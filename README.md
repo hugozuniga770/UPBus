@@ -4,7 +4,7 @@
 - Docente: Ing. Alejandro Rodríguez (Certificación I)
 - Tecnología: Python con Django, Django REST Framework y Django Channels; SQLite; React con Tailwind CSS
 - Método: Scrum, con sprints de una semana ([plan](docs/sesion-08-09-plan.md))
-- Estado: Sprint 1. Documentación en curso; todavía no hay código.
+- Estado: Sprint 1. Documentación en curso; entrevistas ENT-01 y ENT-02 hechas el 16/11/2026; todavía no hay código.
 
 ## 1. Qué hace
 
@@ -38,12 +38,13 @@ En el MVP la ubicación del bus y de los estudiantes, la recarga de créditos, e
 |---|---|---|
 | [sesion-06-requisitos.md](docs/sesion-06-requisitos.md) | Requisitos, alcance, lo que se simula y preguntas abiertas | Listo para revisión |
 | [sesion-07-modelos.md](docs/sesion-07-modelos.md) | Historias, criterios Dado/Cuando/Entonces, casos de uso, estados y trazabilidad | Pendiente |
-| [sesion-08-09-plan.md](docs/sesion-08-09-plan.md) | Plan por sprints, tareas, calendario, riesgos y recortes | Listo para revisión |
+| [sesion-08-09-plan.md](docs/sesion-08-09-plan.md) | Plan por sprints, tareas, Gantt, riesgos y recortes | Listo para revisión |
 | [sesion-12-arquitectura.md](docs/sesion-12-arquitectura.md) | Arquitectura y verificación de un flujo | Pendiente |
 | [sesion-13-14-diseno.md](docs/sesion-13-14-diseno.md) | Datos, clases y arquitectura FE / MW / Padrón / BD | Pendiente |
-| [diagramas-secuencia.md](docs/diagramas-secuencia.md) | Un diagrama de secuencia por caso de uso | Pendiente |
+| [diagramas-secuencia.md](docs/diagramas-secuencia.md) | Un diagrama de secuencia por caso de uso | Propuesta para revisión |
 | [trazabilidad.md](docs/trazabilidad.md) | Cada test con su criterio y su requisito | Pendiente |
-| [entrevistas.md](docs/entrevistas.md) | Guías y registro de las entrevistas | Guías listas |
+| [entrevistas.md](docs/entrevistas.md) | Entrevistas, conclusiones y guías de las siguientes | ENT-01 y ENT-02 hechas |
+| [sesion-15-costos.md](docs/sesion-15-costos.md) | Horas-persona, tarifa, precio y estimado contra real | Listo para revisión |
 | [cambios.md](docs/cambios.md) | Registro de cambios | Al día |
 | [glosario.md](docs/glosario.md) | Siglas y términos | Al día |
 

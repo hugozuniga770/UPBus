@@ -4,6 +4,7 @@
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I) · Aprueba los requisitos: Hugo Zuñiga, como Product Owner
 - Fecha: 13/11/2026 · Sprint 1 · Issue: por crear · Milestone: Sprint 1
+- Actualizado: 16/11/2026 · entrevistas ENT-01 y ENT-02 (C-08 a C-11) y preguntas P-19 a P-24
 - Plan: [Sesiones 8–9](sesion-08-09-plan.md) · Entrevistas: [entrevistas.md](entrevistas.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
 ## 0. Cómo leer este documento
@@ -19,7 +20,7 @@ Cada requisito tiene un ID con el prefijo `BUS` (por ejemplo, `BUS-RF-09`). Dent
 
 **Datos de los ejemplos.** Todos los criterios usan los mismos datos:
 
-- **Ruta:** Ruta Norte, ingreso de las 06:40 desde La Fontana Family Club. Paradas de ejemplo **[PROVISIONAL]**: La Fontana (inicio), Ventura Mall y Campus UPB (fin). Llegada límite a la U: 07:45 **[PROVISIONAL]** (P-06).
+- **Ruta:** Ruta Norte, ingreso de las 06:40 desde La Fontana Family Club. Paradas de ejemplo: La Fontana (inicio, GUIA), Sevilla, Petrol y Campos (ENT-01) y Campus UPB (fin). El orden y las coordenadas de las tres intermedias son **[PROVISIONAL]** (P-18). Llegada límite a la U: 07:45 **[PROVISIONAL]** (P-06).
 - **Tarifa:** 5 Bs por viaje (GUIA). 1 crédito = 1 Bs.
 - **Personas** (códigos y correos de ejemplo **[PROVISIONAL]**, P-01):
 
@@ -30,7 +31,7 @@ Cada requisito tiene un ID con el prefijo `BUS` (por ejemplo, `BUS-RF-09`). Dent
 | 70003 | Andrés Laura Vargas | andres.laura@upb.example | Activo | Administrador y estudiante |
 | 70004 | Ismael | ismael@upb.example | Activo | Estudiante |
 | 70005 | Lucía Peña (ficticia) | lucia.pena@upb.example | Inactiva | — (para probar rechazos) |
-| — | Iván (chofer) **[PROVISIONAL]** (P-03) | — | No está en el padrón | Chofer, cuenta creada por el administrador |
+| — | Marco (chofer, ficticio) | — | No está en el padrón | Chofer, cuenta creada por el administrador |
 
 - **Hora:** todas las fechas y horas son de America/La_Paz. Cada criterio fija su «hora actual».
 
@@ -42,7 +43,7 @@ Cada requisito tiene un ID con el prefijo `BUS` (por ejemplo, `BUS-RF-09`). Dent
 | PERFIL | Perfil de proyecto presentado el 07/11/2026 | Problema, árbol de problemas, objetivo general, objetivos específicos y las 12 historias iniciales |
 | PO13 | Decisiones del Product Owner (Hugo Zuñiga), 13/11/2026 | Tecnología, roles, registro e inicio de sesión, paradas, horas aproximadas, créditos, permisos del chofer y lo que se simula |
 | DOC | Indicaciones del docente comunicadas por Hugo, **fecha no registrada** | (1) Créditos en la app en lugar de pagar por QR. (2) Sin espera de 5 minutos: el bus pasa a una hora aproximada y quien no está se queda. |
-| ENT | Entrevistas ENT-01 en adelante | **Pendientes.** La guía y el registro están en [entrevistas.md](entrevistas.md) |
+| ENT | Entrevistas del 16/11/2026: ENT-01 (chofer de la Ruta Norte) y ENT-02 (estudiante de la Ruta Norte, anónima). Detalle en [entrevistas.md](entrevistas.md) | Paradas reales de la Ruta Norte, cómo se paga hoy, el dispositivo del chofer, que la ubicación se corta y cuánto espera el bus |
 
 ## 2. Alcance del MVP
 
@@ -74,7 +75,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 
 | Qué | Cómo funciona en el MVP | Cómo sería en el servicio real |
 |---|---|---|
-| Ubicación del bus | Un simulador recorre la ruta y envía posiciones como si fuera el celular del chofer | El celular del chofer, con la app abierta, cargador y pantalla siempre encendida |
+| Ubicación del bus | Un simulador recorre la ruta y envía posiciones como si fuera el dispositivo del chofer | La pantalla del bus, que tiene Wi-Fi, Chrome y GPS (ENT-01), o el celular del chofer con cargador; en los dos casos, con la página siempre abierta |
 | Ubicación del estudiante | Posiciones simuladas (por ahora, las de Ismael) | El GPS del celular del estudiante |
 | Recarga de créditos | El estudiante pide la recarga y un administrador la aprueba | Una pasarela de pagos cobra a una cuenta de empresa; cuando aprueba el pago, se cargan los créditos |
 | Retiro del chofer | Se registra el retiro y el saldo baja | Transferencia a la cuenta del chofer |
@@ -82,8 +83,8 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 
 ### Limitaciones del MVP (declaradas)
 
-- La app es web. El GPS real del chofer exige la página abierta y la pantalla encendida; no se hace una app nativa **[ACUERDO, PO13]**.
-- El bus no espera: no existe un tiempo de espera configurable **[ACUERDO, DOC]**.
+- La app es web. El GPS real del chofer exige la página abierta y la pantalla encendida; no se hace una app nativa **[ACUERDO, PO13]**. Según ENT-01, el bus tiene una pantalla con Wi-Fi, Chrome y GPS en la que el chofer podría dejar la página abierta (P-20).
+- El bus no espera: no existe un tiempo de espera configurable **[ACUERDO, DOC]** (P-19).
 - Los avisos se muestran dentro de la app abierta; no se envían por WhatsApp, correo ni SMS **[PROPUESTA]**.
 - El chat es solo de texto **[PROVISIONAL]** (P-10).
 
@@ -126,15 +127,16 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Criterio de aceptación:
   - Aceptación: Hugo (administrador) marca «Voy a subir» en un viaje, igual que un estudiante.
   - Rechazo: Ismael (estudiante) intenta crear una cuenta de chofer. Se rechaza por «solo el administrador puede hacer esto» y no se crea nada.
-  - Rechazo: Iván (chofer) pide los estudiantes de un viaje que no es suyo. Se rechaza por «este viaje no es tuyo».
+  - Rechazo: Marco (chofer) pide los estudiantes de un viaje que no es suyo. Se rechaza por «este viaje no es tuyo».
 
 ### BUS-RF-04 — Gestión de usuarios
 
 - Origen: PO13. Prioridad: alta.
 - Estado: **[ACUERDO]** (PO13). La relación con el padrón es **[PROVISIONAL]** (P-04).
 - Requisito: el administrador crea y elimina cuentas de chofer y de personas (estudiantes nuevos). Las cuentas de chofer no salen del padrón: las crea el administrador.
+- Pendiente: una cuenta con viajes o movimientos de créditos se desactiva en lugar de borrarse, para no perder comprobantes **[PROPUESTA]** (P-23).
 - Criterio de aceptación:
-  - Aceptación: Hugo crea la cuenta de chofer de Iván; Iván puede iniciar sesión y ve solo las funciones de chofer.
+  - Aceptación: Hugo crea la cuenta de chofer de Marco; Marco puede iniciar sesión y ve solo las funciones de chofer.
   - Rechazo: Hugo intenta crear una cuenta con un correo que ya existe. Se rechaza por «ya existe una cuenta con ese correo».
 
 ### BUS-RF-05 — Rutas, paradas y horarios
@@ -143,7 +145,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Estado: **[ACUERDO]** rutas, puntos de partida y horarios (GUIA). Paradas intermedias **[PROVISIONAL]** hasta la entrevista ENT-01.
 - Requisito: cualquier usuario ve cada ruta en un mapa, con su recorrido, sus paradas en orden, sus horarios de ingreso y salida y la hora aproximada de paso por cada parada (RF-11). Consultar no modifica nada.
 - Criterio de aceptación:
-  - Aceptación: Ismael abre la Ruta Norte y ve el recorrido, las paradas La Fontana, Ventura Mall y Campus UPB, y los horarios de ingreso 06:40, 11:00, 13:00 y 15:30. Nada cambia en la BD.
+  - Aceptación: Ismael abre la Ruta Norte y ve el recorrido, las paradas La Fontana, Sevilla, Petrol, Campos y Campus UPB, y los horarios de ingreso 06:40, 11:00, 13:00 y 15:30. Nada cambia en la BD.
 
 ### BUS-RF-06 — Viaje: iniciar y terminar
 
@@ -151,13 +153,13 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Estado: **[ACUERDO]** (PO13).
 - Requisito: un **viaje** es una salida concreta: ruta, horario, fecha y chofer. Sus estados son Programado → En curso → Terminado, o Cancelado. Solo el chofer asignado lo inicia y lo termina. Un chofer tiene un solo viaje en curso a la vez.
 - Criterio de aceptación:
-  - Situación inicial: Iván tiene asignado el viaje Ruta Norte 06:40 del lunes 16/11. Son las 06:38.
-  - Aceptación: Iván inicia el viaje; pasa a En curso y queda la hora de inicio.
-  - Rechazo: Iván intenta iniciar otro viaje sin terminar el primero. Se rechaza por «ya tienes un viaje en curso».
+  - Situación inicial: Marco tiene asignado el viaje Ruta Norte 06:40 del lunes 16/11. Son las 06:38.
+  - Aceptación: Marco inicia el viaje; pasa a En curso y queda la hora de inicio.
+  - Rechazo: Marco intenta iniciar otro viaje sin terminar el primero. Se rechaza por «ya tienes un viaje en curso».
 
 ### BUS-RF-07 — Ubicación del bus en vivo
 
-- Origen: PERFIL. Prioridad: alta, porque es el problema central.
+- Origen: PERFIL; ENT-01 («hay veces se corta en tiempo real, tengo que volver a ponerlo»); ENT-02 (lo que más pediría: «que mejoren la ubicación»). Prioridad: alta, porque es el problema central y las dos entrevistas lo confirman.
 - Estado: **[ACUERDO]** (PO13). Fuente de la ubicación **[SIMULADO]**.
 - Requisito: mientras el viaje está En curso, la posición del bus se guarda y se envía en tiempo real a quienes miran esa ruta. Si el viaje no está En curso, no se aceptan posiciones. Si deja de llegar la señal, se muestra la última posición con su hora.
 - Criterio de aceptación:
@@ -170,27 +172,29 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Estado: **[ACUERDO]** (PO13). Fuente de la ubicación **[SIMULADO]**.
 - Requisito: el estudiante que marcó «Voy a subir» puede compartir su ubicación. La ve solo el chofer de ese viaje (y el administrador). Se deja de compartir en cualquiera de estos casos: el estudiante toca «He subido», el chofer marca «subió» o el viaje termina.
 - Criterio de aceptación:
-  - Aceptación: Ismael comparte su ubicación en el viaje de las 06:40; Iván la ve.
-  - Límite: Iván marca «subió» a Ismael; la ubicación de Ismael deja de compartirse en ese momento.
+  - Aceptación: Ismael comparte su ubicación en el viaje de las 06:40; Marco la ve.
+  - Límite: Marco marca «subió» a Ismael; la ubicación de Ismael deja de compartirse en ese momento.
 
 ### BUS-RF-09 — «Voy a subir»
 
 - Origen: PERFIL; PO13; DOC. Prioridad: alta.
 - Estado: **[ACUERDO]** (PO13, DOC).
+- Entrevistas: ENT-02 está de acuerdo con que el bus no espere («porque después no llegamos [a la U]»). ENT-01 cuenta que hoy espera «hasta dos minutos», y como máximo uno más (P-19).
 - Requisito: el estudiante marca «Voy a subir» para un viaje concreto y una parada. Al chofer le llega la alerta con su nombre y su parada. Puede cancelarlo mientras el bus no haya pasado su parada. El bus no espera: si el bus pasa la parada y el estudiante no subió ni canceló, el aviso se cancela solo y queda registrado como «no se presentó». Un estudiante tiene un solo «Voy a subir» por viaje.
 - Criterio de aceptación:
-  - Aceptación: Ismael marca «Voy a subir» en Ventura Mall para el viaje de las 06:40. Queda Confirmado y a Iván le llega «Ismael va a subir en Ventura Mall».
+  - Aceptación: Ismael marca «Voy a subir» en Sevilla para el viaje de las 06:40. Queda Confirmado y a Marco le llega «Ismael va a subir en Sevilla».
   - Rechazo: Ismael lo marca de nuevo para el mismo viaje. Se rechaza por «ya avisaste que vas a subir en este viaje».
-  - Límite: el bus pasa Ventura Mall y sigue sin que Ismael suba. El aviso queda como «no se presentó», sin cobro.
+  - Límite: el bus pasa Sevilla y sigue sin que Ismael suba. El aviso queda como «no se presentó», sin cobro.
 
 ### BUS-RF-10 — Paradas propuestas y paradas activas
 
 - Origen: PO13. Prioridad: media.
 - Estado: **[ACUERDO]** que estudiantes y choferes proponen paradas y que una parada solo está activa si hay alguien esperando (PO13). Cuándo queda guardada una parada propuesta: **[PROVISIONAL]** (P-05).
+- Entrevistas: ENT-02 no propondría paradas, y ENT-01 dice que los estudiantes suben «todos los días [en] los mismos destinos». Por eso es el recorte 2 propuesto en el plan (C-12).
 - Requisito: el estudiante y el chofer pueden proponer una parada sobre el recorrido de la ruta; no pueden modificar el recorrido. En cada viaje, una parada está **activa** solo si al menos un estudiante con «Voy a subir» en ella comparte su ubicación. Si no hay nadie, la parada no se enciende y no genera avisos.
 - Criterio de aceptación:
   - Aceptación: Ismael propone la parada «Av. Banzer y 4to anillo» sobre el recorrido de la Ruta Norte. Queda registrada como propuesta.
-  - Límite: en el viaje de las 06:40 nadie marcó Ventura Mall. La parada no está activa y el chofer no recibe avisos de ella.
+  - Límite: en el viaje de las 06:40 nadie marcó Sevilla. La parada no está activa y el chofer no recibe avisos de ella.
   - Rechazo: Ismael propone una parada a más de 200 m del recorrido. Se rechaza por «la parada debe estar sobre la ruta» **[PROVISIONAL]** (P-07).
 
 ### BUS-RF-11 — Horas aproximadas por parada
@@ -199,7 +203,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Estado: **[ACUERDO]** (PO13, DOC). Cantidad de viajes del promedio **[PROVISIONAL]** (P-11).
 - Requisito: el bus «llega» a una parada cuando pasa a menos de 50 m. El sistema guarda la hora real de cada paso. La hora aproximada de una parada es la del primer viaje registrado y luego se ajusta con el promedio de los últimos viajes. A cada estudiante se le muestra a qué hora aproximada pasará el bus por su parada.
 - Criterio de aceptación:
-  - Aceptación: en el primer viaje, el bus pasa a 30 m de Ventura Mall a las 06:58. La hora aproximada de esa parada queda en 06:58.
+  - Aceptación: en el primer viaje, el bus pasa a 30 m de Sevilla a las 06:58. La hora aproximada de esa parada queda en 06:58.
   - Límite: en el segundo viaje pasa a las 07:02. La hora aproximada pasa a ser 07:00.
   - Límite: el bus pasa a 80 m de la parada. No cuenta como llegada.
 
@@ -209,7 +213,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Estado: **[ACUERDO]** (PO13): la app solo avisa; el chofer decide.
 - Requisito: si el bus va atrasado respecto de su hora de llegada a la U y en la siguiente parada no hay nadie confirmado ni a menos de 500 m, la app le sugiere al chofer no detenerse. Nunca decide por él.
 - Criterio de aceptación:
-  - Aceptación: el bus va 6 minutos atrasado y Ventura Mall no tiene confirmados. A Iván le aparece «Nadie espera en Ventura Mall: puedes seguir».
+  - Aceptación: el bus va 6 minutos atrasado y Sevilla no tiene confirmados. A Marco le aparece «Nadie espera en Sevilla: puedes seguir».
   - Límite: hay un estudiante confirmado a 300 m. No se muestra la sugerencia.
 
 ### BUS-RF-13 — Aviso de bus cerca
@@ -218,7 +222,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Estado: **[ACUERDO]** 500 m (PO13).
 - Requisito: el estudiante con «Voy a subir» recibe un aviso cuando el bus está a 500 m o menos de su parada. Se avisa una sola vez por viaje.
 - Criterio de aceptación:
-  - Aceptación: el bus queda a 480 m de Ventura Mall; Ismael recibe «Tu bus está cerca».
+  - Aceptación: el bus queda a 480 m de Sevilla; Ismael recibe «Tu bus está cerca».
   - Límite: a 520 m no recibe aviso.
 
 ### BUS-RF-14 — Registrar quién subió
@@ -227,7 +231,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Estado: **[ACUERDO]** (PO13).
 - Requisito: el abordaje se registra cuando el estudiante toca «He subido» o cuando el chofer marca «subió». En ese momento se cobra el viaje (RF-16) y al chofer le aparece el nombre con «ha subido, ha pagado», para que solo le pregunte su nombre.
 - Criterio de aceptación:
-  - Aceptación: Ismael, con 10 créditos, toca «He subido». Queda como A bordo, se le cobran 5 y a Iván le aparece «Ismael: ha subido, ha pagado».
+  - Aceptación: Ismael, con 10 créditos, toca «He subido». Queda como A bordo, se le cobran 5 y a Marco le aparece «Ismael: ha subido, ha pagado».
   - Rechazo: Ismael toca «He subido» en un viaje Terminado. Se rechaza por «el viaje ya terminó».
 
 ### BUS-RF-15 — Recarga de créditos
@@ -244,10 +248,11 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 
 - Origen: GUIA (5 Bs); DOC; PO13. Prioridad: media.
 - Estado: **[ACUERDO]** (PO13).
+- Entrevistas: hoy el chofer cobra por QR y en efectivo; en la salida le pagan al subir y en el ingreso de la mañana, al final del viaje (ENT-01, P-22). El chofer recibe el dinero y la empresa entrega la factura (ENT-01, P-08). ENT-02 prefiere pagar desde la app.
 - Requisito: al registrarse el abordaje (RF-14) se cobran 5 créditos al estudiante y se suman al saldo del chofer. Cada pago genera un comprobante con ID de pago, código, correo y nombre del estudiante, ruta, viaje, fecha, hora y monto. El chofer ve los pagos de su viaje, con el total, y puede buscar uno por ID o por código. Si el estudiante no tiene saldo suficiente, queda como «paga en efectivo»: le paga al chofer al final de la ruta y el chofer lo marca **[PROVISIONAL]** (P-13). Un mismo abordaje nunca se cobra dos veces.
 - Criterio de aceptación:
-  - Aceptación: Ismael, con 10 créditos, sube. Queda con 5, el saldo de Iván sube 5 y existe un comprobante con su ID.
-  - Límite: Ismael, con 0 créditos, sube. No se cobra y a Iván le aparece «Ismael: ha subido, paga en efectivo».
+  - Aceptación: Ismael, con 10 créditos, sube. Queda con 5, el saldo de Marco sube 5 y existe un comprobante con su ID.
+  - Límite: Ismael, con 0 créditos, sube. No se cobra y a Marco le aparece «Ismael: ha subido, paga en efectivo».
   - Rechazo: se envía dos veces el mismo «He subido». Se cobra una sola vez.
 
 ### BUS-RF-17 — Devolución por viaje cancelado
@@ -255,6 +260,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Origen: PO13. Prioridad: baja.
 - Estado: **[ACUERDO]** (PO13).
 - Requisito: si un viaje se cancela después de que un estudiante pagó con créditos, se le devuelven los 5 créditos y se descuentan del saldo del chofer. La devolución queda como un movimiento propio; el pago original no se borra.
+- Pendiente: si el chofer ya retiró su saldo, la devolución lo dejaría en negativo (P-24).
 - Criterio de aceptación:
   - Aceptación: el viaje se cancela con el pago de Ismael hecho. Ismael recupera 5 créditos y quedan los dos movimientos: el pago y la devolución.
 
@@ -264,8 +270,8 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Estado: **[ACUERDO]** el chofer retira solo, sin aprobación (PO13). El retiro es **[SIMULADO]**.
 - Requisito: el chofer retira todo o parte de su saldo. El saldo nunca queda en negativo.
 - Criterio de aceptación:
-  - Aceptación: Iván, con 40 Bs de saldo, retira 40. Queda en 0 y existe el movimiento de retiro.
-  - Rechazo: Iván, con 40 Bs, intenta retirar 50. Se rechaza por «saldo insuficiente» y nada cambia.
+  - Aceptación: Marco, con 40 Bs de saldo, retira 40. Queda en 0 y existe el movimiento de retiro.
+  - Rechazo: Marco, con 40 Bs, intenta retirar 50. Se rechaza por «saldo insuficiente» y nada cambia.
 
 ### BUS-RF-19 — Chat directo
 
@@ -273,7 +279,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Estado: **[ACUERDO]** (PO13). Mensajes rápidos concretos **[PROVISIONAL]** hasta ENT-01.
 - Requisito: el estudiante y el chofer de un viaje pueden escribirse. El chofer dispone de respuestas rápidas para no escribir mientras maneja. El chat directo existe solo entre un estudiante con «Voy a subir» y el chofer de ese viaje.
 - Criterio de aceptación:
-  - Aceptación: Ismael, confirmado en el viaje, le escribe a Iván «Ya estoy en la parada»; Iván lo recibe con el nombre y la hora.
+  - Aceptación: Ismael, confirmado en el viaje, le escribe a Marco «Ya estoy en la parada»; Marco lo recibe con el nombre y la hora.
   - Rechazo: Ismael intenta escribirle al chofer de un viaje en el que no está confirmado. Se rechaza por «no estás en este viaje».
 
 ### BUS-RF-20 — Chat de la ruta
@@ -289,11 +295,12 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 
 - Origen: PO13. Prioridad: baja.
 - Estado: **[ACUERDO]** quién puede y que la hora de llegada a la U no se toca (PO13). El umbral en metros es **[PROVISIONAL]** (P-07).
+- Entrevistas: ENT-01 cambia de ruta «casi nunca: la misma ruta nomás, siempre», porque en esa zona no hay espacio para maniobrar. Por eso es el recorte 1 propuesto en el plan (C-12).
 - Requisito: los estudiantes no modifican rutas. El chofer puede editar las paradas, sus horas y el recorrido de su ruta con cambios pequeños. Un cambio grande (mover el recorrido 2 cuadras o más, o cambiar de avenida) queda Pendiente hasta que un administrador lo aprueba o lo rechaza. Nadie más que el administrador puede cambiar la hora de llegada a la U.
 - Criterio de aceptación:
-  - Aceptación: Iván mueve un punto del recorrido 80 m. El cambio se aplica.
-  - Límite: Iván mueve un punto 250 m. El cambio queda Pendiente y la ruta sigue igual hasta que Hugo lo aprueba.
-  - Rechazo: Iván intenta cambiar la hora de llegada a la U. Se rechaza por «no puedes cambiar la hora de llegada a la U».
+  - Aceptación: Marco mueve un punto del recorrido 80 m. El cambio se aplica.
+  - Límite: Marco mueve un punto 250 m. El cambio queda Pendiente y la ruta sigue igual hasta que Hugo lo aprueba.
+  - Rechazo: Marco intenta cambiar la hora de llegada a la U. Se rechaza por «no puedes cambiar la hora de llegada a la U».
 
 ### BUS-RF-22 — Aviso de mínimo de estudiantes
 
@@ -366,12 +373,12 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 |---|---|---|---|
 | P-01 | ¿Qué códigos y correos reales van en el padrón? ¿El repositorio es público? | Códigos 70001 a 70005 y correos `@upb.example` | RF-01 |
 | P-02 | ¿El equipo se sigue presentando como «Grupo 7»? | No se nombra el número de grupo | Encabezados |
-| P-03 | ¿La cuenta del chofer lleva el nombre real de Don Iván? | «Iván (chofer)» | Ejemplos |
+| P-03 | ¿La cuenta del chofer lleva el nombre real de Don Iván? Respondida (ENT-01): Don Iván no es el chofer de los ejemplos; contrató al chofer entrevistado y es con quien este coordina el servicio con la UPB | Chofer de ejemplo ficticio: Marco | Ejemplos |
 | P-04 | Si el administrador crea y elimina estudiantes, ¿el padrón sigue siendo de solo lectura? | Sí: el padrón no se toca; el administrador crea y elimina cuentas en la BD | RF-01, RF-04 |
 | P-05 | «Solo para el primer día se guardan o no»: ¿quién decide que una parada propuesta queda guardada? | Queda guardada cuando el chofer o un administrador la aprueba; mientras tanto vale solo para ese viaje | RF-10 |
-| P-06 | ¿A qué hora debe llegar a la U cada horario de ingreso? ¿Y las salidas a su punto final? | 06:40 → 07:45; los demás, 65 minutos después de salir | RF-11, RF-12 |
+| P-06 | ¿A qué hora debe llegar a la U cada horario de ingreso? ¿Y las salidas a su punto final? Se pregunta en ENT-03 | 06:40 → 07:45; los demás, 65 minutos después de salir | RF-11, RF-12 |
 | P-07 | ¿Cuántos metros son «2 cuadras»? ¿Quién decide qué es «cambio de avenida»? | 200 m; el cambio de avenida siempre pide aprobación | RF-10, RF-21 |
-| P-08 | «Hablar de impuestos»: ¿se refiere a facturar los pagos o a una sanción por no presentarse? | «No se presentó» solo se registra; la facturación queda fuera del MVP | RF-09, RF-16 |
+| P-08 | «Hablar de impuestos»: ¿se refiere a facturar los pagos o a una sanción por no presentarse? Respondida en parte (ENT-01): el chofer recibe el dinero y la empresa entrega la factura. Falta saber si habrá una sanción por no presentarse | «No se presentó» solo se registra; la app no factura | RF-09, RF-16 |
 | P-09 | ¿El estudiante elige las rutas que usa? Eso define su chat de ruta | Sí: elige una o más y puede cambiarlas | RF-20 |
 | P-10 | ¿El chat es solo de texto? ¿El administrador puede borrar mensajes? | Solo texto; el administrador puede borrar | RF-19, RF-20 |
 | P-11 | ¿Con cuántos viajes se promedia la hora aproximada? | Los últimos 5 | RF-11 |
@@ -381,7 +388,13 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 | P-15 | ¿La recarga tiene monto máximo? | No | RF-15 |
 | P-16 | ¿Qué hosting gratuito se usa? | Se decide en el Sprint 2 | RT-08 |
 | P-17 | ¿Con cuánta anticipación se avisa al administrador que hay menos de 15? | 30 minutos antes de la salida | RF-22 |
-| P-18 | ENT-01: ¿cuáles son las paradas reales de cada ruta y sus coordenadas? | Paradas de ejemplo de la sección 0 | RF-05 |
+| P-18 | ¿Cuáles son las paradas reales de cada ruta, su orden y sus coordenadas? Respondida en parte (ENT-01): la Ruta Norte pasa por «varios puntos de Sevilla», Petrol y parte de Campos. Faltan el orden, las coordenadas y las demás rutas (ENT-03) | Las paradas de la sección 0 | RF-05 |
+| P-19 | El chofer de ENT-01 espera «hasta dos minutos», y como máximo uno más; el docente indicó que el bus no espera. ¿Se da una tolerancia de espera? | Sin espera, como indicó el docente (DOC) | RF-09 |
+| P-20 | ¿Qué pantalla tiene el bus (sistema y navegador) y le da su ubicación a una página web? | Se asume que sí; se confirma con Don Iván y con una prueba en el bus | RF-07 |
+| P-21 | El chofer mencionó una aplicación que «salió para los transportistas». ¿Cuál es y qué hace? | Se investiga como referencia; no cambia el alcance | Alcance |
+| P-22 | ¿Cuándo se cobra? Hoy, en la salida se paga al subir y en el ingreso de la mañana, al final del viaje (ENT-01) | Con créditos se cobra al registrar que subió, en los dos sentidos; el efectivo se paga como hoy | RF-14, RF-16 |
+| P-23 | Al eliminar una cuenta que tiene viajes o movimientos de créditos, ¿se borra o se desactiva? | Se desactiva, para no perder comprobantes | RF-04 |
+| P-24 | Si el chofer ya retiró su saldo y se cancela un viaje, la devolución dejaría su saldo en negativo. ¿Quién la cubre? | Se permite el saldo negativo solo por una devolución, y se compensa con sus próximos cobros | RF-17, RF-18 |
 
 ## 7. Siguiente paso
 
@@ -393,6 +406,8 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 - **Hugo Zuñiga (Product Owner):** respondió las preguntas del 13/11/2026, definió los acuerdos, los valores provisionales y lo que se simula, y aprueba este documento.
 - **Andrés Laura Vargas y Sebastian Cruz:** revisión pendiente antes del commit.
 - **Asistencia de IA:** se usó Claude (Anthropic) para estudiar la estructura del proyecto de referencia (reserva de salas), ordenar las respuestas del Product Owner, proponer la estructura y redactar el borrador.
+- **Hugo Zuñiga (16/11/2026):** hizo las entrevistas ENT-01 y ENT-02.
+- **Asistencia de IA (16/11/2026):** se usó Claude (Anthropic) para pasar las entrevistas a este documento, cambiar los ejemplos (C-09) y redactar las preguntas P-19 a P-24.
 
 ## 9. Anexo — Datos de la guía de buses (GUIA)
 

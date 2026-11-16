@@ -1,0 +1,495 @@
+# Diagramas de secuencia de los casos de uso
+
+- Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
+- Fecha: 16/11/2026 · Sprint 1 · Issue: por crear · Milestone: Sprint 1
+- Estado: **[PROPUESTA]**. Muestran cómo pensamos construir cada caso de uso; los nombres de las funciones se confirman en la [sesión 13–14](sesion-13-14-diseno.md).
+- Requisitos: [Sesión 6](sesion-06-requisitos.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
+
+## 0. Cómo leer los diagramas
+
+- **Mismo número, misma funcionalidad:** CU-07 es el caso de uso de HU-07. Sus pasos detallados van en la sesión 7.
+- Los participantes son las capas del proyecto, como en el proyecto de reserva de salas:
+
+| Participante | Qué es | Dónde estará |
+|---|---|---|
+| FE | Las pantallas, en el navegador (celular, computadora o la pantalla del bus) | `frontend/` (React con Tailwind) |
+| Vista | Recibe la petición y responde JSON | `views.py` de cada app (Django REST Framework) |
+| Servicios | Orquesta: lee lo necesario, pregunta a las reglas y guarda | `servicios.py` |
+| Reglas | Decide si se permite y con qué causa se rechaza. No toca la base | `reglas.py` |
+| Padrón | Lista de la universidad, de solo lectura | `padron/padron.json`, leído solo por `cuentas/padron.py` |
+| BD | La base de datos | SQLite, a través de los modelos (`models.py`) |
+| Canal | Envía al instante la ubicación, los avisos y los mensajes | Django Channels (WebSocket) |
+
+- Las vistas nunca llaman a las reglas ni guardan en la BD: todo pasa por los servicios.
+- Un **rechazo** (`Rechazo` con su causa) no guarda nada y la vista responde con la causa (BUS-RC-01, BUS-RC-03).
+- Datos de los ejemplos: los de la sección 0 de los requisitos (Ismael 70004, parada Sevilla de la Ruta Norte, chofer Marco, administrador Hugo).
+
+## 1. CU-01 — Registrarse (HU-01)
+
+```mermaid
+sequenceDiagram
+    actor E as Ismael
+    participant FE
+    participant V as Vista
+    participant S as Servicios
+    participant R as Reglas
+    participant P as Padrón
+    participant B as BD
+    E->>FE: Código 70004, correo y contraseña dos veces
+    FE->>V: POST /api/registro
+    V->>S: registrar(codigo, correo, contrasena, confirmacion)
+    S->>P: buscar_por_codigo(70004)
+    P-->>S: persona o nada
+    S->>B: ya tiene cuenta?
+    B-->>S: no
+    S->>R: verificar_persona_en_padron, correo, activa, sin_cuenta, contrasenas_iguales, contrasena
+    alt Todo se cumple
+        R-->>S: sin rechazo
+        S->>B: crear la cuenta con rol estudiante
+        S-->>V: cuenta
+        V-->>FE: 201 Cuenta creada
+    else Rechazo
+        R-->>S: Rechazo con la causa
+        S-->>V: Rechazo
+        V-->>FE: 400 con la causa, por ejemplo persona no activa en el padrón
+    end
+```
+
+## 2. CU-02 — Iniciar y cerrar sesión (HU-02)
+
+```mermaid
+sequenceDiagram
+    actor U as Usuario
+    participant FE
+    participant V as Vista
+    participant S as Servicios
+    participant B as BD
+    U->>FE: Código o correo, y contraseña
+    FE->>V: POST /api/sesion
+    V->>S: iniciar_sesion(identificador, contrasena)
+    S->>B: buscar la cuenta por código o por correo
+    alt Cuenta y contraseña correctas
+        S-->>V: cuenta con su rol
+        V-->>FE: 200 y cookie de sesión. El FE muestra las pantallas del rol
+    else Algo no coincide
+        S-->>V: Rechazo
+        V-->>FE: 400 Código, correo o contraseña incorrectos
+    end
+    U->>FE: Cerrar sesión
+    FE->>V: DELETE /api/sesion
+    V-->>FE: 204. La cookie deja de valer
+```
+
+El inicio de sesión no consulta el padrón: solo la BD.
+
+## 3. CU-03 — Gestionar usuarios (HU-03)
+
+```mermaid
+sequenceDiagram
+    actor A as Hugo (administrador)
+    participant FE
+    participant V as Vista
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    A->>FE: Crear la cuenta de chofer de Marco
+    FE->>V: POST /api/usuarios
+    V->>S: crear_cuenta(administrador, datos, rol=chofer)
+    S->>R: verificar_es_administrador
+    S->>B: existe una cuenta con ese correo?
+    S->>R: verificar_correo_libre
+    alt Sin rechazo
+        S->>B: crear la cuenta de chofer
+        V-->>FE: 201 Cuenta creada
+    else Rechazo
+        V-->>FE: 400 o 403 con la causa
+    end
+    A->>FE: Eliminar una cuenta
+    FE->>V: DELETE /api/usuarios/id
+    V->>S: eliminar_cuenta(administrador, id)
+    S->>B: desactivar la cuenta (P-23), sin borrar viajes ni comprobantes
+    V-->>FE: 204
+```
+
+## 4. CU-04 — Ver rutas, paradas y horarios (HU-04)
+
+```mermaid
+sequenceDiagram
+    actor U as Usuario
+    participant FE
+    participant V as Vista
+    participant S as Servicios
+    participant B as BD
+    U->>FE: Abre la Ruta Norte
+    FE->>V: GET /api/rutas/norte
+    V->>S: ver_ruta(norte)
+    S->>B: recorrido, paradas en orden, horarios y horas aproximadas
+    B-->>S: datos
+    S-->>V: ruta
+    V-->>FE: 200 con la ruta. El FE la dibuja en el mapa (Leaflet)
+```
+
+Es una consulta: no cambia nada en la BD (BUS-RC-02).
+
+## 5. CU-05 — Iniciar el viaje y compartir la ubicación (HU-05)
+
+```mermaid
+sequenceDiagram
+    actor C as Marco (chofer)
+    participant FE
+    participant V as Vista
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    participant W as Canal
+    C->>FE: Iniciar ruta (Ruta Norte 06:40)
+    FE->>V: POST /api/viajes/id/iniciar
+    V->>S: iniciar_viaje(chofer, viaje, ahora)
+    S->>B: el viaje y si el chofer tiene otro en curso
+    S->>R: verificar_es_su_viaje, verificar_programado, verificar_sin_viaje_en_curso
+    alt Sin rechazo
+        S->>B: viaje En curso, con su hora de inicio
+        V-->>FE: 200
+        loop Cada 5 a 10 segundos
+            FE->>W: posición del bus (GPS o simulada)
+            W->>S: registrar_ubicacion_bus(viaje, posición, ahora)
+            S->>B: guardar la última posición
+            S->>W: enviar a quienes miran la ruta
+        end
+    else Rechazo
+        V-->>FE: 400 con la causa, por ejemplo ya tienes un viaje en curso
+    end
+    C->>FE: Terminar ruta
+    FE->>V: POST /api/viajes/id/terminar
+    V->>S: terminar_viaje(chofer, viaje, ahora)
+    S->>B: viaje Terminado. Se cierran los avisos y las ubicaciones de estudiantes
+```
+
+## 6. CU-06 — Ver el bus en vivo y la hora aproximada (HU-06)
+
+```mermaid
+sequenceDiagram
+    actor E as Ismael
+    participant FE
+    participant V as Vista
+    participant S as Servicios
+    participant B as BD
+    participant W as Canal
+    E->>FE: Abre el mapa de la Ruta Norte
+    FE->>V: GET /api/viajes/id/estado
+    V->>S: estado_del_viaje(viaje)
+    S->>B: última posición y hora aproximada de cada parada
+    alt Viaje En curso
+        V-->>FE: 200 con la posición y la hora aproximada en Sevilla
+        FE->>W: suscribirse al viaje
+        loop Mientras el viaje está En curso
+            W-->>FE: nueva posición del bus
+            FE->>FE: mueve el bus en el mapa
+        end
+    else Viaje Programado
+        V-->>FE: 200 El bus aún no salió
+    end
+```
+
+## 7. CU-07 — «Voy a subir» y compartir la ubicación (HU-07)
+
+```mermaid
+sequenceDiagram
+    actor E as Ismael
+    participant FE
+    participant V as Vista
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    participant W as Canal
+    actor C as Marco (chofer)
+    E->>FE: Voy a subir en Sevilla
+    FE->>V: POST /api/viajes/id/avisos
+    V->>S: avisar_que_sube(estudiante, viaje, parada, ahora)
+    S->>B: el viaje y si ya avisó en este viaje
+    S->>R: verificar_viaje_abierto, verificar_un_aviso_por_viaje, verificar_bus_no_paso_la_parada
+    alt Sin rechazo
+        S->>B: aviso Confirmado
+        S->>W: alerta al chofer
+        W-->>C: Ismael va a subir en Sevilla
+        V-->>FE: 201
+        loop Mientras espera
+            FE->>W: ubicación de Ismael (GPS o simulada)
+            W->>S: registrar_ubicacion_estudiante
+            S->>W: solo al chofer de ese viaje
+        end
+    else Rechazo
+        V-->>FE: 400 Ya avisaste que vas a subir en este viaje
+    end
+    Note over S,B: Si el bus pasa Sevilla y Ismael no subió ni canceló, cerrar_avisos_pasados deja el aviso como No se presentó, sin cobro
+```
+
+## 8. CU-08 — Proponer una parada (HU-08)
+
+```mermaid
+sequenceDiagram
+    actor E as Estudiante o chofer
+    participant FE
+    participant V as Vista
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    E->>FE: Marca un punto en el mapa de la ruta
+    FE->>V: POST /api/rutas/norte/paradas-propuestas
+    V->>S: proponer_parada(usuario, ruta, punto)
+    S->>B: recorrido de la ruta
+    S->>R: verificar_sobre_la_ruta (a menos de 200 m)
+    alt Sin rechazo
+        S->>B: parada Propuesta
+        V-->>FE: 201
+    else Rechazo
+        V-->>FE: 400 La parada debe estar sobre la ruta
+    end
+```
+
+Una parada solo se enciende en un viaje si alguien espera en ella con su ubicación compartida (RF-10).
+
+## 9. CU-09 — Aviso de bus cerca (HU-09)
+
+```mermaid
+sequenceDiagram
+    participant W as Canal
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    actor E as Ismael
+    W->>S: registrar_ubicacion_bus(viaje, posición, ahora)
+    S->>B: avisos Confirmados del viaje y sus paradas
+    loop Por cada aviso sin notificar
+        S->>R: esta_cerca(posición, parada) a 500 m o menos
+        alt Está cerca
+            S->>B: marcar el aviso como notificado
+            S->>W: Tu bus está cerca
+            W-->>E: aviso en la app abierta
+        end
+    end
+    S->>R: llego_a_la_parada (a menos de 50 m)
+    S->>B: guardar la hora real de paso, para la hora aproximada (RF-11)
+```
+
+## 10. CU-10 y CU-12 — Registrar quién subió y cobrar el viaje (HU-10, HU-12)
+
+```mermaid
+sequenceDiagram
+    actor E as Ismael
+    participant FE
+    participant V as Vista
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    participant W as Canal
+    actor C as Marco (chofer)
+    E->>FE: He subido (o el chofer marca subió)
+    FE->>V: POST /api/viajes/id/abordajes
+    V->>S: registrar_abordaje(usuario, viaje, estudiante, ahora)
+    S->>B: viaje, aviso y saldo de Ismael
+    S->>R: verificar_viaje_en_curso, verificar_no_abordo_antes
+    alt Saldo de 5 o más
+        S->>B: en una sola transacción, abordaje, cobro de 5, abono al chofer y comprobante
+        S->>W: Ismael ha subido, ha pagado
+        W-->>C: aparece en su lista con el comprobante
+        V-->>FE: 201 con el ID del comprobante
+    else Saldo insuficiente
+        S->>B: abordaje como paga en efectivo
+        S->>W: Ismael ha subido, paga en efectivo
+        V-->>FE: 201
+    else Rechazo
+        V-->>FE: 400 El viaje ya terminó
+    end
+    Note over S,B: Al registrar el abordaje se deja de compartir la ubicación de Ismael
+```
+
+Un segundo envío del mismo «He subido» se rechaza en `verificar_no_abordo_antes`: nunca se cobra dos veces (BUS-RC-03).
+
+## 11. CU-11 — Recargar créditos (HU-11)
+
+```mermaid
+sequenceDiagram
+    actor E as Ismael
+    actor A as Hugo (administrador)
+    participant FE
+    participant V as Vista
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    E->>FE: Recargar 20 Bs
+    FE->>V: POST /api/recargas
+    V->>S: pedir_recarga(estudiante, monto)
+    S->>R: verificar_monto (5 o más, múltiplo de 5)
+    alt Monto válido
+        S->>B: recarga Pendiente
+        V-->>FE: 201
+    else Rechazo
+        V-->>FE: 400 El monto debe ser múltiplo de 5
+    end
+    Note over A,B: SIMULADO. En el servicio real aprueba la pasarela de pagos
+    A->>FE: Aprobar la recarga
+    FE->>V: POST /api/recargas/id/aprobar
+    V->>S: aprobar_recarga(administrador, recarga)
+    S->>R: verificar_es_administrador, verificar_pendiente
+    S->>B: recarga Aprobada y movimiento de +20 créditos
+    V-->>FE: 200
+```
+
+## 12. CU-13 — Retirar el saldo del chofer (HU-13)
+
+```mermaid
+sequenceDiagram
+    actor C as Marco (chofer)
+    participant FE
+    participant V as Vista
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    C->>FE: Retirar 40 Bs
+    FE->>V: POST /api/retiros
+    V->>S: retirar_saldo(chofer, monto)
+    S->>B: saldo = suma de sus movimientos
+    S->>R: verificar_saldo_suficiente
+    alt Sin rechazo
+        S->>B: movimiento de retiro (SIMULADO)
+        V-->>FE: 201
+    else Rechazo
+        V-->>FE: 400 Saldo insuficiente
+    end
+```
+
+## 13. CU-14 — Chat directo con el chofer (HU-14)
+
+```mermaid
+sequenceDiagram
+    actor E as Ismael
+    participant FE
+    participant W as Canal
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    actor C as Marco (chofer)
+    E->>FE: Ya estoy en la parada
+    FE->>W: mensaje directo del viaje
+    W->>S: enviar_mensaje_directo(estudiante, viaje, texto)
+    S->>B: el aviso de Ismael en ese viaje
+    S->>R: verificar_esta_en_el_viaje
+    alt Sin rechazo
+        S->>B: guardar el mensaje con nombre y hora
+        S->>W: al chofer
+        W-->>C: Ismael. Ya estoy en la parada
+        C->>W: respuesta rápida Te espero 1 min
+        W-->>FE: respuesta del chofer
+    else Rechazo
+        W-->>FE: No estás en este viaje
+    end
+```
+
+## 14. CU-15 — Chat de la ruta (HU-15)
+
+```mermaid
+sequenceDiagram
+    actor E as Ismael
+    participant FE
+    participant W as Canal
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    actor M as Miembros de la Ruta Norte
+    E->>FE: Escribe en el chat de la Ruta Norte
+    FE->>W: mensaje de ruta
+    W->>S: enviar_mensaje_ruta(estudiante, ruta, texto)
+    S->>R: verificar_es_miembro_de_la_ruta
+    alt Sin rechazo
+        S->>B: guardar el mensaje
+        S->>W: a todos los miembros
+        W-->>M: mensaje con nombre y hora
+    else Rechazo
+        W-->>FE: No eres parte de esta ruta
+    end
+```
+
+## 15. CU-16 — Modificar una ruta (HU-16)
+
+```mermaid
+sequenceDiagram
+    actor C as Marco (chofer)
+    actor A as Hugo (administrador)
+    participant FE
+    participant V as Vista
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    C->>FE: Mueve un punto del recorrido
+    FE->>V: POST /api/rutas/norte/cambios
+    V->>S: proponer_cambio_ruta(usuario, ruta, cambio)
+    S->>R: verificar_puede_editar, verificar_no_cambia_llegada_a_la_U
+    S->>R: es_cambio_grande (200 m o más, o cambio de avenida)
+    alt Cambio pequeño
+        S->>B: aplicar el cambio
+        V-->>FE: 200 Cambio aplicado
+    else Cambio grande
+        S->>B: cambio Pendiente, la ruta sigue igual
+        V-->>FE: 202 Pendiente de aprobación
+        A->>FE: Aprobar
+        FE->>V: POST /api/cambios/id/aprobar
+        V->>S: aprobar_cambio(administrador, cambio)
+        S->>B: aplicar el cambio
+    else Rechazo
+        V-->>FE: 403 No puedes cambiar la hora de llegada a la U
+    end
+```
+
+## 16. CU-17 — Confirmados y aviso de mínimo (HU-17)
+
+```mermaid
+sequenceDiagram
+    participant T as Tarea programada
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    participant W as Canal
+    actor A as Hugo (administrador)
+    T->>S: revisar_minimo(ahora), cada minuto
+    S->>B: viajes que salen dentro de 30 minutos y sus confirmados
+    loop Por cada viaje
+        S->>R: hay_menos_del_minimo(confirmados, 15)
+        alt Menos de 15 y sin aviso previo
+            S->>B: marcar el viaje como avisado
+            S->>W: aviso al administrador
+            W-->>A: Ruta Norte 06:40 tiene 9 confirmados
+        end
+    end
+    Note over S,B: La app no cancela el viaje. Decide una persona
+```
+
+## 17. Simulador de escenarios (T23)
+
+No es un caso de uso del usuario: es la herramienta de la demo y de las pruebas. Lo importante es que **llama a los mismos servicios que la app**, así que un escenario solo funciona si las reglas funcionan.
+
+```mermaid
+sequenceDiagram
+    actor D as Integrante (terminal o panel de demo)
+    participant Sim as Simulador
+    participant S as Servicios
+    participant B as BD
+    participant W as Canal
+    participant FE as Pantallas abiertas
+    D->>Sim: simular bus-deja-estudiante --velocidad 10
+    Sim->>S: iniciar_viaje(Marco, Ruta Norte 06:40)
+    Sim->>S: avisar_que_sube(Ismael, Sevilla)
+    loop Puntos del recorrido, con el reloj acelerado
+        Sim->>S: registrar_ubicacion_bus(posición, ahora simulado)
+        S->>B: guardar
+        S->>W: nueva posición
+        W-->>FE: el bus se mueve
+    end
+    Note over Sim,S: Ismael nunca sube. Al pasar Sevilla, cerrar_avisos_pasados lo marca No se presentó
+    Sim->>S: terminar_viaje(Marco)
+```
+
+## 18. Participación y asistencia utilizada
+
+- **Hugo Zuñiga (Product Owner):** pidió los diagramas y los aprueba.
+- **Asistencia de IA:** se usó Claude (Anthropic) para proponer las secuencias a partir de los requisitos y de la organización por capas del proyecto de referencia.

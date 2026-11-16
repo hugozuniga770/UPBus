@@ -21,11 +21,11 @@ Busca la sigla, lee su significado y sigue.
 | RT | Restricción: algo ya decidido sobre la tecnología | RT-02, SQLite | `sesion-06-requisitos.md` |
 | HU | Historia de usuario | HU-07 | `sesion-07-modelos.md` |
 | CA | Criterio de aceptación; cada uno es un test | HU07-CA2 | `sesion-07-modelos.md` |
-| CU | Caso de uso: los pasos de una historia | CU-07 | `sesion-07-modelos.md` |
+| CU | Caso de uso: los pasos de una historia. Mismo número que su historia | CU-07 | `sesion-07-modelos.md`, `diagramas-secuencia.md` |
 | P-xx | Pregunta abierta para el Product Owner | P-06, horas de llegada | `sesion-06-requisitos.md`, sección 6 |
 | C-xx | Cambio registrado a algo ya acordado | C-02, créditos en lugar de QR | `cambios.md` |
 | T-xx | Tarea del plan | T11, viajes y bus en vivo | `sesion-08-09-plan.md` |
-| ENT-xx | Entrevista | ENT-01, chofer | `entrevistas.md` |
+| ENT-xx | Entrevista | ENT-01, chofer de la Ruta Norte | `entrevistas.md` |
 
 ### 1.1 Fuentes citadas en los requisitos
 
@@ -36,6 +36,16 @@ Busca la sigla, lee su significado y sigue.
 | PO13 | Decisiones del Product Owner del 13/11/2026 |
 | DOC | Indicaciones del docente comunicadas por Hugo |
 | ENT | Entrevistas |
+
+### 1.2 Costos (`sesion-15-costos.md`)
+
+| Sigla | Significa |
+|---|---|
+| h-p | Horas-persona: una persona trabajando una hora |
+| Bs/h | Bolivianos por hora: la tarifa |
+| IVA | Impuesto al Valor Agregado, 13%, incluido en el precio de la factura |
+| IT | Impuesto a las Transacciones, 3% del ingreso bruto |
+| SMN | Salario Mínimo Nacional: 3.300 Bs en 2026 |
 
 ## 2. Arquitectura y técnicas
 
