@@ -59,7 +59,7 @@ Las estimaciones son en horas-persona (h-p) y son **[PROPUESTA]**: no hay horas 
 | T10 | Rutas, paradas y horarios (HU-04) | Comando `cargar_rutas`; las rutas se ven en el mapa | 8 | Sebastian | 2 | Por hacer |
 | T11 | Viajes y bus en vivo (HU-05, HU-06) | El chofer inicia el viaje; el simulador mueve el bus en el mapa por WebSocket | 10 | Sebastian | 2 | Por hacer |
 | T12 | Base visual | Estilo UPB, navegación por rol y componentes comunes | 6 | Andrés | 2 | Por hacer |
-| T13 | Entrevistas a Don Iván y a estudiantes de otras rutas (ENT-03 en adelante) | Registros en `entrevistas.md` y cambios derivados | 4 | Hugo | 2 | Por hacer |
+| T13 | Entrevistas a Don Iván y a la administración (ENT-03 y ENT-07, el 18/11) y a estudiantes de otras rutas | Registros en `entrevistas.md` y cambios derivados | 4 | Andrés (ENT-03, ENT-07) y Hugo (estudiantes) | 1 y 2 | Por hacer |
 | T14 | «Voy a subir» y ubicación del estudiante (HU-07) | Alerta al chofer; el aviso se cancela solo si no sube | 8 | Sebastian | 3 | Por hacer |
 | T15 | Paradas propuestas y horas aproximadas (HU-08) | Paradas activas; hora aproximada por parada | 8 | Sebastian | 3 | Por hacer |
 | T16 | Aviso de bus cerca y registro de quién subió (HU-09, HU-10) | Aviso a 500 m; «ha subido» en la lista del chofer | 6 | Andrés | 3 | Por hacer |
@@ -245,6 +245,7 @@ Al cerrar cada sprint se anota aquí la fecha real y el SHA del commit de cierre
 | 14/11/2026 | Se agregan T23 (simulador y panel de demo, 10 h-p) y T24 (guion y ensayo de la demo, 3 h-p); T22 queda solo para el despliegue (C-07) | Mostrar en clase que la app funciona |
 | 16/11/2026 | T04 queda hecha con ENT-01 y ENT-02; T13 pasa a Don Iván y a estudiantes de otras rutas (C-08) | No se encontró a Don Iván; el chofer entrevistado coordina con él |
 | 16/11/2026 | Nuevo orden de los recortes (C-12, propuesto) | Lo que dijeron ENT-01 y ENT-02 |
+| 17/11/2026 | ENT-03 y ENT-07 pasan a Andrés y se adelantan al 18/11 (C-14) | Reparto de trabajo |
 | 16/11/2026 | Se agregan T00 (perfil, ya hecho) al conteo, el Gantt detallado y el Gantt real | Llevar las cuentas del proyecto (sesión 15) |
 
 ## 12. Dudas abiertas
