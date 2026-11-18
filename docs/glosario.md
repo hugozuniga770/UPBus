@@ -5,7 +5,7 @@ Busca la sigla, lee su significado y sigue.
 ## Ficha del documento
 
 - Proyecto: UPBus — Buses UPB en tiempo real
-- Creado: 13/11/2026 · Issue: por crear · Milestone: Sprint 1
+- Creado: 13/11/2026 · Actualizado: 18/11/2026 (modo registro, padrón local y términos del código) · Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
 - Elaboración: Hugo Zuñiga, con asistencia de Claude (Anthropic)
 
 ## 0. Cómo se arma un ID
@@ -34,6 +34,7 @@ Busca la sigla, lee su significado y sigue.
 | GUIA | Guía oficial «Buses I-26» de la UPB |
 | PERFIL | Perfil de proyecto presentado el 07/11/2026 |
 | PO13 | Decisiones del Product Owner del 13/11/2026 |
+| PO18 | Decisiones del Product Owner del 18/11/2026: modo registro, padrón de la clase y roles de la implementación |
 | DOC | Indicaciones del docente comunicadas por Hugo |
 | ENT | Entrevistas |
 
@@ -54,11 +55,16 @@ Busca la sigla, lee su significado y sigue.
 | FE | Frontend: las pantallas, hechas con React y Tailwind |
 | MW | La capa del medio: el servidor Django, que recibe, aplica las reglas y responde |
 | BD | La base de datos del proyecto (SQLite) |
-| Padrón | La lista de personas de la universidad, de solo lectura |
+| Padrón | La lista de personas de la universidad, de solo lectura. En el repositorio va el de ejemplo (`padron.json`); la lista de la clase va en `padron.local.json`, que no se sube |
 | API | La forma en que el FE le pide datos al MW |
 | DRF | Django REST Framework: la herramienta de Django para hacer la API |
 | WebSocket | Conexión abierta entre el navegador y el servidor, para recibir la ubicación y los mensajes al instante |
 | CI | Integración continua: GitHub corre las pruebas en cada cambio |
+| CSRF | Ataque en el que otra página intenta usar tu sesión; Django lo bloquea con un token que el FE manda en cada escritura |
+| HTTPS | Conexión cifrada; el navegador solo entrega el GPS a páginas con HTTPS o abiertas en la misma computadora |
+| Túnel | Programa gratuito (cloudflared) que da una dirección HTTPS temporal a la app que corre en una computadora, para abrirla en el celular |
+| PR | Pull Request: el pedido para unir una rama a `develop`; lo aprueba Hugo |
+| Wake Lock | Permiso del navegador para que la pantalla no se apague mientras se graba un recorrido |
 
 ## 3. Las marcas entre corchetes
 
@@ -83,3 +89,11 @@ Busca la sigla, lee su significado y sigue.
 | Sprint | Ciclo de una semana que termina con algo que funciona |
 | Incremento | Lo terminado en un sprint que cumple la Definition of Done |
 | MVP | Producto mínimo viable: la primera versión que ya resuelve el problema principal |
+| Modo registro | Modo del chofer y del administrador para grabar paradas, horas y recorrido en un viaje real (RF-23, HU-18) |
+| Registro | Una grabación del modo registro: una ruta, un horario y sus marcas |
+| Marca | Lo que se guarda al tocar «Parada» en el modo registro: posición, precisión del GPS y hora |
+| Paso | Una vez que el bus pasó por una parada, con los minutos desde la salida; con los pasos se calcula la hora aproximada |
+| Respaldo | Archivo JSON que el celular descarga con un registro, para importarlo si algo falló (`importar_registro`) |
+| Cola | Lista de marcas y puntos que esperan en el celular hasta que haya señal |
+| Base del código | El punto de partida que dejó Hugo el 18/11/2026: entornos, cuentas, usuarios, rutas, modo registro y pruebas |
+| `develop` | Rama donde se unen las historias terminadas; solo Hugo la une con `main` al cerrar cada sprint |

@@ -2,7 +2,7 @@
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Responsable: Hugo Zuñiga (Product Owner)
-- Creado: 13/11/2026 · Actualizado: 18/11/2026, entrevista ENT-03 a Don Iván y guía de ENT-07 ajustada (C-15 a C-17) · Issue: por crear · Milestone: Sprint 1
+- Creado: 13/11/2026 · Actualizado: 18/11/2026, entrevista ENT-03 a Don Iván y guía de ENT-07 ajustada (C-15 a C-17) · Issue: [#7](https://github.com/hugozuniga770/UPBus/issues/7) · Milestone: Sprint 1
 - Requisitos que dependen de estas entrevistas: [sesion-06-requisitos.md](sesion-06-requisitos.md), sección 6 · Cambios: [cambios.md](cambios.md)
 
 ## 0. Cómo leer este documento

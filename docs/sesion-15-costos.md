@@ -3,7 +3,8 @@
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I)
-- Fecha: 16/11/2026 · Sprint 1 · Issue: por crear · Milestone: Sprint 1
+- Fecha: 16/11/2026 · Sprint 1 · Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
+- Actualizado: 18/11/2026 · T25 y T26 suman 10 h-p (152 en total); la base del código cambia responsables y las tareas por asignar las reparte Andrés (C-18, C-19)
 - Hoja de cálculo con las cuentas al día: «UPBus · Costos y horas» (Claude Sheets, privada del equipo)
 - Plan: [Sesiones 8–9](sesion-08-09-plan.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
@@ -24,7 +25,7 @@ El número 15 es el de la última sesión de esta documentación. Si el docente 
 | SAL-ING | [Nucamp, salarios tecnológicos en Bolivia 2026](https://www.nucamp.co/blog/coding-bootcamp-bolivia-bol-highest-paying-tech-companies-in-bolivia), que cita a Levels.fyi | Ingeniero de software promedio: unos 12.118 Bs al mes |
 | SMN | [Decreto Supremo 5516](https://ovt.mintrabajo.gob.bo/soporte/recursos/PLANILLA%20COMPLEMENTARIA.pdf) | Salario Mínimo Nacional 2026: 3.300 Bs al mes |
 | L843 | [Ley 843: IVA e IT](https://boliviaimpuestos.com/iva-it-e-iue-todo/) | IVA del 13%, incluido en el precio de la factura; IT del 3% sobre el ingreso bruto |
-| PLAN | [Sesiones 8–9](sesion-08-09-plan.md), sección 4 | Las 142 h-p estimadas por tarea |
+| PLAN | [Sesiones 8–9](sesion-08-09-plan.md), sección 4 | Las 152 h-p estimadas por tarea |
 | GUIA | Guía oficial «Buses I-26» de la UPB | Tarifa de 5 Bs por viaje, para los viajes de prueba |
 
 ## 2. Horas estimadas
@@ -32,12 +33,14 @@ El número 15 es el de la última sesión de esta documentación. Si el docente 
 | Etapa | Tareas | h-p |
 |---|---|---:|
 | Perfil (ya hecho) | T00 | 6 |
-| Sprint 1 | T01 a T08 | 32 |
-| Sprint 2 | T09 a T13, y 3 h-p de T23 | 35 |
+| Sprint 1 | T01 a T10, T12 y T25 (la base adelantó T09, T10 y T12) | 58 |
+| Sprint 2 | T11, T13, T26 y 3 h-p de T23 | 19 |
 | Sprint 3 | T14 a T16, 5 h-p de T17 y 3 h-p de T23 | 30 |
 | Sprint 4 | T18 a T20, 5 h-p de T17 y 4 h-p de T23 | 26 |
 | Cierre | T21, T22 y T24 | 13 |
-| **Total** | | **142** |
+| **Total** | | **152** |
+
+Hasta el 16/11 el total era 142 h-p. El 18/11 se sumaron T25, el modo registro (8 h-p), y T26, grabar la Ruta Norte (2 h-p) (C-18).
 
 El detalle de cada tarea, su responsable y sus dependencias está en el [plan](sesion-08-09-plan.md), secciones 4 a 6, con el diagrama de Gantt.
 
@@ -72,39 +75,42 @@ La duración es del 13/11 al 15/12/2026: 32 días, que son 1,07 meses.
 
 | Concepto | Cómo se calcula | Bs |
 |---|---|---:|
-| Mano de obra | 142 h-p × 54,97 Bs/h | 7.805,97 |
+| Mano de obra | 152 h-p × 54,97 Bs/h | 8.355,68 |
 | Otros costos | Sección 4 | 1.283,33 |
-| Subtotal | | 9.089,30 |
-| Contingencia | 15% del subtotal, para imprevistos **[PROVISIONAL]** | 1.363,39 |
-| **Costo total del proyecto** | Lo que cuesta hacerlo | **10.452,69** |
-| Utilidad | 20% del costo total, solo si se vendiera **[PROVISIONAL]** | 2.090,54 |
-| Precio sin impuestos | Costo total + utilidad | 12.543,23 |
-| IVA (13%) | Incluido en el precio de la factura (L843) | 1.941,21 |
-| IT (3%) | Sobre el ingreso bruto (L843) | 447,97 |
-| **Precio con factura** | Precio sin impuestos ÷ (1 − 0,13 − 0,03) | **14.932,42** |
+| Subtotal | | 9.639,02 |
+| Contingencia | 15% del subtotal, para imprevistos **[PROVISIONAL]** | 1.445,85 |
+| **Costo total del proyecto** | Lo que cuesta hacerlo | **11.084,87** |
+| Utilidad | 20% del costo total, solo si se vendiera **[PROVISIONAL]** | 2.216,97 |
+| Precio sin impuestos | Costo total + utilidad | 13.301,84 |
+| IVA (13%) | Incluido en el precio de la factura (L843) | 2.058,62 |
+| IT (3%) | Sobre el ingreso bruto (L843) | 475,07 |
+| **Precio con factura** | Precio sin impuestos ÷ (1 − 0,13 − 0,03) | **15.835,52** |
 
-**Por qué se divide y no se multiplica.** En Bolivia el IVA va incluido en el monto de la factura y el IT se calcula sobre el ingreso bruto. Para que después de pagar los dos queden 12.543,23 Bs, la factura tiene que ser de 12.543,23 ÷ 0,84.
+**Por qué se divide y no se multiplica.** En Bolivia el IVA va incluido en el monto de la factura y el IT se calcula sobre el ingreso bruto. Para que después de pagar los dos queden 13.301,84 Bs, la factura tiene que ser de 13.301,84 ÷ 0,84.
+
+Con 142 h-p (16/11), el costo total era 10.452,69 Bs y el precio con factura, 14.932,42 Bs.
 
 ## 6. Escenarios de tarifa
 
 | Escenario | Tarifa (Bs/h) | Costo total (Bs) | Precio con factura (Bs) |
 |---|---:|---:|---:|
-| Piso legal (salario mínimo) | 18,75 | 4.537,71 | 6.482,44 |
-| **Desarrollador web** | **54,97** | **10.452,69** | **14.932,42** |
-| Ingeniero de software promedio | 68,85 | 12.719,41 | 18.170,58 |
+| Piso legal (salario mínimo) | 18,75 | 4.753,33 | 6.790,48 |
+| **Desarrollador web** | **54,97** | **11.084,87** | **15.835,52** |
+| Ingeniero de software promedio | 68,85 | 13.511,21 | 19.301,73 |
 
 ## 7. Horas y costo por persona
 
-Las tareas compartidas se reparten por igual: las de «Hugo y Sebastian» entre dos, y las de «Los tres» entre tres.
+Las tareas compartidas se reparten por igual: las de «Hugo y Sebastian» y las de «Andrés y Hugo» entre dos, y las de «Los tres» entre tres. Las tareas de código que siguen a la base (T11, T14 a T20 y T23) están **por asignar**: las reparte Andrés en el Sprint Planning del 21/11 (C-19).
 
 | Persona | Horas estimadas | Costo estimado (Bs) |
 |---|---:|---:|
-| Hugo Zuñiga | 48,8 | 2.684,45 |
-| Sebastian Cruz | 58,8 | 3.234,16 |
-| Andrés Laura Vargas | 34,3 | 1.887,36 |
-| **Total** | **142,0** | **7.805,97** |
+| Hugo Zuñiga | 63,8 | 3.509,02 |
+| Sebastian Cruz | 10,8 | 595,53 |
+| Andrés Laura Vargas | 8,3 | 458,10 |
+| Por asignar (las reparte Andrés) | 69,0 | 3.793,04 |
+| **Total** | **152,0** | **8.355,68** |
 
-El reparto no es parejo: Sebastian lleva el bus en vivo y el simulador, que es lo más pesado, y Andrés tiene menos horas estimadas. Se revisa en el Sprint Planning del Sprint 2.
+Hugo lleva más horas porque hizo la base del código (42 h-p estimadas). Cuando Andrés reparta las 69 h-p por asignar, se anota el responsable de cada tarea en la hoja «Tareas» y esta tabla se recalcula sola.
 
 ## 8. Costo de operar el servicio (fuera del proyecto)
 
@@ -123,7 +129,7 @@ Estos costos no entran en el precio de la sección 5.
 | Eventos de Scrum: por sprint y por persona, 1 h de Planning, 15 min de Daily × 5 días, 1 h de Review y 30 min de Retrospectiva = 3,75 h; × 3 personas × 4 sprints | 45 | 2.473,72 |
 | Tiempo de aprender Django Channels, React y Tailwind | No se estimó | — |
 
-Si se cobran los eventos de Scrum, el costo total sube a **13.297,47 Bs** y el precio con factura a **18.996,39 Bs**. No se incluyen en el precio base porque el plan estima solo el trabajo de cada tarea **[PROPUESTA]**.
+Si se cobran los eventos de Scrum, el costo total sube a **13.929,65 Bs** y el precio con factura a **19.899,50 Bs**. No se incluyen en el precio base porque el plan estima solo el trabajo de cada tarea **[PROPUESTA]**. Las 45 h-p se calcularon con un Daily por día hábil; con las sesiones de sábado y domingo (C-19) se revisan en la Retrospectiva del Sprint 2.
 
 ## 10. Estimado contra real
 
@@ -132,16 +138,16 @@ Las horas reales salen de la hoja «Registro de horas»: cada integrante anota l
 | Etapa | h-p estimadas | h-p reales | Diferencia | Costo real (Bs) | Comentario |
 |---|---:|---:|---:|---:|---|
 | Perfil | 6 | — | — | — | Hecho; horas no registradas |
-| Sprint 1 | 32 | — | — | — | En curso |
-| Sprint 2 | 35 | — | — | — | |
+| Sprint 1 | 58 | — | — | — | En curso; la base del código (42 h-p estimadas) se hizo el 18/11 |
+| Sprint 2 | 19 | — | — | — | |
 | Sprint 3 | 30 | — | — | — | |
 | Sprint 4 | 26 | — | — | — | |
 | Cierre | 13 | — | — | — | |
-| **Total** | **142** | — | — | — | |
+| **Total** | **152** | — | — | — | |
 
-Al 16/11/2026 no hay horas reales registradas. T00 (perfil) y T04 (entrevistas ENT-01 y ENT-02) están hechas, pero falta anotar cuánto tomaron.
+Al 18/11/2026 no hay horas reales registradas. T00, T04 y la base del código (T05 a T10, T12 y T25) están hechas, pero falta anotar cuánto tomaron. La base se hizo con asistencia de IA: sus horas reales mostrarán cuánto bajó el esfuerzo frente a lo estimado.
 
 ## 11. Participación y asistencia utilizada
 
 - **Hugo Zuñiga (Product Owner):** pidió el cálculo, aprueba la tarifa y los supuestos, y lleva el registro de horas.
-- **Asistencia de IA:** se usó Claude (Anthropic) para buscar los sueldos de referencia y las tasas de impuestos, armar la hoja de cálculo y redactar este documento.
+- **Asistencia de IA:** se usó Claude (Anthropic) para buscar los sueldos de referencia y las tasas de impuestos, armar la hoja de cálculo y redactar este documento, y el 18/11/2026 para sumar T25 y T26 a la hoja y recalcular los totales.

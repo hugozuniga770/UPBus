@@ -1,7 +1,8 @@
 # Diagramas de secuencia de los casos de uso
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
-- Fecha: 16/11/2026 · Sprint 1 · Issue: por crear · Milestone: Sprint 1
+- Fecha: 16/11/2026 · Sprint 1 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3) · Milestone: Sprint 1
+- Actualizado: 18/11/2026 · se agrega CU-18, el modo registro (C-18)
 - Estado: **[PROPUESTA]**. Muestran cómo pensamos construir cada caso de uso; los nombres de las funciones se confirman en la [sesión 13–14](sesion-13-14-diseno.md).
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
@@ -16,7 +17,7 @@
 | Vista | Recibe la petición y responde JSON | `views.py` de cada app (Django REST Framework) |
 | Servicios | Orquesta: lee lo necesario, pregunta a las reglas y guarda | `servicios.py` |
 | Reglas | Decide si se permite y con qué causa se rechaza. No toca la base | `reglas.py` |
-| Padrón | Lista de la universidad, de solo lectura | `padron/padron.json`, leído solo por `cuentas/padron.py` |
+| Padrón | Lista de la universidad, de solo lectura | `padron/padron.json` (ejemplo) o `padron/padron.local.json` (la clase, fuera del repositorio), leído solo por `cuentas/padron.py` |
 | BD | La base de datos | SQLite, a través de los modelos (`models.py`) |
 | Canal | Envía al instante la ubicación, los avisos y los mensajes | Django Channels (WebSocket) |
 
@@ -464,7 +465,59 @@ sequenceDiagram
     Note over S,B: La app no cancela el viaje. Decide una persona
 ```
 
-## 17. Simulador de escenarios (T23)
+## 17. CU-18 — Modo registro de paradas y horas (HU-18)
+
+Agregado el 18/11/2026 (C-18). A diferencia de los demás, este caso de uso ya está construido en la base del código, así que los nombres son los reales.
+
+```mermaid
+sequenceDiagram
+    actor C as Sebastian (administrador) o Marco (chofer)
+    participant FE as FE (celular)
+    participant V as Vista
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    C->>FE: Modo registro · Ruta Norte 06:40
+    FE->>V: POST /api/registros
+    V->>S: iniciar_registro(usuario, ruta, horario)
+    S->>R: verificar_puede_registrar, verificar_horario_de_la_ruta, verificar_sin_registro_en_curso
+    S->>B: registro En curso
+    V-->>FE: 201 con el registro
+    loop Cada 15 segundos o 40 m
+        FE->>V: POST /api/registros/id/puntos (lo que espera en la cola)
+        V->>S: agregar_puntos(usuario, registro, puntos)
+        S->>B: guardar los puntos nuevos, sin repetir los que ya estaban
+    end
+    C->>FE: toca «Parada» en Sevilla
+    Note over FE: La marca entra a la cola del celular con su id_cliente. Sin señal, espera y se reintenta
+    FE->>V: POST /api/registros/id/marcas
+    V->>S: marcar_parada(usuario, registro, id_cliente, posición, hora)
+    S->>B: ¿ya existe una marca con ese id_cliente?
+    alt Es un reenvío
+        V-->>FE: 201 con la misma marca, sin duplicarla
+    else Es nueva
+        S->>R: verificar_lejos_de_las_otras_marcas (50 m)
+        S->>B: guardar la marca
+        V-->>FE: 201
+    end
+    C->>FE: Terminar
+    FE->>V: POST /api/registros/id/terminar
+    V->>S: terminar_registro(usuario, registro)
+    S->>R: verificar_hay_marcas
+    loop Por cada marca, desde la primera (la salida)
+        S->>R: parada_mas_cercana (menos de 50 m)
+        alt Hay una parada cerca
+            S->>B: un paso por esa parada (registrar_paso)
+        else No hay
+            S->>R: estado_de_una_parada_nueva: aprobada o propuesta
+            S->>B: parada nueva y su paso
+        end
+    end
+    S->>B: orden de las paradas y, si la ruta no tenía, su recorrido
+    V-->>FE: 200 con el resumen: marcas, paradas nuevas y ya conocidas
+```
+
+## 18. Simulador de escenarios (T23)
 
 No es un caso de uso del usuario: es la herramienta de la demo y de las pruebas. Lo importante es que **llama a los mismos servicios que la app**, así que un escenario solo funciona si las reglas funcionan.
 
@@ -489,7 +542,7 @@ sequenceDiagram
     Sim->>S: terminar_viaje(Marco)
 ```
 
-## 18. Participación y asistencia utilizada
+## 19. Participación y asistencia utilizada
 
 - **Hugo Zuñiga (Product Owner):** pidió los diagramas y los aprueba.
-- **Asistencia de IA:** se usó Claude (Anthropic) para proponer las secuencias a partir de los requisitos y de la organización por capas del proyecto de referencia.
+- **Asistencia de IA:** se usó Claude (Anthropic) para proponer las secuencias a partir de los requisitos y de la organización por capas del proyecto de referencia, y el 18/11/2026 para dibujar la de CU-18 desde el código de la base.

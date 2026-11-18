@@ -3,9 +3,9 @@
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I) · Aprueba los requisitos: Hugo Zuñiga, como Product Owner
-- Fecha: 13/11/2026 · Sprint 1 · Issue: por crear · Milestone: Sprint 1
-- Actualizado: 18/11/2026 · entrevista ENT-03 a Don Iván (C-16, C-17) y preguntas P-25 a P-27; antes, 16/11/2026, ENT-01 y ENT-02 (C-08 a C-11) y P-19 a P-24
-- Plan: [Sesiones 8–9](sesion-08-09-plan.md) · Entrevistas: [entrevistas.md](entrevistas.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
+- Fecha: 13/11/2026 · Sprint 1 · Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
+- Actualizado: 18/11/2026 · modo registro de paradas y horas, BUS-RF-23 (C-18); padrón con la lista de la clase fuera del repositorio (C-20); criterios nuevos en RF-01, RF-02 y RF-04 (C-21); preguntas P-28 a P-31. Antes, ese mismo día: entrevista ENT-03 a Don Iván (C-16, C-17) y P-25 a P-27. El 16/11/2026: ENT-01 y ENT-02 (C-08 a C-11) y P-19 a P-24
+- Historias y criterios: [Sesión 7](sesion-07-modelos.md) · Plan: [Sesiones 8–9](sesion-08-09-plan.md) · Entrevistas: [entrevistas.md](entrevistas.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
 ## 0. Cómo leer este documento
 
@@ -31,8 +31,9 @@ Cada requisito tiene un ID con el prefijo `BUS` (por ejemplo, `BUS-RF-09`). Dent
 | 70003 | Andrés Laura Vargas | andres.laura@upb.example | Activo | Administrador y estudiante |
 | 70004 | Ismael | ismael@upb.example | Activo | Estudiante |
 | 70005 | Lucía Peña (ficticia) | lucia.pena@upb.example | Inactiva | — (para probar rechazos) |
-| — | Marco (chofer, ficticio) | — | No está en el padrón | Chofer, cuenta creada por el administrador |
+| — | Marco (chofer, ficticio) | marco.chofer@upbus.example | No está en el padrón | Chofer, cuenta creada por el administrador |
 
+- **Padrón de ejemplo y padrón de la clase:** estas cinco personas están en `padron/padron.json`, que sí se sube al repositorio y usan los tests. La lista real de la clase (28 personas, con sus códigos) va en `padron/padron.local.json`, que **no** se sube porque el repositorio es público **[ACUERDO, PO18]** (C-20, P-01).
 - **Hora:** todas las fechas y horas son de America/La_Paz. Cada criterio fija su «hora actual».
 
 ## 1. Fuentes
@@ -44,10 +45,11 @@ Cada requisito tiene un ID con el prefijo `BUS` (por ejemplo, `BUS-RF-09`). Dent
 | PO13 | Decisiones del Product Owner (Hugo Zuñiga), 13/11/2026 | Tecnología, roles, registro e inicio de sesión, paradas, horas aproximadas, créditos, permisos del chofer y lo que se simula |
 | DOC | Indicaciones del docente comunicadas por Hugo, **fecha no registrada** | (1) Créditos en la app en lugar de pagar por QR. (2) Sin espera de 5 minutos: el bus pasa a una hora aproximada y quien no está se queda. |
 | ENT | Entrevistas del 16/11/2026: ENT-01 (chofer de la Ruta Norte) y ENT-02 (estudiante de la Ruta Norte, anónima), y del 18/11/2026: ENT-03 (Don Iván, coordinador del servicio). Detalle en [entrevistas.md](entrevistas.md) | Paradas reales de la Ruta Norte, cómo se paga hoy, el dispositivo del chofer, que la ubicación se corta y cuánto espera el bus |
+| PO18 | Decisiones del Product Owner (Hugo Zuñiga), 18/11/2026 | Modo registro para grabar las paradas y sus horas en un viaje real, en lugar de capturas de Maps; padrón con la lista de la clase y correos de ejemplo; roles para la implementación |
 
 ## 2. Alcance del MVP
 
-**Incluye:** registro con el padrón, inicio y cierre de sesión, gestión de usuarios, rutas con paradas y horarios, viajes con el bus en vivo, «Voy a subir», ubicación del estudiante, paradas propuestas, horas aproximadas por parada, aviso de bus cerca, registro de quién subió, créditos (recarga, pago, comprobante, devolución y retiro), chat directo, chat de ruta, modificación de rutas y aviso de mínimo de estudiantes.
+**Incluye:** registro con el padrón, inicio y cierre de sesión, gestión de usuarios, rutas con paradas y horarios, viajes con el bus en vivo, «Voy a subir», ubicación del estudiante, paradas propuestas, horas aproximadas por parada, modo registro de paradas y horas, aviso de bus cerca, registro de quién subió, créditos (recarga, pago, comprobante, devolución y retiro), chat directo, chat de ruta, modificación de rutas y aviso de mínimo de estudiantes.
 
 **Actores:** estudiante, chofer y administrador. Un administrador también puede usar las funciones de estudiante, porque también lo es **[ACUERDO, PO13]**.
 
@@ -58,6 +60,7 @@ Cada requisito tiene un ID con el prefijo `BUS` (por ejemplo, `BUS-RF-09`). Dent
 | Ver rutas, paradas, horarios y el bus en vivo | Sí | Sí | Sí |
 | «Voy a subir», compartir ubicación, «He subido» | Sí | No | Sí (como estudiante) |
 | Proponer una parada | Sí | Sí | Sí |
+| Grabar paradas y horas con el modo registro (RF-23) | No | Sí; sus paradas nuevas quedan propuestas | Sí; sus paradas nuevas quedan aprobadas |
 | Ver sus viajes asignados, iniciarlos y terminarlos | No | Sí, solo los suyos | No |
 | Ver estudiantes confirmados y su ubicación | No | Solo durante su viaje | Sí |
 | Marcar «subió» o «no se presentó» | No | Solo en su viaje | No |
@@ -79,7 +82,9 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 | Ubicación del estudiante | Posiciones simuladas (por ahora, las de Ismael) | El GPS del celular del estudiante |
 | Recarga de créditos | El estudiante pide la recarga y un administrador la aprueba | Una pasarela de pagos cobra a una cuenta de empresa; cuando aprueba el pago, se cargan los créditos |
 | Retiro del chofer | Se registra el retiro y el saldo baja | Transferencia a la cuenta del chofer |
-| Padrón de la UPB | Un archivo con los integrantes e Ismael | La base de datos oficial de la universidad |
+| Padrón de la UPB | Un archivo JSON de solo lectura. En el repositorio va el de ejemplo (`padron/padron.json`); en las computadoras del equipo, la lista de la clase (`padron/padron.local.json`, C-20) | La base de datos oficial de la universidad |
+
+**Lo que no se simula:** las paradas y sus horas de paso. Se graban con el GPS real del celular en el modo registro (RF-23), durante viajes reales **[ACUERDO, PO18]**.
 
 ### Limitaciones del MVP (declaradas)
 
@@ -87,6 +92,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - El bus no espera: no existe un tiempo de espera configurable **[ACUERDO, DOC]** (P-19).
 - Los avisos se muestran dentro de la app abierta; no se envían por WhatsApp, correo ni SMS **[PROPUESTA]**.
 - El chat es solo de texto **[PROVISIONAL]** (P-10).
+- El navegador solo entrega el GPS a una página segura (HTTPS) o abierta en la misma computadora. Mientras no haya hosting (P-16), el modo registro se abre en el celular con un túnel HTTPS gratuito. Si la página no abre en el viaje, el plan B son capturas de Maps con la hora de cada parada (P-29).
 
 **Fuera del MVP:** aplicación móvil nativa, pasarela de pagos real, facturación e impuestos (P-08), faltas de comportamiento del reglamento y conexión con el sistema real de la UPB.
 
@@ -104,8 +110,11 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
   5. la contraseña y su confirmación no coinciden («las contraseñas no coinciden»). Se comprueba antes que las reglas de contraseña de Django.
 
   El padrón es de solo lectura: el sistema nunca lo modifica y no guarda contraseñas en él **[PROVISIONAL]** (P-04).
+
+  La cuenta toma el rol que indica el padrón: estudiante o administrador. Los integrantes del equipo son administradores y, como también son estudiantes, pueden usar las funciones de estudiante **[ACUERDO, PO13]**.
 - Criterio de aceptación:
   - Aceptación: Ismael (70004, ismael@upb.example), sin cuenta, se registra con una contraseña válida. Se crea su cuenta con rol estudiante y el padrón no cambia.
+  - Aceptación: Hugo (70001, administrador en el padrón) se registra. Su cuenta queda con rol administrador y puede usar también las funciones de estudiante.
   - Rechazo: Lucía (70005, inactiva) intenta registrarse. Se rechaza por «persona no activa en el padrón» y no se crea ninguna cuenta.
   - Rechazo: Ismael escribe dos contraseñas distintas. Se rechaza por «las contraseñas no coinciden» y no se crea ninguna cuenta.
 
@@ -118,6 +127,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
   - Situación inicial: Ismael tiene cuenta.
   - Aceptación: entra con su código 70004 y su contraseña; también entra con su correo y la misma contraseña.
   - Rechazo: con una contraseña incorrecta recibe «Código, correo o contraseña incorrectos», el mismo mensaje que con un código inexistente.
+  - Límite: Ismael cierra sesión y vuelve a pedir la lista de rutas. Se rechaza por «debes iniciar sesión».
 
 ### BUS-RF-03 — Roles y permisos
 
@@ -134,16 +144,17 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Origen: PO13. Prioridad: alta.
 - Estado: **[ACUERDO]** (PO13). La relación con el padrón es **[PROVISIONAL]** (P-04).
 - Requisito: el administrador crea y elimina cuentas de chofer y de personas (estudiantes nuevos). Las cuentas de chofer no salen del padrón: las crea el administrador.
-- Pendiente: una cuenta con viajes o movimientos de créditos se desactiva en lugar de borrarse, para no perder comprobantes **[PROPUESTA]** (P-23).
+- Eliminar una cuenta la **desactiva**: la persona ya no puede entrar, pero se conservan sus viajes y comprobantes **[PROVISIONAL]** (P-23). Un administrador no puede eliminar su propia cuenta («no puedes eliminar tu propia cuenta»).
 - Criterio de aceptación:
   - Aceptación: Hugo crea la cuenta de chofer de Marco; Marco puede iniciar sesión y ve solo las funciones de chofer.
   - Rechazo: Hugo intenta crear una cuenta con un correo que ya existe. Se rechaza por «ya existe una cuenta con ese correo».
+  - Aceptación: Hugo elimina la cuenta de Marco. La cuenta queda desactivada, no borrada, y Marco ya no puede entrar: recibe «Código, correo o contraseña incorrectos».
 
 ### BUS-RF-05 — Rutas, paradas y horarios
 
 - Origen: GUIA; PERFIL. Prioridad: alta.
-- Estado: **[ACUERDO]** rutas, puntos de partida y horarios (GUIA). Paradas intermedias **[PROVISIONAL]** hasta la entrevista ENT-01.
-- Requisito: cualquier usuario ve cada ruta en un mapa, con su recorrido, sus paradas en orden, sus horarios de ingreso y salida y la hora aproximada de paso por cada parada (RF-11). Consultar no modifica nada.
+- Estado: **[ACUERDO]** rutas, puntos de partida y horarios (GUIA). Las paradas, su orden, el recorrido y las horas se graban con el modo registro (RF-23) **[ACUERDO, PO18]**; mientras una ruta no se grabe, se muestra sin paradas.
+- Requisito: cualquier usuario ve cada ruta en un mapa, con su recorrido, sus paradas en orden, sus horarios de ingreso y salida y la hora aproximada de paso por cada parada (RF-11). Todos ven las paradas aprobadas; el chofer y el administrador ven también las propuestas. Consultar no modifica nada.
 - Criterio de aceptación:
   - Aceptación: Ismael abre la Ruta Norte y ve el recorrido, las paradas La Fontana, Sevilla, Petrol, Campos y Campus UPB, y los horarios de ingreso 06:40, 11:00, 13:00 y 15:30. Nada cambia en la BD.
 
@@ -202,6 +213,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Origen: PO13; DOC. Prioridad: media.
 - Estado: **[ACUERDO]** (PO13, DOC). Cantidad de viajes del promedio **[PROVISIONAL]** (P-11).
 - Requisito: el bus «llega» a una parada cuando pasa a menos de 50 m. El sistema guarda la hora real de cada paso. La hora aproximada de una parada es la del primer viaje registrado y luego se ajusta con el promedio de los últimos viajes. A cada estudiante se le muestra a qué hora aproximada pasará el bus por su parada.
+- Cómo se calcula: cada paso guarda cuántos minutos después de la salida llegó el bus a la parada. La hora aproximada es la hora de salida del horario más el promedio de esos minutos en los últimos 5 pasos (P-11), redondeado al minuto. Si ese horario todavía no tiene pasos, se usan los de otro horario del mismo sentido; si tampoco hay, la parada se muestra sin hora. Los pasos salen del modo registro (RF-23) y, cuando exista, del viaje en vivo (RF-07).
 - Criterio de aceptación:
   - Aceptación: en el primer viaje, el bus pasa a 30 m de Sevilla a las 06:58. La hora aproximada de esa parada queda en 06:58.
   - Límite: en el segundo viaje pasa a las 07:02. La hora aproximada pasa a ser 07:00.
@@ -312,6 +324,30 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
   - Aceptación: a las 06:10 el viaje de las 06:40 tiene 9 confirmados; Hugo recibe el aviso y el viaje sigue Programado.
   - Límite: con 15 confirmados no hay aviso.
 
+### BUS-RF-23 — Modo registro de paradas y horas
+
+- Origen: PO18 («que mientras se vaya utilizando en el primer viaje haya modo registro solo para la cuenta administrador o chofer, y cuando toque parada, se registre hora y la parada por el GPS»). Prioridad: alta, porque sin paradas no funcionan RF-05, RF-09, RF-11 ni RF-13.
+- Estado: **[ACUERDO]** (PO18). Reemplaza el plan de sacar capturas de Maps en cada parada (C-18). Usa el GPS real, no simulado.
+- Requisito: un chofer o un administrador inicia un **registro** en un viaje real, eligiendo la ruta y el horario. Mientras el registro está en curso:
+  1. La página sigue el GPS del celular, guarda el recorrido (un punto cada 15 segundos o cada 40 m) y mantiene la pantalla encendida.
+  2. Al llegar a una parada, la persona toca «Parada» y se guardan la posición, la precisión del GPS y la hora. La primera marca es la salida y los minutos se cuentan desde ella.
+  3. Si no hay señal, las marcas esperan en el celular y se envían cuando vuelve la conexión. Una marca reenviada se guarda una sola vez. La persona puede descargar un respaldo del registro, que el administrador importa después si algo falló.
+
+  Al terminar el registro, cada marca a menos de 50 m de una parada que ya existe cuenta como un paso por esa parada; si no hay ninguna, se crea una parada nueva. La parada nueva queda **aprobada** si la grabó un administrador y **propuesta** si la grabó un chofer (P-28). Con los pasos se recalculan las horas aproximadas (RF-11) y el orden de las paradas, que sale de los minutos promedio de los viajes de ingreso. El primer registro con dos o más puntos da el recorrido de la ruta.
+
+  Se rechaza si:
+  1. quien lo usa es un estudiante («solo un chofer o un administrador puede usar el modo registro»);
+  2. ya tiene un registro en curso («ya tienes un registro en curso»);
+  3. el horario no es de esa ruta («ese horario no es de esta ruta»);
+  4. marca una parada a menos de 50 m de otra marca del mismo registro («ya marcaste una parada a menos de 50 m»);
+  5. quiere terminar sin haber marcado ninguna parada («no marcaste ninguna parada»).
+- Criterio de aceptación:
+  - Aceptación: el viernes 20/11, Sebastian (administrador) graba la Ruta Norte de las 06:40 y marca La Fontana a las 06:40, Sevilla a las 06:58 y Campus UPB a las 07:35. Al terminar quedan tres paradas aprobadas, en ese orden, y la hora aproximada de Sevilla es 06:58.
+  - Límite: el lunes 23/11 graba de nuevo: sale a las 06:41 y marca a 30 m de Sevilla a las 07:03 (22 minutos). No se crea otra parada y la hora aproximada de Sevilla pasa a 07:00, el promedio de 18 y 22 minutos.
+  - Rechazo: Ismael (estudiante) intenta iniciar un registro. Se rechaza por «solo un chofer o un administrador puede usar el modo registro».
+  - Rechazo: Sebastian marca otra parada a 20 m de Sevilla. Se rechaza por «ya marcaste una parada a menos de 50 m» y no se guarda.
+  - Límite: sin señal, la marca de Sevilla se envía dos veces. Se guarda una sola vez.
+
 ## 4. Requisitos de calidad
 
 ### BUS-RC-01 — El rechazo muestra la causa concreta
@@ -365,6 +401,8 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 | RF-18 | Retira exactamente todo su saldo | Se acepta; queda en 0 |
 | RF-21 | Mueve el recorrido 200 m exactos | Necesita aprobación **[PROVISIONAL]** |
 | RF-22 | 15 confirmados exactos | No hay aviso (con 14 sí) |
+| RF-23 | Una marca a 50 m exactos de una parada que ya existe | Se crea una parada nueva: para contar como la misma debe estar a menos de 50 m **[PROVISIONAL]** |
+| RF-23 | La misma marca llega dos veces (se reenvió sin señal) | Se guarda una sola vez |
 
 ## 6. Preguntas abiertas para el Product Owner
 
@@ -372,11 +410,11 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 
 | ID | Pregunta | Valor provisional | Afecta |
 |---|---|---|---|
-| P-01 | ¿Qué códigos y correos reales van en el padrón? ¿El repositorio es público? | Códigos 70001 a 70005 y correos `@upb.example` | RF-01 |
+| P-01 | ¿Qué códigos y correos reales van en el padrón? ¿El repositorio es público? Respondida (PO18): el repositorio es público; la lista de la clase va en `padron/padron.local.json`, fuera del repositorio, y los correos que no son de la UPB se reemplazan por `<código>@upb.example` (C-20) | En el repositorio y en los tests, los códigos 70001 a 70005 y correos `@upb.example` | RF-01 |
 | P-02 | ¿El equipo se sigue presentando como «Grupo 7»? | No se nombra el número de grupo | Encabezados |
 | P-03 | ¿La cuenta del chofer lleva el nombre real de Don Iván? Respondida (ENT-01): Don Iván no es el chofer de los ejemplos; contrató al chofer entrevistado y es con quien este coordina el servicio con la UPB | Chofer de ejemplo ficticio: Marco | Ejemplos |
 | P-04 | Si el administrador crea y elimina estudiantes, ¿el padrón sigue siendo de solo lectura? | Sí: el padrón no se toca; el administrador crea y elimina cuentas en la BD | RF-01, RF-04 |
-| P-05 | «Solo para el primer día se guardan o no»: ¿quién decide que una parada propuesta queda guardada? | Queda guardada cuando el chofer o un administrador la aprueba; mientras tanto vale solo para ese viaje | RF-10 |
+| P-05 | «Solo para el primer día se guardan o no»: ¿quién decide que una parada propuesta queda guardada? | Queda guardada cuando el chofer o un administrador la aprueba; mientras tanto vale solo para ese viaje. En el modo registro, la parada nueva del administrador queda aprobada y la del chofer, propuesta (P-28) | RF-10, RF-23 |
 | P-06 | ¿A qué hora debe llegar a la U cada horario de ingreso? ¿Y las salidas a su punto final? Respondida en parte (ENT-03): en la mañana, antes de las 7:40. Los demás se preguntan en ENT-07 | 06:40 → 07:40; los demás, 60 minutos después de salir | RF-11, RF-12 |
 | P-07 | ¿Cuántos metros son «2 cuadras»? ¿Quién decide qué es «cambio de avenida»? | 200 m; el cambio de avenida siempre pide aprobación | RF-10, RF-21 |
 | P-08 | «Hablar de impuestos»: ¿se refiere a facturar los pagos o a una sanción por no presentarse? Respondida en parte (ENT-01): el chofer recibe el dinero y la empresa entrega la factura. Falta saber si habrá una sanción por no presentarse | «No se presentó» solo se registra; la app no factura | RF-09, RF-16 |
@@ -389,7 +427,7 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 | P-15 | ¿La recarga tiene monto máximo? | No | RF-15 |
 | P-16 | ¿Qué hosting gratuito se usa? | Se decide en el Sprint 2 | RT-08 |
 | P-17 | ¿Con cuánta anticipación se avisa al administrador que hay menos de 15? | 30 minutos antes de la salida | RF-22 |
-| P-18 | ¿Cuáles son las paradas reales de cada ruta, su orden y sus coordenadas? Respondida en parte (ENT-01): la Ruta Norte pasa por «varios puntos de Sevilla», Petrol y parte de Campos. Faltan el orden, las coordenadas y las demás rutas (ENT-03) | Las paradas de la sección 0 | RF-05 |
+| P-18 | ¿Cuáles son las paradas reales de cada ruta, su orden y sus coordenadas? Respondida en parte (ENT-01): la Ruta Norte pasa por «varios puntos de Sevilla», Petrol y parte de Campos. Faltan el orden, las coordenadas y las demás rutas (ENT-03). Se responde con el modo registro: Sebastian Cruz graba la Ruta Norte en un viaje real (RF-23, tarea T26) | Las paradas de la sección 0, solo en los ejemplos y los tests | RF-05, RF-23 |
 | P-19 | El chofer de ENT-01 espera «hasta dos minutos», y como máximo uno más; Don Iván dice «mayormente son 2 minutos» (ENT-03); el docente indicó que el bus no espera. ¿Se da una tolerancia de espera? | Sin espera, como indicó el docente (DOC) | RF-09 |
 | P-20 | ¿Qué pantalla tiene el bus (sistema y navegador) y le da su ubicación a una página web? ENT-01 dice que la pantalla tiene GPS; Don Iván dice que usan «el GPS del WhatsApp» (ENT-03) | Se asume el celular del chofer; se confirma con una prueba en el bus | RF-07 |
 | P-21 | El chofer mencionó una aplicación que «salió para los transportistas». ¿Cuál es y qué hace? Don Iván no la conoce, pero dijo que el próximo año habría una aplicación y «varios cambios sobre el transporte» (ENT-03); se pregunta en ENT-07 | Se investiga como referencia; no cambia el alcance | Alcance |
@@ -399,11 +437,15 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 | P-25 | Don Iván dijo que los cambios de ruta los decide la UPB (ENT-03). ¿El chofer deja de aplicar cambios pequeños por su cuenta? | Sí: el chofer propone y todo cambio lo aprueba el administrador (C-17, propuesto) | RF-21 |
 | P-26 | La empresa factura y la UPB paga «el íntegro de todo el mes» (ENT-03), pero los estudiantes pagan 5 Bs al chofer (GUIA, ENT-01). ¿Cómo se combinan? | Se mantiene el cobro de 5 Bs por viaje; se pregunta en ENT-07 | RF-15 a RF-18 |
 | P-27 | Don Iván nombró 4 rutas habilitadas: Norte, Externa, Sur y 4to Anillo–Urubó (ENT-03). ¿La Ruta Híbrida de la guía sigue activa? | Se cargan las 5 rutas de la guía y la Híbrida se marca para confirmar | RF-05 |
+| P-28 | En el modo registro, ¿la parada nueva que graba un chofer queda propuesta hasta que la apruebe un administrador? | Sí: la del chofer queda propuesta y la del administrador, aprobada | RF-10, RF-23 |
+| P-29 | Si el túnel HTTPS o el GPS fallan en el viaje de grabación, ¿qué se hace? | Si la página no abre: capturas de Maps con la hora de cada parada. Si abre pero se corta la señal: las marcas esperan en el celular, o se descarga el respaldo y el administrador lo importa | RF-23 |
+| P-30 | ¿Se graban también los viajes de salida (de la U al punto final)? ¿Paran en las mismas paradas, en orden inverso? | Se puede grabar cualquier horario; el orden de las paradas sale de los viajes de ingreso y las horas, de cada horario | RF-05, RF-11, RF-23 |
+| P-31 | Cuando exista «subió» (RF-14), ¿cada abordaje en una parada cuenta también como un paso para ajustar la hora aproximada? | Sí, a partir de HU-10; mientras tanto, solo cuentan el modo registro y el viaje en vivo | RF-11, RF-14 |
 
 ## 7. Siguiente paso
 
-- Documento siguiente: `docs/sesion-07-modelos.md`, con las historias HU-01 a HU-17, sus criterios Dado/Cuando/Entonces, los casos de uso, los estados del viaje, del «Voy a subir» y de la recarga, y la trazabilidad requisito → historia → criterio → test.
-- Los criterios de este documento se reutilizan allí con los mismos datos, para que cada test salga de un criterio y no de un detalle del código.
+- Las historias HU-01 a HU-18, sus criterios Dado/Cuando/Entonces, los casos de uso, los estados y la trazabilidad requisito → historia → criterio → test están en [sesion-07-modelos.md](sesion-07-modelos.md). Los criterios de este documento se reutilizan allí con los mismos datos, para que cada test salga de un criterio y no de un detalle del código.
+- La base del código (HU-01 a HU-04 y HU-18) entra a la rama `develop` por Pull Request. El diseño de datos y clases va en `sesion-13-14-diseno.md`, dentro de esa misma base.
 
 ## 8. Participación y asistencia utilizada
 
@@ -413,6 +455,8 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 - **Hugo Zuñiga (16/11/2026):** hizo las entrevistas ENT-01 y ENT-02.
 - **Andrés Laura Vargas (18/11/2026):** hizo la entrevista ENT-03 a Don Iván.
 - **Asistencia de IA (16/11/2026):** se usó Claude (Anthropic) para pasar las entrevistas a este documento, cambiar los ejemplos (C-09) y redactar las preguntas P-19 a P-24.
+- **Hugo Zuñiga (18/11/2026):** decidió el modo registro en lugar de las capturas de Maps, entregó la lista de la clase para el padrón y pidió correos de ejemplo para quienes no tienen correo de la UPB.
+- **Asistencia de IA (18/11/2026):** se usó Claude (Anthropic) para redactar BUS-RF-23, los criterios nuevos de RF-01, RF-02 y RF-04 y las preguntas P-28 a P-31, a partir de las decisiones de Hugo y de la base del código.
 
 ## 9. Anexo — Datos de la guía de buses (GUIA)
 
