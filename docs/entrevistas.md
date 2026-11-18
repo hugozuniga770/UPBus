@@ -188,7 +188,7 @@
 **Datos de los estudiantes**
 
 13. ★ Para registrarse en UPBus pedimos el código y el correo institucional, y los comparamos con un padrón. ¿La UPB podría darnos un padrón real o un servicio para validar estudiantes? ¿Qué datos se podrían usar? (RF-01, P-01, P-04)
-14. ¿Qué condiciones pone la universidad para guardar la ubicación de los estudiantes y sus pagos? (RNF-04)
+14. ¿Qué condiciones pone la universidad para guardar la ubicación de los estudiantes y sus pagos? (riesgo 6 del plan)
 15. ¿Cuál es el formato del código de estudiante y el dominio del correo institucional? (P-01)
 
 **La aplicación**

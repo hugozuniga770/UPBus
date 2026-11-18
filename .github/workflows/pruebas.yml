@@ -1,0 +1,43 @@
+# Integración continua (T07): corre las pruebas del servidor y las de la
+# interfaz por separado (BUS-RT-09) en cada Pull Request y en develop y main.
+name: Pruebas
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  servidor:
+    name: Servidor (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Configuración de Django
+        run: python manage.py check
+      - name: Ninguna migración olvidada
+        run: python manage.py makemigrations --check --dry-run
+      - run: pytest
+
+  interfaz:
+    name: Interfaz (Vitest y build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build

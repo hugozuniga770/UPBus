@@ -1,0 +1,267 @@
+# Sesiones 13 y 14 — Diseño: arquitectura, datos y clases
+
+- Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
+- Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
+- Fecha: 18/11/2026 · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
+- Estado: la sección 2 y las secciones 4 a 6 describen la **base del código, ya construida**. La sección 3 es **[PROPUESTA]** para las historias que faltan.
+- Requisitos: [Sesión 6](sesion-06-requisitos.md) · Historias: [Sesión 7](sesion-07-modelos.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Trazabilidad: [trazabilidad.md](trazabilidad.md)
+
+## 0. Cómo leer este documento
+
+- **FE** es la interfaz (React), **MW** el servidor Django que aplica las reglas, **Padrón** la lista de la universidad y **BD** la base de datos (SQLite).
+- Quien toma una historia lee la sección 3 para su modelo y la sección 4 para el molde de sus capas. Si cambia algo de lo propuesto, lo corrige aquí y, si era algo acordado, lo anota en [cambios.md](cambios.md).
+
+## 1. Arquitectura FE / MW / Padrón / BD
+
+```mermaid
+flowchart LR
+    subgraph Navegador["Celular, computadora o pantalla del bus"]
+        FE["FE · React 19 con Tailwind 4<br/>Leaflet y OpenStreetMap"]
+    end
+    subgraph Servidor["MW · Django 6 (ASGI con Daphne)"]
+        V["Vistas · DRF"] --> S["Servicios"] --> R["Reglas"]
+        C["Canal · Channels"] --> S
+    end
+    P[("Padrón<br/>archivo JSON de solo lectura")]
+    B[("BD · SQLite")]
+    FE -- "HTTP JSON /api<br/>cookie de sesión y CSRF" --> V
+    FE <-- "WebSocket /ws" --> C
+    S --> B
+    S -- "solo cuentas/padron.py" --> P
+```
+
+| Capa | Qué es | Dónde está |
+|---|---|---|
+| FE | Las pantallas. Primero el celular: mapa a pantalla completa y tarjetas que suben desde abajo | `frontend/src/` |
+| Vistas | Reciben, leen el formato con un serializador, llaman a un servicio y responden JSON | `views.py`, `serializadores.py` |
+| Servicios | Orquestan: leen, preguntan a las reglas y guardan, en una transacción | `servicios.py` |
+| Reglas | Deciden y rechazan con su causa. No tocan la BD | `reglas.py` |
+| Canal | Empuja al instante la ubicación del bus, los avisos y los mensajes | `consumers.py`, `routing.py` |
+| Padrón | Lista de personas de la UPB. Solo se lee, y solo desde un módulo | `padron/`, `cuentas/padron.py` |
+| BD | Las tablas | `models.py` y `migrations/` |
+
+**En desarrollo**, Vite (puerto 5173) le pasa `/api`, `/admin`, `/static` y `/ws` a Django (puerto 8000), así FE y MW comparten el mismo origen. Para el celular, un túnel HTTPS gratuito apunta a Vite ([guía del modo registro](guia-modo-registro.md)).
+
+## 2. Datos que ya existen
+
+```mermaid
+erDiagram
+    USUARIO ||--o{ REGISTRO_DE_RECORRIDO : graba
+    USUARIO ||--o{ PARADA : "crea (si la grabó)"
+    RUTA ||--o{ HORARIO : tiene
+    RUTA ||--o{ PARADA : tiene
+    RUTA ||--o{ REGISTRO_DE_RECORRIDO : "se graba en"
+    HORARIO ||--o{ REGISTRO_DE_RECORRIDO : "de"
+    REGISTRO_DE_RECORRIDO ||--o{ MARCA_DE_PARADA : tiene
+    REGISTRO_DE_RECORRIDO ||--o{ PUNTO_DE_REGISTRO : tiene
+    PARADA ||--o{ PASO_POR_PARADA : "registra"
+    HORARIO ||--o{ PASO_POR_PARADA : "de"
+    MARCA_DE_PARADA }o--|| PARADA : "se une a"
+    USUARIO {
+        string correo UK
+        string codigo UK "vacío en los choferes"
+        string nombre
+        string rol "estudiante, chofer o administrador"
+        bool is_active "eliminar la desactiva"
+    }
+    RUTA {
+        string clave UK "norte, sur, externa, cuarto-anillo, hibrida"
+        string nombre
+        string punto_de_partida
+        json recorrido "lista de [latitud, longitud]"
+    }
+    HORARIO {
+        string sentido "ingreso o salida"
+        time salida
+        time llegada_limite "07:40 en el ingreso de la mañana"
+    }
+    PARADA {
+        string nombre
+        float latitud
+        float longitud
+        int orden
+        string estado "aprobada, propuesta o rechazada"
+    }
+    REGISTRO_DE_RECORRIDO {
+        string id_cliente UK "lo crea el celular"
+        string estado "en_curso, terminado o cancelado"
+        datetime iniciado_en
+    }
+    MARCA_DE_PARADA {
+        string id_cliente "único en su registro"
+        float precision_m
+        datetime marcada_en
+        float minutos_desde_salida
+    }
+    PUNTO_DE_REGISTRO {
+        string id_cliente "único en su registro"
+        datetime tomado_en
+    }
+    PASO_POR_PARADA {
+        float minutos_desde_salida
+        datetime ocurrido_en
+    }
+```
+
+| Modelo | App | Para qué | Restricciones |
+|---|---|---|---|
+| `Usuario` | cuentas | La cuenta: entra con código o correo (`CodigoOCorreoBackend`) | `correo` y `codigo` únicos. El rol sale del padrón; los choferes los crea un administrador |
+| `Ruta` | rutas | Las 5 rutas de la guía, cargadas con `cargar_rutas` | `clave` única |
+| `Horario` | rutas | Cada salida de una ruta, de ingreso o de salida | Única por ruta, sentido y hora de salida |
+| `Parada` | rutas | Una parada de una ruta, con su estado | Solo las aprobadas las ven todos; el chofer y el administrador ven también las propuestas |
+| `RegistroDeRecorrido` | rutas | Una grabación del modo registro | `id_cliente` único: un reenvío del inicio no crea otro |
+| `MarcaDeParada` | rutas | Cada «Parada aquí» | Única por registro e `id_cliente` |
+| `PuntoDeRegistro` | rutas | El recorrido grabado | Único por registro e `id_cliente` |
+| `PasoPorParada` | rutas | Cada vez que el bus pasó por una parada, con los minutos desde la salida | Lo usan el modo registro y, cuando exista, el viaje en vivo (`registrar_paso`) |
+
+## 3. Datos propuestos para las historias que faltan **[PROPUESTA]**
+
+```mermaid
+erDiagram
+    VIAJE ||--o{ AVISO_DE_SUBIDA : tiene
+    VIAJE ||--o{ MENSAJE : "chat directo"
+    AVISO_DE_SUBIDA ||--o| ABORDAJE : "termina en"
+    AVISO_DE_SUBIDA ||--o{ UBICACION_DEL_ESTUDIANTE : comparte
+    ABORDAJE ||--o| MOVIMIENTO : "se cobra con"
+    RECARGA ||--o| MOVIMIENTO : "suma con"
+    RUTA ||--o{ MIEMBRO_DE_RUTA : "tiene"
+    RUTA ||--o{ CAMBIO_DE_RUTA : "recibe"
+    VIAJE {
+        int ruta_id
+        int horario_id
+        date fecha
+        int chofer_id
+        string estado "programado, en_curso, terminado o cancelado"
+        datetime iniciado_en
+        datetime terminado_en
+        float ultima_latitud
+        float ultima_longitud
+        datetime ultima_posicion_en
+        bool aviso_de_minimo_enviado
+    }
+    AVISO_DE_SUBIDA {
+        int viaje_id
+        int estudiante_id
+        int parada_id
+        string estado "confirmado, a_bordo, cancelado o no_se_presento"
+        bool aviso_de_cercania_enviado
+    }
+    UBICACION_DEL_ESTUDIANTE {
+        float latitud
+        float longitud
+        datetime tomada_en
+    }
+    ABORDAJE {
+        string id_cliente UK "para no cobrar dos veces"
+        int registrado_por_id
+        string pago "creditos, efectivo_pendiente o efectivo"
+        datetime registrado_en
+    }
+    RECARGA {
+        int estudiante_id
+        int monto "múltiplo de 5, mínimo 5"
+        string estado "pendiente, aprobada o rechazada"
+        int aprobada_por_id
+    }
+    MOVIMIENTO {
+        int cuenta_id
+        string tipo "recarga, pago, devolucion o retiro"
+        int monto "con signo"
+        int viaje_id
+        string comprobante UK "ID del comprobante"
+        datetime creado_en
+    }
+    MENSAJE {
+        int autor_id
+        int viaje_id "o la ruta, en el chat de ruta"
+        string texto
+        datetime enviado_en
+    }
+    MIEMBRO_DE_RUTA {
+        int usuario_id
+    }
+    CAMBIO_DE_RUTA {
+        int chofer_id
+        json cambio
+        float metros
+        string estado "aplicado, pendiente, aprobado o rechazado"
+        int aprobado_por_id
+    }
+```
+
+| Modelo | App | Historia | Notas |
+|---|---|---|---|
+| `Viaje` | viajes | HU-05, HU-06 | Guarda la última posición para mostrarla si se corta la señal (HU06-CA5). Un chofer tiene un solo viaje en curso |
+| `AvisoDeSubida` | viajes | HU-07, HU-09 | Uno por estudiante y viaje (HU07-CA2). Al pasar el bus, los confirmados que no subieron pasan a «no se presentó» |
+| `UbicacionDelEstudiante` | viajes | HU-07 | Solo se guarda la última; se borra al subir o al terminar el viaje |
+| `Abordaje` | viajes | HU-10, HU-12 | `id_cliente` único para que un reenvío no cobre dos veces (HU12-CA3) |
+| `Recarga` y `Movimiento` | `creditos` (app nueva) o viajes | HU-11 a HU-13 | El saldo es la suma de los movimientos; nunca se guarda aparte. Cada cobro, devolución o retiro es un movimiento completo o ninguno (RC-03) |
+| `Mensaje` y `MiembroDeRuta` | mensajes | HU-14, HU-15 | Solo texto (P-10) |
+| `CambioDeRuta` | rutas | HU-16 | Los grandes quedan pendientes; P-25 puede hacer que todos lo queden |
+
+## 4. Clases y funciones por capa (lo que hay)
+
+| App | Reglas | Servicios | Vistas |
+|---|---|---|---|
+| `comun` | `Rechazo` (400), `SinPermiso` (403), `NoExiste` (404); `distancia_en_metros`, `coordenadas_validas`; `ahora`, `a_hora_local` | `leer` (valida un serializador) | `manejar_excepcion` y `falla_csrf`: todo rechazo sale como `{"causa": ...}` |
+| `cuentas` | `verificar_persona_en_padron`, `verificar_correo_del_padron`, `verificar_persona_activa`, `verificar_sin_cuenta`, `verificar_contrasenas_iguales`, `verificar_contrasena`, `rol_desde_el_padron`, `verificar_credenciales`, `verificar_es_administrador`, `verificar_rol_valido`, `verificar_correo_libre`, `verificar_codigo_libre`, `verificar_no_es_uno_mismo` | `registrar`, `autenticar`, `listar_cuentas`, `crear_cuenta`, `buscar_cuenta`, `eliminar_cuenta` | `CsrfVista`, `RegistroVista`, `SesionVista`, `UsuariosVista`, `UsuarioVista` |
+| `rutas` | `verificar_puede_registrar`, `verificar_horario_de_la_ruta`, `verificar_sin_registro_en_curso`, `verificar_es_su_registro`, `verificar_registro_en_curso`, `verificar_coordenadas`, `verificar_lejos_de_las_otras_marcas`, `verificar_hay_marcas`, `estado_de_una_parada_nueva`, `llego_a_la_parada`, `parada_mas_cercana`, `minutos_entre`, `promedio_de_los_ultimos`, `hora_aproximada`, `llegada_limite` | `listar_rutas`, `ver_ruta`, `paradas_visibles`, `horas_aproximadas`, `registrar_paso`, `reordenar_paradas`, `iniciar_registro`, `marcar_parada`, `agregar_puntos`, `terminar_registro`, `cancelar_registro`, `importar_registro` | `RutasVista`, `RutaVista`, `RegistrosVista`, `RegistroEnCursoVista`, `MarcasVista`, `PuntosVista`, `TerminarRegistroVista`, `CancelarRegistroVista` |
+| `viajes` | Por hacer (T11, T14, T16, T17) | Por hacer | `ViajeConsumer` ya conecta al grupo `viaje_<id>` |
+| `mensajes` | Por hacer (T19) | Por hacer | Por hacer |
+
+Comandos: `importar_padron` (cuentas), `cargar_rutas` e `importar_registro` (rutas).
+
+## 5. API
+
+Todas las rutas empiezan con `/api/` y responden JSON. Toda escritura lleva el token CSRF en la cabecera `X-CSRFToken`.
+
+| Método y ruta | Quién | Qué hace | Historia |
+|---|---|---|---|
+| `GET sesion/csrf` | Cualquiera | Entrega la cookie CSRF | HU-01, HU-02 |
+| `POST registro` | Persona del padrón | Crea la cuenta y deja la sesión abierta | HU-01 |
+| `GET sesion` | Cualquiera | Quién está dentro (`usuario` o `null`) | HU-02 |
+| `POST sesion` | Cualquiera | Entra con código o correo y contraseña | HU-02 |
+| `DELETE sesion` | Con sesión | Cierra la sesión | HU-02 |
+| `GET usuarios` · `POST usuarios` | Administrador | Lista las cuentas · crea una | HU-03 |
+| `DELETE usuarios/<id>` | Administrador | Desactiva la cuenta | HU-03 |
+| `GET rutas` | Con sesión | Las rutas con sus horarios | HU-04 |
+| `GET rutas/<id>?horario=<id>` | Con sesión | La ruta con recorrido, paradas y hora aproximada | HU-04 |
+| `POST registros` | Chofer o administrador | Inicia un registro | HU-18 |
+| `GET registros/en-curso` | Chofer o administrador | El registro sin terminar, si hay | HU-18 |
+| `POST registros/<id>/marcas` | Quien graba | Guarda una marca; un reenvío no duplica | HU-18 |
+| `POST registros/<id>/puntos` | Quien graba | Guarda puntos del recorrido | HU-18 |
+| `POST registros/<id>/terminar` | Quien graba | Crea o une paradas y recalcula horas | HU-18 |
+| `POST registros/<id>/cancelar` | Quien graba | Cancela sin crear nada | HU-18 |
+| `ws/viajes/<id>/` (WebSocket) | Con sesión | Canal del viaje; hoy confirma la conexión | HU-06 (por hacer) |
+
+## 6. Interfaz
+
+| Ruta | Pantalla | Quién | Historia |
+|---|---|---|---|
+| `/ingresar` | Iniciar sesión con código o correo | Cualquiera | HU-02 |
+| `/registrarse` | Crear la cuenta con el padrón | Persona del padrón | HU-01 |
+| `/` | Inicio con tarjetas según el rol; las que faltan dicen «Próximamente» con su historia | Con sesión | — |
+| `/rutas` | Mapa con el recorrido, las paradas y la hora aproximada; tarjeta que sube desde abajo | Con sesión | HU-04 |
+| `/modo-registro` | Grabar paradas y horas con el GPS | Chofer o administrador | HU-18 |
+| `/usuarios` | Crear choferes y personas, y desactivar cuentas | Administrador | HU-03 |
+
+Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `ErrorApi` con la causa), `sesion/` (quién está dentro y las rutas protegidas por rol), `componentes/` (Boton, Campo, Aviso, Mapa, Plantilla, PantallaDeAcceso, Logo) y `registro/` (la cola sin señal, el almacenamiento en el celular y el respaldo).
+
+## 7. Decisiones de diseño y su porqué
+
+| Decisión | Por qué |
+|---|---|
+| Cookie de sesión de Django con CSRF, y no tokens (RT-05) | La interfaz y el servidor comparten origen gracias al proxy de Vite; no hay tokens que guardar en el navegador |
+| El padrón se lee solo desde `cuentas/padron.py` | Lo simulado queda aislado (RC-04): cambiar al sistema real de la UPB toca un solo módulo |
+| Eliminar una cuenta la desactiva (P-23) | Para no perder viajes ni comprobantes |
+| La hora aproximada se guarda como minutos desde la salida | Así se pueden promediar viajes que salieron a horas un poco distintas (RF-11) |
+| Promedio de los últimos 5 pasos, redondeado al minuto (P-11) | Reacciona a cambios recientes sin depender de un solo viaje |
+| Todo lo que manda el celular lleva un `id_cliente` | Sin señal, el celular reintenta; el servidor reconoce el reenvío y no duplica (HU18-CA5) |
+| Canal de Channels en memoria | Basta con un solo proceso en el MVP. Si el hosting usa más de uno, se cambia a Redis **[PROPUESTA]** (T22) |
+| SQLite (RT-02) | Gratis y sin servidor aparte; suficiente para el MVP |
+
+## 8. Participación y asistencia utilizada
+
+- **Hugo Zuñiga:** decidió la tecnología (PO13) y aprueba este diseño.
+- **Sebastian Cruz:** revisión pendiente, junto con T03.
+- **Asistencia de IA:** se usó Claude (Anthropic) para construir la base y describir aquí su diseño, y para proponer los modelos de la sección 3.
