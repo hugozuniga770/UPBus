@@ -18,11 +18,11 @@
 
 | ID | A quién | Rol | Fecha | Estado |
 |---|---|---|---|---|
-| ENT-01 | Chofer de la Ruta Norte, contratado (no es Don Iván) | Chofer | 16/11/2026 | Hecha · 5 min 41 s |
-| ENT-02 | Estudiante de la Ruta Norte (anónima) | Estudiante | 16/11/2026 | Hecha · 2 min 31 s |
-| ENT-03 | Don Iván, coordinador del servicio de transporte | Coordinación del servicio | 18/11/2026 · la hizo Andrés | Hecha · 2 min 55 s grabados |
+| ENT-01 | Chofer de la Ruta Norte, contratado (no es Don Iván) | Chofer | 16/11/2026 · Hecha por Hugo y Sebastian | Hecha · 5 min 41 s |
+| ENT-02 | Estudiante de la Ruta Norte (anónima) | Estudiante | 16/11/2026 · Hecha por Hugo y Sebastian | Hecha · 2 min 31 s |
+| ENT-03 | Don Iván, coordinador del servicio de transporte | Coordinación del servicio | 18/11/2026 · la hizo Andrés y Hugo | Hecha · 2 min 55 s grabados |
 | ENT-04 a ENT-06 | Estudiantes de otras rutas (Sur, Externa, 4to Anillo–Urubó) | Estudiante | Sprint 2 | Pendiente |
-| ENT-07 | Encargada del servicio de buses en la UPB (anónima) | Administración | Por confirmar · la hace Andrés | Pendiente · es la única entrevista que falta |
+| ENT-07 | Encargada del servicio de buses en la UPB (anónima) | Administración | Por confirmar · la hace Andrés y Sebastian | Pendiente · es la única entrevista que falta |
 
 **Cambio de calendario (C-08).** El 13/11 se pensaba entrevistar a Don Iván como chofer (ENT-01) y a la administración como ENT-06. No se encontró a Don Iván, y ENT-01 se hizo con otro chofer de la Ruta Norte. Ese chofer dijo que coordina el servicio con Don Iván, así que Don Iván pasa a ser ENT-03 y es quien puede llevarnos a la administración.
 
@@ -32,7 +32,7 @@
 
 - Fecha: 16/11/2026 · Duración: 5 min 41 s, grabada y transcrita
 - Entrevistado: chofer de la Ruta Norte, contratado. No se registró su nombre.
-- Entrevistó: Hugo Zuñiga
+- Entrevistó: Hugo Zuñiga y Sebastian Cruz
 
 | # | Pregunta | Respuesta |
 |---|---|---|
@@ -67,7 +67,7 @@
 
 - Fecha: 16/11/2026 · Duración: 2 min 31 s, grabada y transcrita
 - Entrevistada: estudiante de la Ruta Norte (anónima)
-- Entrevistaron: dos integrantes del equipo
+- Entrevistaron: Hugo Zuñiga y Sebastian Cruz
 
 | # | Pregunta | Respuesta |
 |---|---|---|
@@ -137,7 +137,7 @@
 
 ## 7. ENT-03 — Don Iván (coordinador del servicio)
 
-- Fecha: 18/11/2026 · Entrevistador: Andrés Laura Vargas · Duración grabada: 2 min 55 s
+- Fecha: 18/11/2026 · Entrevistador: Hugo zuñiga y Andrés Laura Vargas · Duración grabada: 2 min 55 s
 - Permiso: autorizó que se use su nombre en la documentación («Claro, no hay ningún problema»).
 - La respuesta a la pregunta 1 no se grabó; se anota como la recordó el equipo.
 
