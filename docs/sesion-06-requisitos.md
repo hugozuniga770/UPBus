@@ -4,7 +4,7 @@
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I) · Aprueba los requisitos: Hugo Zuñiga, como Product Owner
 - Fecha: 13/11/2026 · Sprint 1 · Issue: por crear · Milestone: Sprint 1
-- Actualizado: 16/11/2026 · entrevistas ENT-01 y ENT-02 (C-08 a C-11) y preguntas P-19 a P-24
+- Actualizado: 18/11/2026 · entrevista ENT-03 a Don Iván (C-16, C-17) y preguntas P-25 a P-27; antes, 16/11/2026, ENT-01 y ENT-02 (C-08 a C-11) y P-19 a P-24
 - Plan: [Sesiones 8–9](sesion-08-09-plan.md) · Entrevistas: [entrevistas.md](entrevistas.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
 ## 0. Cómo leer este documento
@@ -20,7 +20,7 @@ Cada requisito tiene un ID con el prefijo `BUS` (por ejemplo, `BUS-RF-09`). Dent
 
 **Datos de los ejemplos.** Todos los criterios usan los mismos datos:
 
-- **Ruta:** Ruta Norte, ingreso de las 06:40 desde La Fontana Family Club. Paradas de ejemplo: La Fontana (inicio, GUIA), Sevilla, Petrol y Campos (ENT-01) y Campus UPB (fin). El orden y las coordenadas de las tres intermedias son **[PROVISIONAL]** (P-18). Llegada límite a la U: 07:45 **[PROVISIONAL]** (P-06).
+- **Ruta:** Ruta Norte, ingreso de las 06:40 desde La Fontana Family Club. Paradas de ejemplo: La Fontana (inicio, GUIA), Sevilla, Petrol y Campos (ENT-01) y Campus UPB (fin). El orden y las coordenadas de las tres intermedias son **[PROVISIONAL]** (P-18). Llegada límite a la U: 07:40 (ENT-03).
 - **Tarifa:** 5 Bs por viaje (GUIA). 1 crédito = 1 Bs.
 - **Personas** (códigos y correos de ejemplo **[PROVISIONAL]**, P-01):
 
@@ -43,7 +43,7 @@ Cada requisito tiene un ID con el prefijo `BUS` (por ejemplo, `BUS-RF-09`). Dent
 | PERFIL | Perfil de proyecto presentado el 07/11/2026 | Problema, árbol de problemas, objetivo general, objetivos específicos y las 12 historias iniciales |
 | PO13 | Decisiones del Product Owner (Hugo Zuñiga), 13/11/2026 | Tecnología, roles, registro e inicio de sesión, paradas, horas aproximadas, créditos, permisos del chofer y lo que se simula |
 | DOC | Indicaciones del docente comunicadas por Hugo, **fecha no registrada** | (1) Créditos en la app en lugar de pagar por QR. (2) Sin espera de 5 minutos: el bus pasa a una hora aproximada y quien no está se queda. |
-| ENT | Entrevistas del 16/11/2026: ENT-01 (chofer de la Ruta Norte) y ENT-02 (estudiante de la Ruta Norte, anónima). Detalle en [entrevistas.md](entrevistas.md) | Paradas reales de la Ruta Norte, cómo se paga hoy, el dispositivo del chofer, que la ubicación se corta y cuánto espera el bus |
+| ENT | Entrevistas del 16/11/2026: ENT-01 (chofer de la Ruta Norte) y ENT-02 (estudiante de la Ruta Norte, anónima), y del 18/11/2026: ENT-03 (Don Iván, coordinador del servicio). Detalle en [entrevistas.md](entrevistas.md) | Paradas reales de la Ruta Norte, cómo se paga hoy, el dispositivo del chofer, que la ubicación se corta y cuánto espera el bus |
 
 ## 2. Alcance del MVP
 
@@ -179,7 +179,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 
 - Origen: PERFIL; PO13; DOC. Prioridad: alta.
 - Estado: **[ACUERDO]** (PO13, DOC).
-- Entrevistas: ENT-02 está de acuerdo con que el bus no espere («porque después no llegamos [a la U]»). ENT-01 cuenta que hoy espera «hasta dos minutos», y como máximo uno más (P-19).
+- Entrevistas: ENT-02 está de acuerdo con que el bus no espere («porque después no llegamos [a la U]»). ENT-01 cuenta que hoy espera «hasta dos minutos», y como máximo uno más, y ENT-03 dice que «mayormente son 2 minutos» (P-19).
 - Requisito: el estudiante marca «Voy a subir» para un viaje concreto y una parada. Al chofer le llega la alerta con su nombre y su parada. Puede cancelarlo mientras el bus no haya pasado su parada. El bus no espera: si el bus pasa la parada y el estudiante no subió ni canceló, el aviso se cancela solo y queda registrado como «no se presentó». Un estudiante tiene un solo «Voy a subir» por viaje.
 - Criterio de aceptación:
   - Aceptación: Ismael marca «Voy a subir» en Sevilla para el viaje de las 06:40. Queda Confirmado y a Marco le llega «Ismael va a subir en Sevilla».
@@ -190,7 +190,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 
 - Origen: PO13. Prioridad: media.
 - Estado: **[ACUERDO]** que estudiantes y choferes proponen paradas y que una parada solo está activa si hay alguien esperando (PO13). Cuándo queda guardada una parada propuesta: **[PROVISIONAL]** (P-05).
-- Entrevistas: ENT-02 no propondría paradas, y ENT-01 dice que los estudiantes suben «todos los días [en] los mismos destinos». Por eso es el recorte 2 propuesto en el plan (C-12).
+- Entrevistas: ENT-02 no propondría paradas, y ENT-01 dice que los estudiantes suben «todos los días [en] los mismos destinos». Por eso es el recorte 2 propuesto en el plan (C-12). ENT-03: las paradas nuevas las decide la UPB, lo que apoya que una parada propuesta solo quede guardada si la aprueba el administrador (P-05).
 - Requisito: el estudiante y el chofer pueden proponer una parada sobre el recorrido de la ruta; no pueden modificar el recorrido. En cada viaje, una parada está **activa** solo si al menos un estudiante con «Voy a subir» en ella comparte su ubicación. Si no hay nadie, la parada no se enciende y no genera avisos.
 - Criterio de aceptación:
   - Aceptación: Ismael propone la parada «Av. Banzer y 4to anillo» sobre el recorrido de la Ruta Norte. Queda registrada como propuesta.
@@ -295,7 +295,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 
 - Origen: PO13. Prioridad: baja.
 - Estado: **[ACUERDO]** quién puede y que la hora de llegada a la U no se toca (PO13). El umbral en metros es **[PROVISIONAL]** (P-07).
-- Entrevistas: ENT-01 cambia de ruta «casi nunca: la misma ruta nomás, siempre», porque en esa zona no hay espacio para maniobrar. Por eso es el recorte 1 propuesto en el plan (C-12).
+- Entrevistas: ENT-01 cambia de ruta «casi nunca: la misma ruta nomás, siempre», porque en esa zona no hay espacio para maniobrar. Por eso es el recorte 1 propuesto en el plan (C-12). ENT-03: los cambios de ruta los decide la UPB. Se propone que el chofer solo proponga cambios y que todos los apruebe el administrador (C-17, P-25).
 - Requisito: los estudiantes no modifican rutas. El chofer puede editar las paradas, sus horas y el recorrido de su ruta con cambios pequeños. Un cambio grande (mover el recorrido 2 cuadras o más, o cambiar de avenida) queda Pendiente hasta que un administrador lo aprueba o lo rechaza. Nadie más que el administrador puede cambiar la hora de llegada a la U.
 - Criterio de aceptación:
   - Aceptación: Marco mueve un punto del recorrido 80 m. El cambio se aplica.
@@ -306,6 +306,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 
 - Origen: GUIA (mínimo 15); PO13. Prioridad: baja.
 - Estado: **[ACUERDO]** la app solo avisa al administrador (PO13). Anticipación **[PROVISIONAL]** (P-17).
+- Entrevistas: según ENT-03, habilitar, no habilitar o cancelar una ruta lo decide la UPB, no los choferes. Confirma que la app solo avisa al administrador.
 - Requisito: el administrador y el chofer ven cuántos estudiantes confirmaron cada viaje. Si faltando 30 minutos para la salida hay menos de 15 confirmados, el administrador recibe un aviso. La app no cancela el viaje.
 - Criterio de aceptación:
   - Aceptación: a las 06:10 el viaje de las 06:40 tiene 9 confirmados; Hugo recibe el aviso y el viaje sigue Programado.
@@ -376,7 +377,7 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 | P-03 | ¿La cuenta del chofer lleva el nombre real de Don Iván? Respondida (ENT-01): Don Iván no es el chofer de los ejemplos; contrató al chofer entrevistado y es con quien este coordina el servicio con la UPB | Chofer de ejemplo ficticio: Marco | Ejemplos |
 | P-04 | Si el administrador crea y elimina estudiantes, ¿el padrón sigue siendo de solo lectura? | Sí: el padrón no se toca; el administrador crea y elimina cuentas en la BD | RF-01, RF-04 |
 | P-05 | «Solo para el primer día se guardan o no»: ¿quién decide que una parada propuesta queda guardada? | Queda guardada cuando el chofer o un administrador la aprueba; mientras tanto vale solo para ese viaje | RF-10 |
-| P-06 | ¿A qué hora debe llegar a la U cada horario de ingreso? ¿Y las salidas a su punto final? Se pregunta en ENT-03 | 06:40 → 07:45; los demás, 65 minutos después de salir | RF-11, RF-12 |
+| P-06 | ¿A qué hora debe llegar a la U cada horario de ingreso? ¿Y las salidas a su punto final? Respondida en parte (ENT-03): en la mañana, antes de las 7:40. Los demás se preguntan en ENT-07 | 06:40 → 07:40; los demás, 60 minutos después de salir | RF-11, RF-12 |
 | P-07 | ¿Cuántos metros son «2 cuadras»? ¿Quién decide qué es «cambio de avenida»? | 200 m; el cambio de avenida siempre pide aprobación | RF-10, RF-21 |
 | P-08 | «Hablar de impuestos»: ¿se refiere a facturar los pagos o a una sanción por no presentarse? Respondida en parte (ENT-01): el chofer recibe el dinero y la empresa entrega la factura. Falta saber si habrá una sanción por no presentarse | «No se presentó» solo se registra; la app no factura | RF-09, RF-16 |
 | P-09 | ¿El estudiante elige las rutas que usa? Eso define su chat de ruta | Sí: elige una o más y puede cambiarlas | RF-20 |
@@ -389,12 +390,15 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 | P-16 | ¿Qué hosting gratuito se usa? | Se decide en el Sprint 2 | RT-08 |
 | P-17 | ¿Con cuánta anticipación se avisa al administrador que hay menos de 15? | 30 minutos antes de la salida | RF-22 |
 | P-18 | ¿Cuáles son las paradas reales de cada ruta, su orden y sus coordenadas? Respondida en parte (ENT-01): la Ruta Norte pasa por «varios puntos de Sevilla», Petrol y parte de Campos. Faltan el orden, las coordenadas y las demás rutas (ENT-03) | Las paradas de la sección 0 | RF-05 |
-| P-19 | El chofer de ENT-01 espera «hasta dos minutos», y como máximo uno más; el docente indicó que el bus no espera. ¿Se da una tolerancia de espera? | Sin espera, como indicó el docente (DOC) | RF-09 |
-| P-20 | ¿Qué pantalla tiene el bus (sistema y navegador) y le da su ubicación a una página web? | Se asume que sí; se confirma con Don Iván y con una prueba en el bus | RF-07 |
-| P-21 | El chofer mencionó una aplicación que «salió para los transportistas». ¿Cuál es y qué hace? | Se investiga como referencia; no cambia el alcance | Alcance |
+| P-19 | El chofer de ENT-01 espera «hasta dos minutos», y como máximo uno más; Don Iván dice «mayormente son 2 minutos» (ENT-03); el docente indicó que el bus no espera. ¿Se da una tolerancia de espera? | Sin espera, como indicó el docente (DOC) | RF-09 |
+| P-20 | ¿Qué pantalla tiene el bus (sistema y navegador) y le da su ubicación a una página web? ENT-01 dice que la pantalla tiene GPS; Don Iván dice que usan «el GPS del WhatsApp» (ENT-03) | Se asume el celular del chofer; se confirma con una prueba en el bus | RF-07 |
+| P-21 | El chofer mencionó una aplicación que «salió para los transportistas». ¿Cuál es y qué hace? Don Iván no la conoce, pero dijo que el próximo año habría una aplicación y «varios cambios sobre el transporte» (ENT-03); se pregunta en ENT-07 | Se investiga como referencia; no cambia el alcance | Alcance |
 | P-22 | ¿Cuándo se cobra? Hoy, en la salida se paga al subir y en el ingreso de la mañana, al final del viaje (ENT-01) | Con créditos se cobra al registrar que subió, en los dos sentidos; el efectivo se paga como hoy | RF-14, RF-16 |
 | P-23 | Al eliminar una cuenta que tiene viajes o movimientos de créditos, ¿se borra o se desactiva? | Se desactiva, para no perder comprobantes | RF-04 |
 | P-24 | Si el chofer ya retiró su saldo y se cancela un viaje, la devolución dejaría su saldo en negativo. ¿Quién la cubre? | Se permite el saldo negativo solo por una devolución, y se compensa con sus próximos cobros | RF-17, RF-18 |
+| P-25 | Don Iván dijo que los cambios de ruta los decide la UPB (ENT-03). ¿El chofer deja de aplicar cambios pequeños por su cuenta? | Sí: el chofer propone y todo cambio lo aprueba el administrador (C-17, propuesto) | RF-21 |
+| P-26 | La empresa factura y la UPB paga «el íntegro de todo el mes» (ENT-03), pero los estudiantes pagan 5 Bs al chofer (GUIA, ENT-01). ¿Cómo se combinan? | Se mantiene el cobro de 5 Bs por viaje; se pregunta en ENT-07 | RF-15 a RF-18 |
+| P-27 | Don Iván nombró 4 rutas habilitadas: Norte, Externa, Sur y 4to Anillo–Urubó (ENT-03). ¿La Ruta Híbrida de la guía sigue activa? | Se cargan las 5 rutas de la guía y la Híbrida se marca para confirmar | RF-05 |
 
 ## 7. Siguiente paso
 
@@ -407,6 +411,7 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 - **Andrés Laura Vargas y Sebastian Cruz:** revisión pendiente antes del commit.
 - **Asistencia de IA:** se usó Claude (Anthropic) para estudiar la estructura del proyecto de referencia (reserva de salas), ordenar las respuestas del Product Owner, proponer la estructura y redactar el borrador.
 - **Hugo Zuñiga (16/11/2026):** hizo las entrevistas ENT-01 y ENT-02.
+- **Andrés Laura Vargas (18/11/2026):** hizo la entrevista ENT-03 a Don Iván.
 - **Asistencia de IA (16/11/2026):** se usó Claude (Anthropic) para pasar las entrevistas a este documento, cambiar los ejemplos (C-09) y redactar las preguntas P-19 a P-24.
 
 ## 9. Anexo — Datos de la guía de buses (GUIA)

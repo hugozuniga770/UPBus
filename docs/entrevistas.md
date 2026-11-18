@@ -2,7 +2,7 @@
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Responsable: Hugo Zuñiga (Product Owner)
-- Creado: 13/11/2026 · Actualizado: 17/11/2026, guía de ENT-07 y responsable de ENT-03 y ENT-07 (C-14) · Issue: por crear · Milestone: Sprint 1
+- Creado: 13/11/2026 · Actualizado: 18/11/2026, entrevista ENT-03 a Don Iván y guía de ENT-07 ajustada (C-15 a C-17) · Issue: por crear · Milestone: Sprint 1
 - Requisitos que dependen de estas entrevistas: [sesion-06-requisitos.md](sesion-06-requisitos.md), sección 6 · Cambios: [cambios.md](cambios.md)
 
 ## 0. Cómo leer este documento
@@ -11,7 +11,8 @@
 - Las respuestas de las secciones 2 y 3 son citas de la transcripción automática. Lo que va entre corchetes lo agregamos para que se entienda; por ejemplo, la transcripción escribió «al lado» donde se dijo «a la U».
 - Las transcripciones completas están en los anexos A y B.
 - Si una respuesta cambia un requisito, se registra en [cambios.md](cambios.md) y en la sección 5.
-- No se nombra a las personas entrevistadas.
+- No se nombra a las personas entrevistadas, salvo Don Iván, que dio permiso (ENT-03). La encargada del servicio en la UPB (ENT-07) queda anónima.
+- ENT-03 se registra solo como tabla de preguntas y respuestas, sin transcripción completa.
 
 ## 1. Calendario
 
@@ -19,9 +20,9 @@
 |---|---|---|---|---|
 | ENT-01 | Chofer de la Ruta Norte, contratado (no es Don Iván) | Chofer | 16/11/2026 | Hecha · 5 min 41 s |
 | ENT-02 | Estudiante de la Ruta Norte (anónima) | Estudiante | 16/11/2026 | Hecha · 2 min 31 s |
-| ENT-03 | Don Iván, con quien los choferes coordinan el servicio con la UPB | Coordinación del servicio | 18/11/2026, hora por confirmar · la hace Andrés | Pendiente · prioridad alta |
-| ENT-04 a ENT-06 | Estudiantes de otras rutas (Sur, Externa, 4to Anillo, Híbrida) | Estudiante | Sprint 2 | Pendiente |
-| ENT-07 | Administración de la UPB a cargo del servicio | Administración | 18/11/2026, hora por confirmar · la hace Andrés | Pendiente |
+| ENT-03 | Don Iván, coordinador del servicio de transporte | Coordinación del servicio | 18/11/2026 · la hizo Andrés | Hecha · 2 min 55 s grabados |
+| ENT-04 a ENT-06 | Estudiantes de otras rutas (Sur, Externa, 4to Anillo–Urubó) | Estudiante | Sprint 2 | Pendiente |
+| ENT-07 | Encargada del servicio de buses en la UPB (anónima) | Administración | Por confirmar · la hace Andrés | Pendiente · es la única entrevista que falta |
 
 **Cambio de calendario (C-08).** El 13/11 se pensaba entrevistar a Don Iván como chofer (ENT-01) y a la administración como ENT-06. No se encontró a Don Iván, y ENT-01 se hizo con otro chofer de la Ruta Norte. Ese chofer dijo que coordina el servicio con Don Iván, así que Don Iván pasa a ser ENT-03 y es quien puede llevarnos a la administración.
 
@@ -93,14 +94,17 @@
 
 ## 4. Lo que coincide y lo que no
 
-| Tema | ENT-01 (chofer) | ENT-02 (estudiante) | Conclusión |
-|---|---|---|---|
-| Ubicación del bus | Se corta y hay que volver a ponerla | No carga en algunos choferes; es lo que más pediría | Es el problema principal: RF-07 va primero |
-| Paradas | Siempre las mismas | No propondría paradas | Las paradas propuestas (RF-10) valen poco por ahora |
-| Espera | Espera hasta 2 minutos | Está bien que no espere | Hay que decidir P-19 |
-| Pago | QR y efectivo; la empresa factura | Prefiere pagar desde la app | Los créditos tienen buena acogida |
-| Comunicación | — | Ya chatea con el chofer | El chat directo tiene sentido |
-| Cambios de ruta | Casi nunca | — | RF-21 puede esperar |
+| Tema | ENT-01 (chofer) | ENT-02 (estudiante) | ENT-03 (Don Iván) | Conclusión |
+|---|---|---|---|---|
+| Ubicación del bus | Se corta y hay que volver a ponerla | No carga en algunos choferes; es lo que más pediría | Usan el GPS de WhatsApp; el internet se corta | Es el problema principal: RF-07 va primero y debe mostrar la última posición cuando se corta la señal |
+| Paradas | Siempre las mismas | No propondría paradas | Las paradas nuevas las decide la UPB | Las paradas propuestas (RF-10) valen poco por ahora |
+| Espera | Espera hasta 2 minutos | Está bien que no espere | «Mayormente son 2 minutos» | Dos de tres fuentes dicen 2 minutos: hay que decidir P-19 |
+| Pago | QR y efectivo; la empresa factura | Prefiere pagar desde la app | La empresa factura y la UPB paga el mes; con créditos, el dinero va al conductor | Los créditos tienen buena acogida; falta entender cómo se combinan el pago mensual y los 5 Bs (P-26) |
+| Comunicación | — | Ya chatea con el chofer | — | El chat directo tiene sentido |
+| Cambios de ruta | Casi nunca | — | Los decide la UPB | El chofer no debería cambiar la ruta solo (C-17) |
+| Llegada a la U | — | Entra a las 7:00 | Antes de las 7:40 | La hora límite de la mañana es 07:40 (C-16) |
+| Rutas activas | Cree que son 3 o 4 | — | 4: Norte, Externa, Sur y 4to Anillo–Urubó | La Híbrida de la guía no aparece (P-27) |
+| Una app así | — | — | La UPB pensaba hacer una el próximo año; aceptan una prueba piloto | Hay interés real, y también la posibilidad de que la UPB haga la suya |
 
 **Para la defensa.** El perfil presentó el problema como «me dejó el bus». Las dos entrevistas apuntan más a «no sé dónde está el bus». Es el mismo problema visto desde dos lados, pero conviene empezar la defensa por la ubicación.
 
@@ -116,97 +120,91 @@
 | ENT-01 y ENT-02 | Ruta fija y nadie propone paradas | Recortes del plan | C-12 propuesto: RF-21 y RF-10 pasan a ser los primeros recortes |
 | ENT-01 | La empresa factura; en la mañana se paga al final | RF-16, P-08, P-22 | Se agrega al requisito; P-08 queda respondida en parte |
 | ENT-01 y ENT-02 | La ubicación se corta | RF-07 | Se agrega como origen; sigue siendo prioridad alta |
+| ENT-03 | El bus debe estar en la U antes de las 7:40 | P-06, ejemplos de la sesión 6 | C-16: la llegada límite de la mañana pasa de 07:45 a 07:40 |
+| ENT-03 | Los cambios de ruta y las paradas nuevas los decide la UPB | RF-10, RF-21 | C-17 propuesto: el chofer solo propone cambios; los aprueba el administrador |
+| ENT-03 | Habilitar o cancelar una ruta lo decide la UPB | RF-22 | Confirma que la app solo avisa al administrador |
+| ENT-03 | Espera de «mayormente 2 minutos» | RF-09, P-19 | Segunda fuente a favor de la tolerancia; P-19 sigue abierta |
+| ENT-03 | Con créditos, el dinero va al conductor | RF-16 | Confirma el abono al chofer |
+| ENT-03 | Hay 4 rutas habilitadas | Ejemplos, anexo de la sesión 6 | P-27: confirmar si la Híbrida sigue activa |
 
 ## 6. Límites de estas entrevistas
 
 - Las dos son de la Ruta Norte. Las otras cuatro rutas pueden tener otros problemas.
 - Es una persona por rol: sirven para orientar, no para decir cuántos estudiantes tienen cada problema.
+- En ENT-03 no quedó grabada la respuesta sobre el rol de Don Iván.
 - La transcripción es automática y tiene errores, como «al lado» por «a la U».
 - En las próximas, pedir el permiso para grabar al empezar la grabación, para que quede registrado.
 
-## 7. Guía para ENT-03 — Don Iván
+## 7. ENT-03 — Don Iván (coordinador del servicio)
 
-- Entrevistador: Andrés Laura Vargas · Fecha: 18/11/2026, hora por confirmar.
+- Fecha: 18/11/2026 · Entrevistador: Andrés Laura Vargas · Duración grabada: 2 min 55 s
+- Permiso: autorizó que se use su nombre en la documentación («Claro, no hay ningún problema»).
+- La respuesta a la pregunta 1 no se grabó; se anota como la recordó el equipo.
 
-**Su rol**
+| # | Pregunta | Respuesta |
+|---|---|---|
+| 1 | ¿Cuál es su rol en el servicio y con quién de la UPB coordina? | Según contó (no se grabó), trabaja para la UPB, tiene una empresa de transporte y coordina con la encargada del servicio en la UPB (ENT-07) |
+| 2 | ¿Cuántos buses y choferes hay, y qué hace cada uno? | «En total, ahorita están habilitadas 4 rutas: Norte, Externa, Sur y Cuarto Anillo–Urubó». Recogen en la mañana y llevan en la tarde o en la noche |
+| 3 | ¿A qué hora debe llegar cada bus a la U? | «En la mañana, el bus tiene que estar antes de las 7:40», porque las clases empiezan a las 7:45 |
+| 4 | ¿Qué pasa con una ruta de menos de 15 estudiantes? ¿Quién decide? | «Los encargados son los de la UPB. Nosotros solo [sabemos lo que] nos dicen: se habilita, no se habilita o se cancela la ruta» |
+| 5 | ¿Quién decide un cambio de ruta o una parada nueva? | «Los de la UPB» |
+| 6 | ¿El bus espera a un estudiante que avisa que está llegando? ¿Cuánto? | «Mayormente son 2 minutos» |
+| 7 | ¿Quién recibe el pago, quién factura y cómo se rinde el dinero? | «Nosotros entregamos las facturas y ellos [la UPB] son los que pagan el íntegro de todo el mes» |
+| 8 | ¿Qué pantalla tienen los buses? ¿Usan Wi-Fi o GPS? | «El GPS del WhatsApp» |
+| 9 | ¿Podrían usar una pantalla para ver la ubicación de cada estudiante? | «Eso se iba a hacer para el próximo año. Iba a haber una aplicación, porque a veces el internet se corta, es mala señal» |
+| 10 | Si los estudiantes pagan con créditos de una app, ¿a qué cuenta debería llegar el dinero? | «El encargado de la ruta, el conductor» |
+| 11 | ¿Conoce la app para transportistas que mencionó un chofer? | «Eso no. Pero para el año iba a haber varios cambios sobre el transporte» |
+| 12 | ¿Se podría hacer una prueba piloto con una aplicación? | «Claro» |
+| 13 | ¿Podemos usar su nombre en la documentación? | «Claro, no hay ningún problema» |
 
-1. ¿Cuál es su rol en el servicio: trabaja para la UPB o para la empresa de transporte? ¿Con quién de la UPB coordina?
-2. ¿Cuántos buses y choferes hay, y qué ruta hace cada uno?
+## 8. Guía para ENT-07 — Encargada del servicio en la UPB (anónima)
 
-**Rutas, paradas y horarios** (P-06, P-18)
-
-3. ¿Cuáles son las paradas de cada ruta, en orden? ¿Nos puede mostrar el recorrido en un mapa?
-4. ¿A qué hora debe llegar cada bus a la U en cada horario de ingreso? ¿Y las salidas a su punto final?
-5. ¿Quién decide un cambio de ruta o una parada nueva?
-
-**Reglas del servicio** (P-19, RF-22)
-
-6. ¿El bus espera a un estudiante que avisa que está llegando? ¿Cuánto tiempo?
-7. ¿Qué pasa cuando una ruta tiene menos de 15 estudiantes? ¿Quién decide suspenderla y con cuánta anticipación?
-
-**Pagos** (P-08, P-22)
-
-8. ¿Quién recibe el pago y quién factura? ¿Cómo se rinde ese dinero?
-9. Si los estudiantes pagaran con créditos de una app, ¿a qué cuenta debería llegar el dinero?
-
-**Tecnología** (P-20, P-21)
-
-10. ¿Qué pantalla tienen los buses? ¿Todos tienen Wi-Fi y GPS?
-11. ¿Conoce la app «para transportistas» que mencionó un chofer?
-12. ¿Podríamos hacer una prueba piloto en la Ruta Norte?
-
-**Cierre**
-
-13. ¿Con quién de la administración de la UPB deberíamos hablar?
-14. ¿Podemos usar su nombre en la documentación del proyecto?
-
-## 8. Guía para ENT-07 — Administración de la UPB
-
-- Entrevistador: Andrés Laura Vargas · Fecha: 18/11/2026, hora por confirmar · Duración prevista: 15 a 20 minutos.
-- Al empezar: presentarse como estudiantes de Certificación I, explicar que UPBus es un proyecto de la materia, pedir permiso para grabar (que quede en la grabación) y preguntar si se puede usar su nombre y su cargo en la documentación.
+- Entrevistador: Andrés Laura Vargas · Fecha: por confirmar · Duración prevista: 15 a 20 minutos.
+- Al empezar: presentarse como estudiantes de Certificación I, explicar que UPBus es un proyecto de la materia y pedir permiso para grabar (que quede en la grabación). Aclarar que en la documentación aparecerá como «encargada del servicio en la UPB», sin su nombre.
 - Si hay poco tiempo, hacer primero las preguntas marcadas con ★.
-- Entre paréntesis, la pregunta abierta (P-xx) o el requisito que cada respuesta ayuda a cerrar.
+- Entre paréntesis, la pregunta abierta (P-xx) o el requisito que cada respuesta ayuda a cerrar. Donde dice «ENT-03», es para confirmar lo que dijo Don Iván.
 
 **Su rol y la organización del servicio**
 
 1. ★ ¿Qué área de la UPB está a cargo del servicio de buses y cuál es su rol en él?
-2. ¿Cómo se contrata el servicio: con una empresa, con Don Iván o con cada chofer? ¿Hasta cuándo dura el contrato?
-3. ★ ¿Cuántas rutas, buses y choferes hay hoy? ¿Cada cuánto cambian? (P-18)
-4. ¿Cuántos estudiantes usan el servicio, más o menos? ¿Llevan algún registro por ruta?
+2. ¿Cómo se contrata el servicio: con la empresa de Don Iván o con cada chofer? ¿Hasta cuándo dura el contrato?
+3. ★ Don Iván dijo que hay 4 rutas habilitadas: Norte, Externa, Sur y 4to Anillo–Urubó. ¿La Ruta Híbrida de la guía sigue funcionando? ¿Cuántos buses hay? (P-27, P-18)
+4. ¿Cuántos estudiantes usan el servicio? ¿Llevan un registro por ruta y por día?
 
 **Rutas, horarios y reglas**
 
-5. ★ ¿Quién define las rutas, las paradas y los horarios? ¿Quién aprueba un cambio de ruta o una parada nueva? (RF-10, RF-21)
-6. ★ ¿A qué hora debe llegar cada bus al campus en cada horario de ingreso? (P-06)
-7. La guía dice que la ruta sigue solo con al menos 15 estudiantes. ¿Quién decide suspenderla, con cuánta anticipación y cómo se avisa? (RF-22, P-17)
-8. ¿El bus tiene una tolerancia de espera, o la regla es no esperar? (P-19)
+5. ★ Don Iván dijo que los cambios de ruta y las paradas nuevas los decide la UPB. ¿Quién los aprueba y cómo se pide un cambio? ¿Un chofer podría hacer un desvío pequeño sin pedir permiso? (RF-10, RF-21, C-17)
+6. La mañana debe llegar antes de las 7:40 (ENT-03). ¿A qué hora debe llegar cada uno de los otros horarios de ingreso? ¿Y las salidas a su punto final? (P-06)
+7. ★ Con menos de 15 estudiantes, ¿cómo deciden habilitar, no habilitar o cancelar una ruta? ¿Con cuánta anticipación y cómo se avisa a los estudiantes? (RF-22, P-17)
+8. Los choferes esperan «mayormente 2 minutos» (ENT-01 y ENT-03). ¿Es una regla de la UPB o la regla es no esperar? (P-19)
 9. ¿Qué reclamos reciben con más frecuencia sobre los buses?
 
 **Pagos y facturación**
 
-10. ★ ¿Quién recibe los 5 Bs de cada viaje y quién factura: la UPB, la empresa o el chofer? (P-08, P-22)
-11. Si los estudiantes recargaran créditos en una app, ¿a qué cuenta debería llegar el dinero? ¿La UPB tiene o usaría una pasarela de pagos? (RF-15)
-12. ¿Qué haría falta para que el chofer retire lo cobrado desde la app? ¿Quién tendría que controlarlo? (RF-18)
+10. ★ Don Iván dijo que la empresa entrega facturas y que la UPB paga el íntegro del mes. ¿Cómo se relaciona ese pago con los 5 Bs que cada estudiante paga al chofer? (P-26, P-08, P-22)
+11. Si los estudiantes recargaran créditos en una app, ¿a qué cuenta debería llegar el dinero? Don Iván dijo que al conductor. ¿La UPB usaría una pasarela de pagos? (RF-15, RF-16)
+12. ¿Quién debería controlar los retiros del chofer desde la app? (RF-18)
 
 **Datos de los estudiantes**
 
-13. ★ Para registrarse en UPBus pedimos el código y el correo institucional, y los comparamos con un padrón. ¿La UPB podría darnos acceso a un padrón real o a un servicio para validar estudiantes? ¿Qué datos se podrían usar? (RF-01, P-01, P-04)
+13. ★ Para registrarse en UPBus pedimos el código y el correo institucional, y los comparamos con un padrón. ¿La UPB podría darnos un padrón real o un servicio para validar estudiantes? ¿Qué datos se podrían usar? (RF-01, P-01, P-04)
 14. ¿Qué condiciones pone la universidad para guardar la ubicación de los estudiantes y sus pagos? (RNF-04)
 15. ¿Cuál es el formato del código de estudiante y el dominio del correo institucional? (P-01)
 
 **La aplicación**
 
-16. ¿Qué le resolvería a la administración una app como esta? ¿Qué información o reportes le servirían: estudiantes por ruta, puntualidad, pagos? (RF-13)
-17. ¿Quién debería ser el administrador de UPBus: alguien de la UPB, Don Iván o los dos?
-18. ★ ¿Nos autorizarían una prueba piloto en la Ruta Norte? ¿Qué necesitarían para aprobarla?
-19. ¿Qué tendría que cumplir la app para que la UPB la adopte de verdad?
+16. ★ Don Iván comentó que el próximo año iba a haber una aplicación para el transporte. ¿Qué tienen pensado? ¿Podría UPBus servir como base o prueba de esa idea? (P-21)
+17. ¿Qué reportes le servirían: estudiantes por ruta, puntualidad, pagos? (RF-13)
+18. ¿Quién debería ser el administrador de UPBus: alguien de la UPB, Don Iván o los dos?
+19. ★ Don Iván aceptó una prueba piloto. ¿La UPB la autorizaría en la Ruta Norte? ¿Qué necesitaría para aprobarla?
+20. ¿Qué tendría que cumplir la app para que la UPB la adopte de verdad?
 
 **Cierre**
 
-20. ¿Hay algo del servicio que no preguntamos y que deberíamos saber?
-21. ¿Podemos volver a contactarle cuando tengamos un prototipo para mostrarle?
+21. ¿Hay algo del servicio que no preguntamos y que deberíamos saber?
+22. ¿Podemos volver a contactarle cuando tengamos un prototipo para mostrarle?
 
-**Después de la entrevista:** Andrés sube la grabación o su transcripción al equipo; Hugo la pasa a la sección de respuestas de ENT-07 y registra en [cambios.md](cambios.md) lo que cambie algún requisito.
+**Después de la entrevista:** Andrés comparte la grabación o sus notas; Hugo pasa las respuestas a una tabla como la de ENT-03, sin nombre, y registra en [cambios.md](cambios.md) lo que cambie algún requisito.
 
 ## 9. Guía para estudiantes (ENT-04 en adelante)
 
