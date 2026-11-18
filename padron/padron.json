@@ -1,0 +1,7 @@
+[
+  {"codigo": "70001", "nombre": "Hugo Zuñiga", "correo": "hugo.zuniga@upb.example", "rol": "administrador", "activo": true},
+  {"codigo": "70002", "nombre": "Sebastian Cruz", "correo": "sebastian.cruz@upb.example", "rol": "administrador", "activo": true},
+  {"codigo": "70003", "nombre": "Andrés Laura Vargas", "correo": "andres.laura@upb.example", "rol": "administrador", "activo": true},
+  {"codigo": "70004", "nombre": "Ismael", "correo": "ismael@upb.example", "rol": "estudiante", "activo": true},
+  {"codigo": "70005", "nombre": "Lucía Peña", "correo": "lucia.pena@upb.example", "rol": "estudiante", "activo": false}
+]

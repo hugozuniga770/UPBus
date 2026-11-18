@@ -1,0 +1,22 @@
+# Datos reales: nunca al repositorio público
+padron/padron.local.json
+*.sqlite3
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+staticfiles/
+
+# Interfaz
+frontend/node_modules/
+frontend/dist/
+
+# Editores y sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
