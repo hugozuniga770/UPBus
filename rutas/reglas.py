@@ -4,6 +4,7 @@ from math import floor
 
 from comun.geo import coordenadas_validas, distancia_en_metros
 from comun.rechazos import Rechazo, SinPermiso
+from comun.tiempo import ZONA_HORARIA, a_hora_local
 
 RADIO_DE_LLEGADA_M = 50  # RF-11: el bus «llega» a menos de 50 m
 PASOS_PARA_EL_PROMEDIO = 5  # P-11 [PROVISIONAL]
@@ -78,6 +79,15 @@ def minutos_entre(inicio, fin):
     return (fin - inicio).total_seconds() / 60
 
 
+def salida_programada(salida, momento):
+    """La hora de salida del horario en el día de `momento`, en la hora de La Paz.
+
+    Los minutos de cada paso se cuentan desde aquí y no desde la primera marca:
+    si el bus sale tarde, ese atraso también se aprende (C-23).
+    """
+    return datetime.combine(a_hora_local(momento).date(), salida, tzinfo=ZONA_HORARIA)
+
+
 def promedio_de_los_ultimos(minutos_del_mas_nuevo_al_mas_viejo, cantidad=PASOS_PARA_EL_PROMEDIO):
     ultimos = list(minutos_del_mas_nuevo_al_mas_viejo)[:cantidad]
     if not ultimos:
@@ -86,10 +96,14 @@ def promedio_de_los_ultimos(minutos_del_mas_nuevo_al_mas_viejo, cantidad=PASOS_P
 
 
 def hora_aproximada(salida, minutos):
-    """Hora de salida del horario + minutos aprendidos, redondeada al minuto."""
+    """Hora de salida del horario + minutos aprendidos, redondeada hacia abajo.
+
+    Hacia abajo para que nadie llegue tarde: si el bus pasó a las 07:00:54,
+    la parada muestra 07:00 (C-23).
+    """
     if minutos is None:
         return None
-    momento = datetime.combine(date(2000, 1, 1), salida) + timedelta(minutes=floor(minutos + 0.5))
+    momento = datetime.combine(date(2000, 1, 1), salida) + timedelta(minutes=floor(minutos))
     return momento.time()
 
 

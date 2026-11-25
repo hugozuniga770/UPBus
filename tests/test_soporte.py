@@ -1,11 +1,13 @@
 """Pruebas de soporte: no son criterios de aceptación.
 
 Verifican herramientas de las que dependen el equipo y la demo: el
-importador del padrón, el respaldo del modo registro y el WebSocket.
+importador del padrón, el respaldo del modo registro (también el viaje real de la
+Ruta Sur) y el WebSocket.
 """
 import json
 import uuid
 from io import StringIO
+from pathlib import Path
 
 import pytest
 from asgiref.sync import async_to_sync
@@ -14,7 +16,7 @@ from django.core.management import CommandError, call_command
 
 from config.asgi import application
 from cuentas.management.commands.importar_padron import convertir_filas
-from rutas.models import Parada
+from rutas.models import Parada, Ruta
 
 from .conftest import CAMPUS_UPB, LA_FONTANA, SEVILLA
 
@@ -73,3 +75,24 @@ def test_el_websocket_del_viaje_confirma_la_conexion():
 
     assert conectado
     assert mensaje == {"tipo": "conectado", "viaje": 7}
+
+
+RUTA_SUR_25_11 = Path(__file__).resolve().parent.parent / "rutas/datos/registros/registro-sur-0640-2026-11-25.json"
+
+
+def test_el_registro_real_de_la_ruta_sur_da_las_horas_observadas(cliente_de, sebastian):
+    """Viaje grabado el 25/11 (REG-01): las horas de la app son las que se vieron en el bus."""
+    call_command("cargar_rutas", stdout=StringIO())
+    call_command("importar_registro", str(RUTA_SUR_25_11), "--usuario", "70002", stdout=StringIO())
+    ruta_sur = Ruta.objects.get(clave="sur")
+    ingreso_0640 = ruta_sur.horarios.get(sentido="ingreso", salida="06:40")
+
+    paradas = cliente_de(sebastian).get(f"/api/rutas/{ruta_sur.pk}?horario={ingreso_0640.pk}").json()["ruta"]["paradas"]
+
+    assert [(p["nombre"], p["hora_aproximada"]) for p in paradas] == [
+        ("Makro Parque", "06:46"), ("Parque Urbano", "07:00"), ("Banco Ganadero", "07:02"),
+        ("Cine Center", "07:04"), ("Mercado Ramafa", "07:11"), ("AMarket Santos Dumont 4to anillo", "07:14"),
+        ("Hot Burguer 4to anillo", "07:15"), ("Avenida Olimpica 4to anillo", "07:17"), ("Campus UPB", "07:30"),
+    ]
+    assert all(p["estado"] == "aprobada" for p in paradas)
+    assert len(Ruta.objects.get(clave="sur").recorrido) == 96
