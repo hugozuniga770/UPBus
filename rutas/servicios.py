@@ -199,14 +199,16 @@ def agregar_puntos(usuario, registro_id, puntos):
 def terminar_registro(usuario, registro_id, ahora=None):
     """Une cada marca a una parada (o crea una) y guarda sus pasos.
 
-    La primera marca es la salida: los minutos de cada parada se cuentan
-    desde ella.
+    Los minutos de cada parada se cuentan desde la salida programada del
+    horario (C-23); sin horario, desde la primera marca.
     """
     registro = _registro_abierto_de(usuario, registro_id)
     marcas = list(registro.marcas.order_by("marcada_en", "id"))
     reglas.verificar_hay_marcas(len(marcas))
     ruta = registro.ruta
     salida = marcas[0].marcada_en
+    if registro.horario is not None:
+        salida = reglas.salida_programada(registro.horario.salida, salida)
     paradas = list(ruta.paradas.exclude(estado=Parada.Estado.RECHAZADA))
     nuevas, existentes, usadas = 0, 0, set()
 

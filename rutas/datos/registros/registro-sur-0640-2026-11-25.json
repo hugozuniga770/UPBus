@@ -1,0 +1,762 @@
+{
+  "formato": "upbus-registro",
+  "version": 1,
+  "id_cliente": "2583ec7f-ec44-49d6-a1c2-8b44c4f55d06",
+  "ruta": {
+    "clave": "sur",
+    "nombre": "Ruta Sur"
+  },
+  "horario": {
+    "sentido": "ingreso",
+    "salida": "06:40"
+  },
+  "iniciado_en": "2026-11-25T06:46:17.887179-04:00",
+  "marcas": [
+    {
+      "id_cliente": "c0fdb720-fcf2-48c5-b45a-7d346d6116c1",
+      "nombre": "Makro Parque",
+      "latitud": -17.763493065966042,
+      "longitud": -63.147689102185076,
+      "precision_m": 121,
+      "marcada_en": "2026-11-25T10:46:29.542Z"
+    },
+    {
+      "id_cliente": "9b24cfde-22e3-41ae-8ba0-528cb63bca2d",
+      "nombre": "Parque Urbano",
+      "latitud": -17.7987593129233,
+      "longitud": -63.170193024351384,
+      "precision_m": 31,
+      "marcada_en": "2026-11-25T11:00:54.154Z"
+    },
+    {
+      "id_cliente": "df065aba-fc04-4872-ae7c-db4c94c77668",
+      "nombre": "Banco Ganadero",
+      "latitud": -17.798044745210397,
+      "longitud": -63.17496476570889,
+      "precision_m": 59,
+      "marcada_en": "2026-11-25T11:02:24.170Z"
+    },
+    {
+      "id_cliente": "e82534c4-092b-4ced-ac8e-04d6819af0a2",
+      "nombre": "Cine Center",
+      "latitud": -17.798570075137174,
+      "longitud": -63.178439154957694,
+      "precision_m": 50,
+      "marcada_en": "2026-11-25T11:04:09.623Z"
+    },
+    {
+      "id_cliente": "2fe17529-dd74-41d9-89cc-1a2263327a37",
+      "nombre": "Mercado Ramafa",
+      "latitud": -17.810640753209036,
+      "longitud": -63.181551646841484,
+      "precision_m": 40,
+      "marcada_en": "2026-11-25T11:11:16.056Z"
+    },
+    {
+      "id_cliente": "fe78fdd6-b95b-4415-929e-3d72ee6b0f1e",
+      "nombre": "AMarket Santos Dumont 4to anillo",
+      "latitud": -17.821018833032596,
+      "longitud": -63.184172365255634,
+      "precision_m": 40,
+      "marcada_en": "2026-11-25T11:14:22.893Z"
+    },
+    {
+      "id_cliente": "f329074d-73a6-4d9a-89f5-b7c8567cdcea",
+      "nombre": "Hot Burguer 4to anillo",
+      "latitud": -17.821991738513567,
+      "longitud": -63.184218270259606,
+      "precision_m": 40,
+      "marcada_en": "2026-11-25T11:15:02.036Z"
+    },
+    {
+      "id_cliente": "14c05522-6f89-438c-96b0-8991915da820",
+      "nombre": "Avenida Olimpica 4to anillo",
+      "latitud": -17.820806601138365,
+      "longitud": -63.1942797468748,
+      "precision_m": 40,
+      "marcada_en": "2026-11-25T11:17:54.736Z"
+    },
+    {
+      "id_cliente": "533a0aa9-c61d-4e52-aaef-639198e6bfee",
+      "nombre": "Campus UPB",
+      "latitud": -17.81939307531214,
+      "longitud": -63.234363703528224,
+      "precision_m": 50,
+      "marcada_en": "2026-11-25T11:30:05.847Z"
+    }
+  ],
+  "puntos": [
+    {
+      "id_cliente": "51775039-548c-4cc3-8ec2-d152675f908f",
+      "latitud": -17.79810138857093,
+      "longitud": -63.16740453532367,
+      "precision_m": 52,
+      "tomado_en": "2026-11-25T11:00:12.761Z"
+    },
+    {
+      "id_cliente": "d15144c6-b080-4d38-859d-9c6b946f0c27",
+      "latitud": -17.798790304119496,
+      "longitud": -63.169620014252665,
+      "precision_m": 31,
+      "tomado_en": "2026-11-25T11:00:44.659Z"
+    },
+    {
+      "id_cliente": "565118a7-8872-4138-be88-4b594b537afa",
+      "latitud": -17.7987593129233,
+      "longitud": -63.170193024351384,
+      "precision_m": 31,
+      "tomado_en": "2026-11-25T11:00:51.386Z"
+    },
+    {
+      "id_cliente": "f5030383-8d19-4387-9a4b-7599db2961b5",
+      "latitud": -17.798495483546642,
+      "longitud": -63.17113604201784,
+      "precision_m": 35,
+      "tomado_en": "2026-11-25T11:01:04.279Z"
+    },
+    {
+      "id_cliente": "dacf3741-6107-43cb-a1ea-59baad65fce9",
+      "latitud": -17.79838643199303,
+      "longitud": -63.171996740947925,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:01:17.308Z"
+    },
+    {
+      "id_cliente": "af3348b4-9fdb-495e-9bee-9dd769e56a52",
+      "latitud": -17.798390782992385,
+      "longitud": -63.17252845128287,
+      "precision_m": 74,
+      "tomado_en": "2026-11-25T11:01:23.853Z"
+    },
+    {
+      "id_cliente": "22c63c85-a1a7-4608-9bdb-66fb5c84f006",
+      "latitud": -17.7982956092926,
+      "longitud": -63.17300051337508,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:01:30.460Z"
+    },
+    {
+      "id_cliente": "e310e772-4a52-4d7e-9cd0-93eb673ffd3c",
+      "latitud": -17.79800666901209,
+      "longitud": -63.174268266309134,
+      "precision_m": 52,
+      "tomado_en": "2026-11-25T11:01:46.474Z"
+    },
+    {
+      "id_cliente": "9e2c1927-5bf4-4f11-9735-2bc8bf2eafde",
+      "latitud": -17.79783923155867,
+      "longitud": -63.173885630833446,
+      "precision_m": 52,
+      "tomado_en": "2026-11-25T11:01:53.221Z"
+    },
+    {
+      "id_cliente": "5c617982-fba0-48c5-8ef2-24370bc5d7b6",
+      "latitud": -17.79795633348793,
+      "longitud": -63.17465256238187,
+      "precision_m": 39,
+      "tomado_en": "2026-11-25T11:01:59.824Z"
+    },
+    {
+      "id_cliente": "1f0fba03-336e-4c9d-b42b-7a984db7983c",
+      "latitud": -17.797911140719094,
+      "longitud": -63.174868111731044,
+      "precision_m": 47,
+      "tomado_en": "2026-11-25T11:02:19.325Z"
+    },
+    {
+      "id_cliente": "54fb1efa-3181-4f40-a104-186a5707e605",
+      "latitud": -17.797420373116502,
+      "longitud": -63.174843204614575,
+      "precision_m": 47,
+      "tomado_en": "2026-11-25T11:02:33.272Z"
+    },
+    {
+      "id_cliente": "8e3ce069-76f0-42bd-8e68-27cafa2dbe3c",
+      "latitud": -17.79820166760095,
+      "longitud": -63.175644607907614,
+      "precision_m": 77,
+      "tomado_en": "2026-11-25T11:02:52.079Z"
+    },
+    {
+      "id_cliente": "65125d94-f9ef-4970-a3d5-97eda0b8d412",
+      "latitud": -17.798244533842517,
+      "longitud": -63.17553528410506,
+      "precision_m": 48,
+      "tomado_en": "2026-11-25T11:03:08.931Z"
+    },
+    {
+      "id_cliente": "b685384a-5aee-45bd-813a-bf19dbb83637",
+      "latitud": -17.798140135990216,
+      "longitud": -63.175895052272914,
+      "precision_m": 49,
+      "tomado_en": "2026-11-25T11:03:29.793Z"
+    },
+    {
+      "id_cliente": "fb7fc8a1-a3fa-463f-81e7-30a21958de19",
+      "latitud": -17.798472109874385,
+      "longitud": -63.17682872875033,
+      "precision_m": 100,
+      "tomado_en": "2026-11-25T11:03:39.286Z"
+    },
+    {
+      "id_cliente": "6b49a6fe-f89e-48ea-b2bc-e87bd60d2b1e",
+      "latitud": -17.798881441198855,
+      "longitud": -63.17831623738301,
+      "precision_m": 46,
+      "tomado_en": "2026-11-25T11:03:51.672Z"
+    },
+    {
+      "id_cliente": "732b9006-739d-46a2-8012-e3bdd59f1c2f",
+      "latitud": -17.798948580294784,
+      "longitud": -63.1776406151747,
+      "precision_m": 72,
+      "tomado_en": "2026-11-25T11:03:58.098Z"
+    },
+    {
+      "id_cliente": "fe2a5837-2697-4fb8-8345-03348a75561c",
+      "latitud": -17.798969259888672,
+      "longitud": -63.178198925021924,
+      "precision_m": 72,
+      "tomado_en": "2026-11-25T11:04:06.085Z"
+    },
+    {
+      "id_cliente": "8ef7d5e5-1c7e-48a8-8b6f-53811072e81a",
+      "latitud": -17.79855009911284,
+      "longitud": -63.17848304527677,
+      "precision_m": 61,
+      "tomado_en": "2026-11-25T11:04:14.066Z"
+    },
+    {
+      "id_cliente": "4cea1b7b-7291-4844-b50b-0f81324c66b6",
+      "latitud": -17.7987109897873,
+      "longitud": -63.17907032796061,
+      "precision_m": 50,
+      "tomado_en": "2026-11-25T11:04:33.396Z"
+    },
+    {
+      "id_cliente": "a706c698-724e-48e0-958b-a393294b1fa0",
+      "latitud": -17.79889306356449,
+      "longitud": -63.17881969754561,
+      "precision_m": 52,
+      "tomado_en": "2026-11-25T11:04:33.809Z"
+    },
+    {
+      "id_cliente": "9e8702f3-4661-4efc-acfa-bb46c528364e",
+      "latitud": -17.80993694770354,
+      "longitud": -63.181130086570974,
+      "precision_m": 49,
+      "tomado_en": "2026-11-25T11:11:05.294Z"
+    },
+    {
+      "id_cliente": "867239b7-3272-475d-92a7-6b0f5d400036",
+      "latitud": -17.810640753209036,
+      "longitud": -63.181551646841484,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:11:12.243Z"
+    },
+    {
+      "id_cliente": "206542cd-3d88-4141-81fb-0e13a61a6bb6",
+      "latitud": -17.811088711350067,
+      "longitud": -63.18184894188215,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:11:18.663Z"
+    },
+    {
+      "id_cliente": "04312601-9389-4344-81f7-550a490f72c2",
+      "latitud": -17.81180802542967,
+      "longitud": -63.18209387233655,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:11:25.069Z"
+    },
+    {
+      "id_cliente": "89f2dcc0-4291-4734-8c31-bb92a1909886",
+      "latitud": -17.812339755830507,
+      "longitud": -63.18224536267749,
+      "precision_m": 74,
+      "tomado_en": "2026-11-25T11:11:46.568Z"
+    },
+    {
+      "id_cliente": "32cd7f0b-524f-465a-8c03-0917f680a060",
+      "latitud": -17.8131977035635,
+      "longitud": -63.182526494383005,
+      "precision_m": 44,
+      "tomado_en": "2026-11-25T11:11:54.475Z"
+    },
+    {
+      "id_cliente": "fc18b5e6-782d-4b17-9f21-f15597b3be91",
+      "latitud": -17.813781012659437,
+      "longitud": -63.18271320888315,
+      "precision_m": 73,
+      "tomado_en": "2026-11-25T11:12:02.604Z"
+    },
+    {
+      "id_cliente": "3c0c6e1f-1ee3-448d-af26-274d402d214a",
+      "latitud": -17.814212577864364,
+      "longitud": -63.183442642988645,
+      "precision_m": 52,
+      "tomado_en": "2026-11-25T11:12:12.179Z"
+    },
+    {
+      "id_cliente": "79051d80-3c20-4978-aa5e-0d382a568935",
+      "latitud": -17.814291188399558,
+      "longitud": -63.182970006173164,
+      "precision_m": 45,
+      "tomado_en": "2026-11-25T11:12:18.713Z"
+    },
+    {
+      "id_cliente": "a2ddc124-5439-4f23-9e7f-54111cf69b4f",
+      "latitud": -17.81457864144927,
+      "longitud": -63.183050418090374,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:12:35.290Z"
+    },
+    {
+      "id_cliente": "39c92740-0b27-45f7-939a-229b1405c371",
+      "latitud": -17.815045227931364,
+      "longitud": -63.183187645105896,
+      "precision_m": 45,
+      "tomado_en": "2026-11-25T11:12:43.387Z"
+    },
+    {
+      "id_cliente": "16159760-e8ed-4f93-892e-2f6a8ceee242",
+      "latitud": -17.816194624635084,
+      "longitud": -63.1833074070696,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:12:51.882Z"
+    },
+    {
+      "id_cliente": "ab9566e1-bb50-4aa2-a486-f660a917c530",
+      "latitud": -17.81680052753302,
+      "longitud": -63.18347397019696,
+      "precision_m": 52,
+      "tomado_en": "2026-11-25T11:13:00.951Z"
+    },
+    {
+      "id_cliente": "18c0d62f-473a-44ab-9e02-2fb16dcbb89f",
+      "latitud": -17.81743947864603,
+      "longitud": -63.183580010893536,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:13:10.047Z"
+    },
+    {
+      "id_cliente": "1778e6c2-5119-479a-a9f3-bf754a1edbc6",
+      "latitud": -17.81809472718543,
+      "longitud": -63.18372708471408,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:13:24.929Z"
+    },
+    {
+      "id_cliente": "ca5cf06b-5228-4325-be33-eaf19eb2827c",
+      "latitud": -17.818958778493283,
+      "longitud": -63.18382520221988,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:13:31.341Z"
+    },
+    {
+      "id_cliente": "1b4fe8e3-539d-42a6-bc0b-9dbce99e1192",
+      "latitud": -17.81939752277211,
+      "longitud": -63.183925926966914,
+      "precision_m": 52,
+      "tomado_en": "2026-11-25T11:13:39.451Z"
+    },
+    {
+      "id_cliente": "eb71a7d9-4823-4a65-8bce-d6109404131e",
+      "latitud": -17.820469240715102,
+      "longitud": -63.184085955804804,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:13:55.513Z"
+    },
+    {
+      "id_cliente": "09ecd1dc-2089-4987-b982-24d9af40f32b",
+      "latitud": -17.820486671098088,
+      "longitud": -63.18407278613855,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:14:07.219Z"
+    },
+    {
+      "id_cliente": "607e715c-d4b1-48e3-8fce-e9ce59e007e9",
+      "latitud": -17.821018833032596,
+      "longitud": -63.184172365255634,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:14:21.595Z"
+    },
+    {
+      "id_cliente": "5aadecaf-7d6f-423c-9854-a5843cbea79d",
+      "latitud": -17.821990985901465,
+      "longitud": -63.18421759975452,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:14:50.145Z"
+    },
+    {
+      "id_cliente": "26a1f84e-eed0-4a79-9409-ac5d4cd9caa5",
+      "latitud": -17.821991738513567,
+      "longitud": -63.184218270259606,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:14:52.083Z"
+    },
+    {
+      "id_cliente": "11051469-2d03-4cca-b0ef-828e9c9396d9",
+      "latitud": -17.821991738513567,
+      "longitud": -63.184218270259606,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:14:52.083Z"
+    },
+    {
+      "id_cliente": "d5744eb8-daa3-486e-bbf0-d7cb99ba6af8",
+      "latitud": -17.821991738513567,
+      "longitud": -63.184218270259606,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:15:23.818Z"
+    },
+    {
+      "id_cliente": "07dbb049-02be-4564-a6f0-f739fa7ac9eb",
+      "latitud": -17.82234173155131,
+      "longitud": -63.184353074035144,
+      "precision_m": 68,
+      "tomado_en": "2026-11-25T11:15:34.110Z"
+    },
+    {
+      "id_cliente": "cc261401-9302-4b68-b110-32b766fbae0f",
+      "latitud": -17.822762911059506,
+      "longitud": -63.185444318311795,
+      "precision_m": 60,
+      "tomado_en": "2026-11-25T11:15:45.696Z"
+    },
+    {
+      "id_cliente": "c3de1568-ff31-4986-bf8b-996175d0dca4",
+      "latitud": -17.82252102297362,
+      "longitud": -63.18602563023951,
+      "precision_m": 99,
+      "tomado_en": "2026-11-25T11:15:52.230Z"
+    },
+    {
+      "id_cliente": "5fd55b79-0b53-474b-bfc6-911f3ece60b3",
+      "latitud": -17.82152626746944,
+      "longitud": -63.18905950580079,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:16:27.130Z"
+    },
+    {
+      "id_cliente": "50d9801c-8c30-4d04-b4b8-4cc0031f629f",
+      "latitud": -17.820884173219813,
+      "longitud": -63.19395879185413,
+      "precision_m": 52,
+      "tomado_en": "2026-11-25T11:17:10.988Z"
+    },
+    {
+      "id_cliente": "20f778bb-98a6-4217-a3ad-e5200017a8e6",
+      "latitud": -17.820864832405725,
+      "longitud": -63.19395923999033,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:17:27.174Z"
+    },
+    {
+      "id_cliente": "3a7c814e-8a86-4a65-8cc9-0bb32c0758ca",
+      "latitud": -17.820806601138365,
+      "longitud": -63.1942797468748,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:17:43.589Z"
+    },
+    {
+      "id_cliente": "38748c62-4313-445e-8284-1b3cf8488018",
+      "latitud": -17.820806601138365,
+      "longitud": -63.1942797468748,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:17:43.589Z"
+    },
+    {
+      "id_cliente": "6e2084b7-73b5-4740-a93d-cf9e7b627868",
+      "latitud": -17.82004731298304,
+      "longitud": -63.19620862993339,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:18:09.027Z"
+    },
+    {
+      "id_cliente": "2c52a068-2d62-4a09-a195-211e5701e329",
+      "latitud": -17.81981822905141,
+      "longitud": -63.197028050977984,
+      "precision_m": 46,
+      "tomado_en": "2026-11-25T11:18:15.220Z"
+    },
+    {
+      "id_cliente": "df6cd05d-d4b6-417d-b221-5bfc0540a8cd",
+      "latitud": -17.81947160270674,
+      "longitud": -63.19788307265584,
+      "precision_m": 52,
+      "tomado_en": "2026-11-25T11:18:23.332Z"
+    },
+    {
+      "id_cliente": "5761efc1-a565-43af-b9b5-369d1777ec71",
+      "latitud": -17.81916068427246,
+      "longitud": -63.19815918965459,
+      "precision_m": 64,
+      "tomado_en": "2026-11-25T11:18:31.445Z"
+    },
+    {
+      "id_cliente": "f02e2a1e-dab7-4f6b-8192-c10ab5003b3d",
+      "latitud": -17.81895793052762,
+      "longitud": -63.198762022963926,
+      "precision_m": 83,
+      "tomado_en": "2026-11-25T11:18:42.518Z"
+    },
+    {
+      "id_cliente": "9470c5ff-0b5e-4c31-a277-f7e21af1a6d7",
+      "latitud": -17.81869227123114,
+      "longitud": -63.199234304542195,
+      "precision_m": 75,
+      "tomado_en": "2026-11-25T11:18:49.092Z"
+    },
+    {
+      "id_cliente": "b8cd7ecb-068f-48ad-9c89-ac067e1a9079",
+      "latitud": -17.818494558041355,
+      "longitud": -63.19955467463284,
+      "precision_m": 49,
+      "tomado_en": "2026-11-25T11:18:58.582Z"
+    },
+    {
+      "id_cliente": "042e4599-0019-469d-9e34-a94147ae603d",
+      "latitud": -17.817589285486257,
+      "longitud": -63.200129516042324,
+      "precision_m": 67,
+      "tomado_en": "2026-11-25T11:19:05.126Z"
+    },
+    {
+      "id_cliente": "28a200e6-664f-4870-b842-4395b8b55f04",
+      "latitud": -17.817566769801072,
+      "longitud": -63.20014152093998,
+      "precision_m": 68,
+      "tomado_en": "2026-11-25T11:19:51.812Z"
+    },
+    {
+      "id_cliente": "22e16bc1-8d71-4003-8562-f39f6add9170",
+      "latitud": -17.81602471952389,
+      "longitud": -63.21328014323524,
+      "precision_m": 68,
+      "tomado_en": "2026-11-25T11:23:26.425Z"
+    },
+    {
+      "id_cliente": "547abe8c-7529-4e92-b31b-91cad1f95e65",
+      "latitud": -17.817075896415243,
+      "longitud": -63.214165557333764,
+      "precision_m": 53,
+      "tomado_en": "2026-11-25T11:23:49.865Z"
+    },
+    {
+      "id_cliente": "1a69bab0-c141-4f98-88e8-ec5c551f8a49",
+      "latitud": -17.819260901746922,
+      "longitud": -63.21669056200188,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:24:22.763Z"
+    },
+    {
+      "id_cliente": "68ccf939-af22-473e-a14b-3856d370945d",
+      "latitud": -17.819856530445552,
+      "longitud": -63.21740455652239,
+      "precision_m": 52,
+      "tomado_en": "2026-11-25T11:24:30.029Z"
+    },
+    {
+      "id_cliente": "19cf3546-d019-4a1b-b73c-82448e124917",
+      "latitud": -17.820321850931734,
+      "longitud": -63.21825103066614,
+      "precision_m": 52,
+      "tomado_en": "2026-11-25T11:24:39.609Z"
+    },
+    {
+      "id_cliente": "73eb5f00-0577-49b0-997c-b48d93603e38",
+      "latitud": -17.821514091183868,
+      "longitud": -63.21978466856373,
+      "precision_m": 52,
+      "tomado_en": "2026-11-25T11:25:01.966Z"
+    },
+    {
+      "id_cliente": "c06d09c6-2d44-42dd-a994-6e8d902ec00b",
+      "latitud": -17.821932018549063,
+      "longitud": -63.219931770200596,
+      "precision_m": 78,
+      "tomado_en": "2026-11-25T11:25:09.484Z"
+    },
+    {
+      "id_cliente": "0272b084-e3e2-4948-bef8-3631698b61fa",
+      "latitud": -17.821326819745803,
+      "longitud": -63.220381547487,
+      "precision_m": 94,
+      "tomado_en": "2026-11-25T11:25:19.030Z"
+    },
+    {
+      "id_cliente": "330af18d-b481-43e7-9212-14270a8ec3c2",
+      "latitud": -17.820124162607996,
+      "longitud": -63.22253683413758,
+      "precision_m": 46,
+      "tomado_en": "2026-11-25T11:25:42.825Z"
+    },
+    {
+      "id_cliente": "407755d3-a3b6-4b3d-8116-e8566c161cbf",
+      "latitud": -17.819617668166465,
+      "longitud": -63.223270998287255,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:25:49.231Z"
+    },
+    {
+      "id_cliente": "65701d7d-c2d5-4900-a065-86b1ff9749b0",
+      "latitud": -17.819018365615594,
+      "longitud": -63.223892212700605,
+      "precision_m": 80,
+      "tomado_en": "2026-11-25T11:25:55.935Z"
+    },
+    {
+      "id_cliente": "13debd26-bc6c-4932-aaba-5ec8448aef7f",
+      "latitud": -17.81824119764502,
+      "longitud": -63.2247076077244,
+      "precision_m": 53,
+      "tomado_en": "2026-11-25T11:26:05.223Z"
+    },
+    {
+      "id_cliente": "a946a13f-311f-46a2-a636-5166eb38dc8a",
+      "latitud": -17.81800824774615,
+      "longitud": -63.22502184354341,
+      "precision_m": 47,
+      "tomado_en": "2026-11-25T11:26:12.847Z"
+    },
+    {
+      "id_cliente": "981ee611-ed23-4d14-87b0-5baa7f384540",
+      "latitud": -17.81733418664419,
+      "longitud": -63.225043778579916,
+      "precision_m": 70,
+      "tomado_en": "2026-11-25T11:26:22.797Z"
+    },
+    {
+      "id_cliente": "753ec1fb-8b1e-41a9-af72-9901ad62aca4",
+      "latitud": -17.8176332964253,
+      "longitud": -63.22547573530051,
+      "precision_m": 47,
+      "tomado_en": "2026-11-25T11:26:29.210Z"
+    },
+    {
+      "id_cliente": "c1f0208c-4521-4bbd-8fa4-a63c9e3517fa",
+      "latitud": -17.817251654482188,
+      "longitud": -63.22551772670524,
+      "precision_m": 47,
+      "tomado_en": "2026-11-25T11:26:37.166Z"
+    },
+    {
+      "id_cliente": "dd9c7461-c1f9-4728-aa44-d093d04d0c72",
+      "latitud": -17.81833026730673,
+      "longitud": -63.226712574682985,
+      "precision_m": 58,
+      "tomado_en": "2026-11-25T11:27:09.271Z"
+    },
+    {
+      "id_cliente": "54a62f1c-9af5-4bbc-a408-18e8d8a0447e",
+      "latitud": -17.818937164158058,
+      "longitud": -63.227499650895766,
+      "precision_m": 33,
+      "tomado_en": "2026-11-25T11:27:16.454Z"
+    },
+    {
+      "id_cliente": "fe203fc4-174b-45f1-a0c8-94f74f163c55",
+      "latitud": -17.819203878109043,
+      "longitud": -63.22777389754721,
+      "precision_m": 66,
+      "tomado_en": "2026-11-25T11:27:24.672Z"
+    },
+    {
+      "id_cliente": "8b34c233-e41b-4e12-83ad-0da77c772421",
+      "latitud": -17.819825620967197,
+      "longitud": -63.22841808915256,
+      "precision_m": 46,
+      "tomado_en": "2026-11-25T11:27:35.319Z"
+    },
+    {
+      "id_cliente": "bc199d5c-b193-4fc4-a6e5-3e0c54835cb0",
+      "latitud": -17.820442110837913,
+      "longitud": -63.22914037700199,
+      "precision_m": 36,
+      "tomado_en": "2026-11-25T11:27:51.457Z"
+    },
+    {
+      "id_cliente": "1593eb16-31da-474d-a0ba-a7e12c3f76d4",
+      "latitud": -17.820855825189813,
+      "longitud": -63.22962056604546,
+      "precision_m": 40,
+      "tomado_en": "2026-11-25T11:27:59.582Z"
+    },
+    {
+      "id_cliente": "06c8c6dd-d394-4c4e-a280-32275a4fc302",
+      "latitud": -17.821611947702227,
+      "longitud": -63.23040047653335,
+      "precision_m": 64,
+      "tomado_en": "2026-11-25T11:28:07.567Z"
+    },
+    {
+      "id_cliente": "bcd0318d-7dbc-483d-8ad5-34b3730d2c11",
+      "latitud": -17.822051970602015,
+      "longitud": -63.230938347304566,
+      "precision_m": 33,
+      "tomado_en": "2026-11-25T11:28:15.674Z"
+    },
+    {
+      "id_cliente": "3691c630-3266-4e4c-af39-d6e30d8e17cf",
+      "latitud": -17.822271441489054,
+      "longitud": -63.23188385231583,
+      "precision_m": 93,
+      "tomado_en": "2026-11-25T11:28:35.343Z"
+    },
+    {
+      "id_cliente": "6a0c60ca-9f99-4505-bb0f-f6c7505921e2",
+      "latitud": -17.821693723595896,
+      "longitud": -63.23246414046075,
+      "precision_m": 27,
+      "tomado_en": "2026-11-25T11:28:42.537Z"
+    },
+    {
+      "id_cliente": "00991855-e77b-4964-a6f0-e74a96973226",
+      "latitud": -17.821364687171773,
+      "longitud": -63.232752123503005,
+      "precision_m": 21,
+      "tomado_en": "2026-11-25T11:28:50.668Z"
+    },
+    {
+      "id_cliente": "80feb481-0419-4482-808a-2eb10787ea1f",
+      "latitud": -17.820960830650346,
+      "longitud": -63.232916356924086,
+      "precision_m": 35,
+      "tomado_en": "2026-11-25T11:28:57.082Z"
+    },
+    {
+      "id_cliente": "0417767d-f91b-4eb9-98cd-28afacda0b2d",
+      "latitud": -17.820623012338622,
+      "longitud": -63.23344839759042,
+      "precision_m": 34,
+      "tomado_en": "2026-11-25T11:29:05.058Z"
+    },
+    {
+      "id_cliente": "e614da41-3f00-4790-979e-e1c4c737869a",
+      "latitud": -17.819775179670188,
+      "longitud": -63.23384469506838,
+      "precision_m": 55,
+      "tomado_en": "2026-11-25T11:29:16.738Z"
+    },
+    {
+      "id_cliente": "91d6a70e-3781-447b-af35-31cf92a4cbc7",
+      "latitud": -17.81931229236489,
+      "longitud": -63.234530253280774,
+      "precision_m": 65,
+      "tomado_en": "2026-11-25T11:29:39.171Z"
+    },
+    {
+      "id_cliente": "515ff064-eb8f-42e5-ae81-72cb328d9952",
+      "latitud": -17.81939300180452,
+      "longitud": -63.23436385463033,
+      "precision_m": 50,
+      "tomado_en": "2026-11-25T11:30:01.009Z"
+    },
+    {
+      "id_cliente": "3098e9d4-69a5-40af-8077-551c003894e6",
+      "latitud": -17.8191235858128,
+      "longitud": -63.234030155871764,
+      "precision_m": 31,
+      "tomado_en": "2026-11-25T11:30:08.530Z"
+    }
+  ]
+}

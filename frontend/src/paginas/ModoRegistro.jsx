@@ -9,7 +9,6 @@ import { almacen } from "../registro/almacen.js";
 import { crearCola, crearId } from "../registro/cola.js";
 import { RADIO_DE_LLEGADA_M, distanciaEnMetros } from "../registro/geo.js";
 import { armarRespaldo, descargarRespaldo } from "../registro/respaldo.js";
-import { useSesion } from "../sesion/SesionContexto.jsx";
 
 const cola = crearCola();
 const SEGUNDOS_ENTRE_PUNTOS = 15;
@@ -40,7 +39,6 @@ function DejarDeSeguirAlArrastrar({ alArrastrar }) {
  * cuando vuelve, y siempre se puede descargar un respaldo.
  */
 export default function ModoRegistro() {
-  const { usuario } = useSesion();
   const [rutas, setRutas] = useState([]);
   const [rutaId, setRutaId] = useState("");
   const [horarioId, setHorarioId] = useState("");
@@ -293,7 +291,7 @@ export default function ModoRegistro() {
 
   function descargar() {
     const datos = estado ?? almacen.leerUltimo();
-    if (datos) descargarRespaldo(armarRespaldo(datos, usuario));
+    if (datos) descargarRespaldo(armarRespaldo(datos));
   }
 
   const aqui = useMemo(

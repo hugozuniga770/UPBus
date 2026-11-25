@@ -4,7 +4,7 @@
 - Docente: Ing. Alejandro Rodríguez (Certificación I)
 - Tecnología: Python con Django, Django REST Framework y Django Channels; SQLite; React con Tailwind CSS
 - Método: Scrum, con sprints de una semana ([plan](docs/sesion-08-09-plan.md))
-- Estado: Sprint 1. Requisitos, historias y plan en revisión; entrevistas ENT-01 a ENT-03 hechas. La **base del código** (registro, inicio de sesión, usuarios, rutas en el mapa y modo registro, con sus pruebas) está en la rama `develop`, por Pull Request.
+- Estado: Sprint 2. La **base del código** (registro, inicio de sesión, usuarios, rutas en el mapa y modo registro, con sus pruebas) está en `develop` y en `main`. Las tareas se repartieron el 18/11 y cada una tiene su issue asignado. La primera ruta real, la Ruta Sur, se grabó el 25/11 ([REG-01](docs/viajes-grabados.md)).
 
 ## 1. Qué hace
 
@@ -45,6 +45,7 @@ En el MVP la ubicación del bus y de los estudiantes, la recarga de créditos, e
 | [diagramas-secuencia.md](docs/diagramas-secuencia.md) | Un diagrama de secuencia por caso de uso, CU-18 incluido | Propuesta para revisión |
 | [trazabilidad.md](docs/trazabilidad.md) | Cada test con su criterio, su requisito y su código | 19 de 73 criterios con test |
 | [entrevistas.md](docs/entrevistas.md) | Entrevistas, conclusiones y guías de las siguientes | ENT-01 a ENT-03 hechas |
+| [viajes-grabados.md](docs/viajes-grabados.md) | Viajes reales grabados con el modo registro: paradas, horas y personas que suben | REG-01 (Ruta Sur, 25/11) |
 | [sesion-15-costos.md](docs/sesion-15-costos.md) | Horas-persona, tarifa, precio y estimado contra real | Listo para revisión |
 | [cambios.md](docs/cambios.md) | Registro de cambios | Al día |
 | [glosario.md](docs/glosario.md) | Siglas y términos | Al día |
@@ -98,5 +99,5 @@ Abre <http://localhost:5173> y regístrate con un código del padrón (de ejempl
 ## 5. Cómo trabajamos
 
 - Nadie sube directo a `main`: cada historia va en su rama, entra a `develop` por Pull Request y la aprueba Hugo.
-- Andrés reparte las tareas en el Sprint Planning de cada sábado; las sesiones de implementación son sábado y domingo. Cada tarea tiene su issue en GitHub.
+- Andrés dirige la implementación como Scrum Master: el 18/11 el equipo repartió las tareas y cada una quedó asignada en su issue de GitHub. Las sesiones de implementación son sábado y domingo.
 - Todo cambio a algo ya acordado se registra en [cambios.md](docs/cambios.md).

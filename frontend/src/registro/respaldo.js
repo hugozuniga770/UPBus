@@ -1,8 +1,9 @@
 /**
  * Respaldo del modo registro: un archivo JSON con todo lo marcado.
  * Se importa en el servidor con `python manage.py importar_registro`.
+ * No lleva datos de quien graba: se sube al repositorio, que es público (C-25).
  */
-export function armarRespaldo(estado, usuario) {
+export function armarRespaldo(estado) {
   const { registro, marcas, puntos } = estado;
   return {
     formato: "upbus-registro",
@@ -10,7 +11,6 @@ export function armarRespaldo(estado, usuario) {
     id_cliente: registro.id_cliente,
     ruta: { clave: registro.ruta.clave, nombre: registro.ruta.nombre },
     horario: registro.horario ? { sentido: registro.horario.sentido, salida: registro.horario.salida } : null,
-    usuario: { codigo: usuario?.codigo ?? null, correo: usuario?.correo ?? null },
     iniciado_en: registro.iniciado_en,
     marcas: marcas
       .filter((m) => m.estado !== "rechazada")

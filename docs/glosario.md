@@ -92,7 +92,9 @@ Busca la sigla, lee su significado y sigue.
 | Modo registro | Modo del chofer y del administrador para grabar paradas, horas y recorrido en un viaje real (RF-23, HU-18) |
 | Registro | Una grabación del modo registro: una ruta, un horario y sus marcas |
 | Marca | Lo que se guarda al tocar «Parada» en el modo registro: posición, precisión del GPS y hora |
-| Paso | Una vez que el bus pasó por una parada, con los minutos desde la salida; con los pasos se calcula la hora aproximada |
+| Paso | Una vez que el bus pasó por una parada, con los minutos desde la salida programada; con los pasos se calcula la hora aproximada |
+| Salida programada | La hora de salida del horario, por ejemplo las 06:40; los minutos de cada paso se cuentan desde ella (C-23) |
+| REG-xx | Un viaje real grabado con el modo registro, descrito en `viajes-grabados.md` |
 | Respaldo | Archivo JSON que el celular descarga con un registro, para importarlo si algo falló (`importar_registro`) |
 | Cola | Lista de marcas y puntos que esperan en el celular hasta que haya señal |
 | Base del código | El punto de partida que dejó Hugo el 18/11/2026: entornos, cuentas, usuarios, rutas, modo registro y pruebas |
