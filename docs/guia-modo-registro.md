@@ -1,8 +1,8 @@
 # Guía del modo registro: grabar una ruta desde el celular
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
-- Fecha: 18/11/2026 · Historia HU-18 (BUS-RF-23) · Tarea T26: [#5](https://github.com/hugozuniga770/UPBus/issues/5)
-- Para quién: Sebastian Cruz, que graba la Ruta Norte, y cualquier chofer o administrador que grabe otra ruta.
+- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25) · Historia HU-18 (BUS-RF-23) · Tarea T26: [#5](https://github.com/hugozuniga770/UPBus/issues/5)
+- Para quién: cualquier chofer o administrador que grabe una ruta. La primera grabada fue la Ruta Sur, el 25/11 ([REG-01](viajes-grabados.md)).
 
 ## 0. Qué hace
 
@@ -43,7 +43,7 @@ Si en el paso 4 dice «El GPS solo funciona con https o en localhost», abriste 
 ## 4. En el viaje
 
 1. Antes de salir de casa: levanta las tres terminales, abre en el celular la dirección nueva del túnel e inicia sesión.
-2. En la parada inicial (La Fontana), toca **«Iniciar registro»** con la ruta y el horario del viaje. **La primera marca es la salida**: márcala apenas arranque el bus.
+2. En la parada inicial, toca **«Iniciar registro»** con la ruta y el horario del viaje, y marca esa primera parada en cuanto el GPS esté en verde. Las horas se cuentan desde la salida programada del horario, así que no importa si el bus sale unos minutos antes o después (C-23).
 3. En cada parada, cuando el bus se detiene a recoger estudiantes, toca **«📍 Parada aquí»**. Si sabes el nombre (Sevilla, Petrol, Campos…), escríbelo antes en «Nombre de la parada»; si no, queda como «Parada 2», «Parada 3»…, y se corrige después.
 4. Si aparece «ya marcaste una parada a menos de 50 m», es la misma parada: sigue.
 5. No cierres la página ni bloquees el celular. Si se corta la señal, abajo dice «N por enviar»: las marcas esperan en el celular y se envían solas cuando vuelve la señal, sin duplicarse.
@@ -52,24 +52,24 @@ Si en el paso 4 dice «El GPS solo funciona con https o en localhost», abriste 
 
 ## 5. Después del viaje
 
-1. En **Rutas**, abre la Ruta Norte con el horario de las 06:40: deberías ver las paradas en orden, cada una con su hora.
+1. En **Rutas**, abre la ruta que grabaste con su horario: deberías ver las paradas en orden, cada una con su hora.
 2. Para que el resto del equipo tenga las mismas paradas, sube el respaldo al repositorio:
    ```powershell
    git checkout develop
    git pull
-   git checkout -b datos-ruta-norte
-   # copia el respaldo a rutas/datos/registros/ruta-norte-ingreso-0640-2026-11-20.json
+   git checkout -b datos-ruta-sur
+   # copia el respaldo descargado a rutas/datos/registros/, por ejemplo registro-sur-0640-2026-11-25.json
    git add rutas/datos/registros/
-   git commit -m "T26: respaldo de la Ruta Norte, ingreso de las 06:40 (#5)"
-   git push -u origin datos-ruta-norte
+   git commit -m "T26: respaldo de la Ruta Sur, ingreso de las 06:40 (#5)"
+   git push -u origin datos-ruta-sur
    ```
-   y abre el Pull Request a `develop`. El respaldo tiene solo la ruta, el horario, las posiciones y las horas: no tiene datos de ninguna persona.
+   y abre el Pull Request a `develop`. El respaldo tiene solo la ruta, el horario, las posiciones y las horas: no tiene datos de ninguna persona (C-25).
 3. Cada integrante lo carga en su base, con su propia cuenta de administrador:
    ```powershell
-   python manage.py importar_registro rutas/datos/registros/ruta-norte-ingreso-0640-2026-11-20.json --usuario 70001
+   python manage.py importar_registro rutas/datos/registros/registro-sur-0640-2026-11-25.json --usuario 70001
    ```
    (con su código o su correo). Cargar el mismo respaldo dos veces se rechaza con «ese registro ya fue importado».
-4. Anota en el issue [#5](https://github.com/hugozuniga770/UPBus/issues/5) cómo fue: la señal, la precisión del GPS y si la pantalla se mantuvo encendida.
+4. Anota el viaje en [viajes-grabados.md](viajes-grabados.md) con su número REG-xx: paradas, horas, cuántas personas subieron en cada una y cómo fue la señal y la precisión del GPS.
 
 ## 6. Si algo falla (P-29)
 
@@ -84,5 +84,5 @@ Si en el paso 4 dice «El GPS solo funciona con https o en localhost», abriste 
 ## 7. Participación y asistencia utilizada
 
 - **Hugo Zuñiga:** propuso el modo registro en lugar de las capturas de Maps (C-18).
-- **Sebastian Cruz:** graba la Ruta Norte (T26).
+- **Sebastian Cruz:** grabó la Ruta Sur el 25/11 (T26, REG-01).
 - **Asistencia de IA:** se usó Claude (Anthropic) para construir el modo registro y escribir esta guía.

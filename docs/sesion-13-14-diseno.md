@@ -2,7 +2,7 @@
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
-- Fecha: 18/11/2026 · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
+- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25) · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
 - Estado: la sección 2 y las secciones 4 a 6 describen la **base del código, ya construida**. La sección 3 es **[PROPUESTA]** para las historias que faltan.
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Historias: [Sesión 7](sesion-07-modelos.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Trazabilidad: [trazabilidad.md](trazabilidad.md)
 
@@ -205,7 +205,7 @@ erDiagram
 |---|---|---|---|
 | `comun` | `Rechazo` (400), `SinPermiso` (403), `NoExiste` (404); `distancia_en_metros`, `coordenadas_validas`; `ahora`, `a_hora_local` | `leer` (valida un serializador) | `manejar_excepcion` y `falla_csrf`: todo rechazo sale como `{"causa": ...}` |
 | `cuentas` | `verificar_persona_en_padron`, `verificar_correo_del_padron`, `verificar_persona_activa`, `verificar_sin_cuenta`, `verificar_contrasenas_iguales`, `verificar_contrasena`, `rol_desde_el_padron`, `verificar_credenciales`, `verificar_es_administrador`, `verificar_rol_valido`, `verificar_correo_libre`, `verificar_codigo_libre`, `verificar_no_es_uno_mismo` | `registrar`, `autenticar`, `listar_cuentas`, `crear_cuenta`, `buscar_cuenta`, `eliminar_cuenta` | `CsrfVista`, `RegistroVista`, `SesionVista`, `UsuariosVista`, `UsuarioVista` |
-| `rutas` | `verificar_puede_registrar`, `verificar_horario_de_la_ruta`, `verificar_sin_registro_en_curso`, `verificar_es_su_registro`, `verificar_registro_en_curso`, `verificar_coordenadas`, `verificar_lejos_de_las_otras_marcas`, `verificar_hay_marcas`, `estado_de_una_parada_nueva`, `llego_a_la_parada`, `parada_mas_cercana`, `minutos_entre`, `promedio_de_los_ultimos`, `hora_aproximada`, `llegada_limite` | `listar_rutas`, `ver_ruta`, `paradas_visibles`, `horas_aproximadas`, `registrar_paso`, `reordenar_paradas`, `iniciar_registro`, `marcar_parada`, `agregar_puntos`, `terminar_registro`, `cancelar_registro`, `importar_registro` | `RutasVista`, `RutaVista`, `RegistrosVista`, `RegistroEnCursoVista`, `MarcasVista`, `PuntosVista`, `TerminarRegistroVista`, `CancelarRegistroVista` |
+| `rutas` | `verificar_puede_registrar`, `verificar_horario_de_la_ruta`, `verificar_sin_registro_en_curso`, `verificar_es_su_registro`, `verificar_registro_en_curso`, `verificar_coordenadas`, `verificar_lejos_de_las_otras_marcas`, `verificar_hay_marcas`, `estado_de_una_parada_nueva`, `llego_a_la_parada`, `parada_mas_cercana`, `minutos_entre`, `salida_programada`, `promedio_de_los_ultimos`, `hora_aproximada`, `llegada_limite` | `listar_rutas`, `ver_ruta`, `paradas_visibles`, `horas_aproximadas`, `registrar_paso`, `reordenar_paradas`, `iniciar_registro`, `marcar_parada`, `agregar_puntos`, `terminar_registro`, `cancelar_registro`, `importar_registro` | `RutasVista`, `RutaVista`, `RegistrosVista`, `RegistroEnCursoVista`, `MarcasVista`, `PuntosVista`, `TerminarRegistroVista`, `CancelarRegistroVista` |
 | `viajes` | Por hacer (T11, T14, T16, T17) | Por hacer | `ViajeConsumer` ya conecta al grupo `viaje_<id>` |
 | `mensajes` | Por hacer (T19) | Por hacer | Por hacer |
 
@@ -254,8 +254,8 @@ Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `Error
 | Cookie de sesión de Django con CSRF, y no tokens (RT-05) | La interfaz y el servidor comparten origen gracias al proxy de Vite; no hay tokens que guardar en el navegador |
 | El padrón se lee solo desde `cuentas/padron.py` | Lo simulado queda aislado (RC-04): cambiar al sistema real de la UPB toca un solo módulo |
 | Eliminar una cuenta la desactiva (P-23) | Para no perder viajes ni comprobantes |
-| La hora aproximada se guarda como minutos desde la salida | Así se pueden promediar viajes que salieron a horas un poco distintas (RF-11) |
-| Promedio de los últimos 5 pasos, redondeado al minuto (P-11) | Reacciona a cambios recientes sin depender de un solo viaje |
+| Cada paso guarda los minutos desde la salida programada del horario | Así se promedian viajes distintos y también se aprende si el bus suele salir tarde: con el primer viaje real, contar desde la primera marca adelantaba las horas 6 minutos (C-23) |
+| Promedio de los últimos 5 pasos (P-11), redondeado hacia abajo | Reacciona a cambios recientes sin depender de un solo viaje; hacia abajo para que nadie llegue segundos tarde (C-23) |
 | Todo lo que manda el celular lleva un `id_cliente` | Sin señal, el celular reintenta; el servidor reconoce el reenvío y no duplica (HU18-CA5) |
 | Canal de Channels en memoria | Basta con un solo proceso en el MVP. Si el hosting usa más de uno, se cambia a Redis **[PROPUESTA]** (T22) |
 | SQLite (RT-02) | Gratis y sin servidor aparte; suficiente para el MVP |

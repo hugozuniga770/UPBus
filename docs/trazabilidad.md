@@ -1,7 +1,7 @@
 # Trazabilidad: requisito → criterio → test → código
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
-- Fecha: 18/11/2026 · Tarea T21 (empezada con la base) · Issue: [#16](https://github.com/hugozuniga770/UPBus/issues/16)
+- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25) · Tarea T21 (empezada con la base) · Issue: [#16](https://github.com/hugozuniga770/UPBus/issues/16)
 - Criterios completos: [Sesión 7](sesion-07-modelos.md) · Requisitos: [Sesión 6](sesion-06-requisitos.md)
 
 ## 0. Cómo se mantiene
@@ -29,7 +29,7 @@
 | HU04-CA1 | RF-05 | `tests/test_hu04_rutas.py::test_HU04_CA1_ve_la_ruta_con_recorrido_paradas_y_horarios` | `rutas.servicios.ver_ruta` | — |
 | HU04-CA2 | RF-05 | `tests/test_hu04_rutas.py::test_HU04_CA2_el_estudiante_ve_solo_las_paradas_aprobadas` | `rutas.servicios.paradas_visibles` | — |
 | HU18-CA1 | RF-23, RF-11 | `tests/test_hu18_modo_registro.py::test_HU18_CA1_el_primer_registro_crea_las_paradas_y_sus_horas` | `rutas.servicios.terminar_registro`, `rutas.reglas.hora_aproximada` | — |
-| HU18-CA2 | RF-23, RF-11 | `tests/test_hu18_modo_registro.py::test_HU18_CA2_un_segundo_registro_ajusta_la_hora_sin_duplicar_la_parada` | `rutas.reglas.parada_mas_cercana`, `rutas.servicios.minutos_aprendidos` | — |
+| HU18-CA2 | RF-23, RF-11 | `tests/test_hu18_modo_registro.py::test_HU18_CA2_un_segundo_registro_ajusta_la_hora_sin_duplicar_la_parada` | `rutas.reglas.parada_mas_cercana`, `rutas.reglas.salida_programada`, `rutas.servicios.minutos_aprendidos` | — |
 | HU18-CA3 | RF-23 | `tests/test_hu18_modo_registro.py::test_HU18_CA3_un_estudiante_no_puede_usar_el_modo_registro` | `rutas.reglas.verificar_puede_registrar` | — |
 | HU18-CA4 | RF-23 | `tests/test_hu18_modo_registro.py::test_HU18_CA4_rechaza_una_marca_a_menos_de_50_m_de_otra` | `rutas.reglas.verificar_lejos_de_las_otras_marcas` | — |
 | HU18-CA5 | RF-23 | `tests/test_hu18_modo_registro.py::test_HU18_CA5_una_marca_reenviada_se_guarda_una_sola_vez` | `rutas.servicios.marcar_parada` | `frontend/src/registro/cola.test.js` |
@@ -42,8 +42,10 @@ No son criterios: prueban herramientas que usan las historias.
 |---|---|
 | `tests/test_soporte.py::test_importar_padron_reemplaza_los_correos_que_no_son_de_la_upb` | `importar_padron` lee la lista con el formato de la de la clase y cambia los correos que no son de la UPB por `<código>@upb.example` |
 | `tests/test_soporte.py::test_importar_un_respaldo_del_modo_registro` | `importar_registro` carga un respaldo y rechaza cargarlo dos veces |
+| `tests/test_soporte.py::test_el_registro_real_de_la_ruta_sur_da_las_horas_observadas` | Con el respaldo real de la Ruta Sur (REG-01), la app muestra las horas que se vieron en el bus (C-23) |
 | `tests/test_soporte.py::test_el_websocket_del_viaje_confirma_la_conexion` | El canal `ws/viajes/<id>/` conecta (base de HU-06) |
 | `frontend/src/api/cliente.test.js` (3 pruebas) | El cliente manda el token CSRF, entrega la causa del rechazo y marca la falta de señal como error de red |
+| `frontend/src/registro/respaldo.test.js` (2 pruebas) | El respaldo no lleva datos de quien graba (C-25), deja fuera las marcas rechazadas y se nombra por ruta, horario y fecha |
 | `frontend/src/registro/cola.test.js` (2 pruebas más) | Sin señal la cola conserva todo y lo envía en orden; lo que el servidor rechaza sale de la cola con su causa |
 
 ## 3. Criterios por hacer

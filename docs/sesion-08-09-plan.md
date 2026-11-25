@@ -5,7 +5,7 @@
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz. Los tres son Developers.
 - Docente: Ing. Alejandro Rodríguez (Certificación I)
 - Fecha del plan: 13/11/2026 · Avance: jueves 19/11/2026 · Entrega final: martes 15/12/2026
-- Actualizado: 18/11/2026 · base del código, tareas T25 y T26, Andrés como Scrum Master de la implementación y sesiones de sábado y domingo (C-18 a C-20). Antes, 16/11/2026: entrevistas, T23 y T24, Gantt detallado y costos (C-07, C-08, C-12, C-13)
+- Actualizado: 25/11/2026 · reparto del 18/11 en la tabla de tareas (C-26), primera ruta grabada con el modo registro (T26, C-24) y Gantt al 25/11. El 18/11/2026: base del código, tareas T25 y T26, Andrés como Scrum Master de la implementación y sesiones de sábado y domingo (C-18 a C-20). Antes, 16/11/2026: entrevistas, T23 y T24, Gantt detallado y costos (C-07, C-08, C-12, C-13)
 - Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Historias: [Sesión 7](sesion-07-modelos.md) · Cambios: [cambios.md](cambios.md)
 
@@ -45,12 +45,12 @@ El alcance completo está en la [sección 2 de los requisitos](sesion-06-requisi
 
 Las estimaciones son en horas-persona (h-p) y son **[PROPUESTA]**: no hay horas medidas de un trabajo parecido. Las horas reales se registran en la hoja de costos ([sesión 15](sesion-15-costos.md)).
 
-| ID | Trabajo | Evidencia de terminación | Esfuerzo (h-p) | Responsable | Sprint | Estado al 18/11 |
+| ID | Trabajo | Evidencia de terminación | Esfuerzo (h-p) | Responsable | Sprint | Estado al 25/11 |
 |---|---|---|---:|---|---|---|
 | T00 | Perfil de proyecto: informe y presentación | Presentado el 07/11/2026 | 6 | Los tres | Perfil | Hecho |
 | T01 | Plan y requisitos | `sesion-08-09-plan.md` y `sesion-06-requisitos.md` aprobados | 4 | Hugo | 1 | En revisión: el 18/11 se sumó RF-23 |
 | T02 | Historias, criterios y casos de uso | `sesion-07-modelos.md` aprobado | 5 | Hugo | 1 | En revisión: escrito el 18/11 |
-| T03 | Diseño y arquitectura | `sesion-13-14-diseno.md`, `sesion-12-arquitectura.md` y `diagramas-secuencia.md` aprobados | 5 | Hugo y Sebastian | 1 | En curso: secuencias y diseño de la base hechos; falta `sesion-12-arquitectura.md` |
+| T03 | Diseño y arquitectura | `sesion-13-14-diseno.md`, `sesion-12-arquitectura.md` y `diagramas-secuencia.md` aprobados | 5 | Andrés; Hugo hizo las secuencias y el diseño de la base | 1 | En curso: falta `sesion-12-arquitectura.md` |
 | T04 | Entrevistas a un chofer y a una estudiante (ENT-01, ENT-02) | Registros en `entrevistas.md` y cambios derivados | 2 | Hugo | 1 | Hecho (16/11) |
 | T05 | Entorno del servidor | Django, DRF y Channels arrancan; SQLite creada | 3 | Hugo (antes Andrés, C-19) | 1 | Hecho en la base |
 | T06 | Entorno de la interfaz | React con Tailwind arranca y habla con la API | 3 | Hugo (antes Andrés, C-19) | 1 | Hecho en la base |
@@ -58,22 +58,22 @@ Las estimaciones son en horas-persona (h-p) y son **[PROPUESTA]**: no hay horas 
 | T08 | Padrón, registro e inicio de sesión (HU-01, HU-02) | Tests de HU-01 y HU-02 en verde; pantallas de registro e inicio de sesión | 8 | Hugo | 1 | Hecho en la base: 8 criterios en verde |
 | T09 | Gestión de usuarios (HU-03) | El administrador crea y elimina choferes y personas | 4 | Hugo | 1 (estaba en el 2) | Hecho en la base: 4 criterios en verde |
 | T10 | Rutas, paradas y horarios (HU-04) | Comando `cargar_rutas`; las rutas se ven en el mapa | 8 | Hugo (antes Sebastian, C-19) | 1 (estaba en el 2) | Hecho en la base: 2 criterios en verde |
-| T11 | Viajes y bus en vivo (HU-05, HU-06) | El chofer inicia el viaje; el simulador mueve el bus en el mapa por WebSocket | 10 | Lo asigna Andrés | 2 | Por hacer: el WebSocket del viaje ya conecta |
+| T11 | Viajes y bus en vivo (HU-05, HU-06) | El chofer inicia el viaje; el simulador mueve el bus en el mapa por WebSocket | 10 | Sebastian | 2 | Por hacer: el WebSocket del viaje ya conecta y la Ruta Sur tiene paradas reales |
 | T12 | Base visual | Estilo UPB, navegación por rol y componentes comunes | 6 | Hugo (antes Andrés, C-19) | 1 (estaba en el 2) | Hecho en la base; cada historia suma sus pantallas |
 | T13 | Entrevistas a Don Iván (ENT-03), a la encargada del servicio en la UPB (ENT-07) y a estudiantes de otras rutas | Registros en `entrevistas.md` y cambios derivados | 4 | Andrés (ENT-03, ENT-07) y Hugo (estudiantes) | 1 y 2 | En curso: ENT-03 hecha el 18/11 |
-| T14 | «Voy a subir» y ubicación del estudiante (HU-07) | Alerta al chofer; el aviso se cancela solo si no sube | 8 | Lo asigna Andrés | 3 | Por hacer |
-| T15 | Paradas propuestas y su aprobación (HU-08) | Proponer en el mapa; el administrador aprueba o rechaza, también las que graba un chofer; paradas activas | 8 | Lo asigna Andrés | 3 | Por hacer: las horas aproximadas ya están en la base |
-| T16 | Aviso de bus cerca y registro de quién subió (HU-09, HU-10) | Aviso a 500 m; sugerencia de seguir al chofer; «ha subido» en la lista del chofer | 6 | Lo asigna Andrés | 3 | Por hacer |
-| T17 | Créditos: recarga y pago (HU-11, HU-12) | Recarga aprobada; cobro al subir; comprobante | 10 | Lo asigna Andrés | 3 y 4 | Por hacer |
-| T18 | Retiro del chofer (HU-13) | El chofer retira y el saldo no queda negativo | 3 | Lo asigna Andrés | 4 | Por hacer |
-| T19 | Chats (HU-14, HU-15) | Chat directo y chat de ruta por WebSocket | 8 | Lo asigna Andrés | 4 | Por hacer |
-| T20 | Modificación de rutas y aviso de mínimo (HU-16, HU-17) | Cambio grande pendiente de aprobación; aviso con menos de 15 | 6 | Lo asigna Andrés | 4 | Por hacer |
-| T21 | Trazabilidad y pruebas completas | `trazabilidad.md` completa; todos los tests en verde | 5 | Los tres | Cierre | Empezada: `trazabilidad.md` llega con la base |
-| T22 | Despliegue en hosting gratuito | App publicada con HTTPS | 5 | Los tres | Cierre | Por hacer |
-| T23 | Simulador de escenarios y panel de demo | Los escenarios corren desde la terminal y desde el panel, usando los mismos servicios que la app | 10 | Lo asigna Andrés | 2 a 4 | Por hacer |
-| T24 | Guion y ensayo de la demo | Recorrido ensayado y cronometrado; video de respaldo | 3 | Los tres | Cierre | Por hacer |
+| T14 | «Voy a subir» y ubicación del estudiante (HU-07) | Alerta al chofer; el aviso se cancela solo si no sube | 8 | Hugo | 3 | Por hacer |
+| T15 | Paradas propuestas y su aprobación (HU-08) | Proponer en el mapa; el administrador aprueba o rechaza, también las que graba un chofer; paradas activas | 8 | Andrés | 3 | Por hacer: las horas aproximadas ya están en la base |
+| T16 | Aviso de bus cerca y registro de quién subió (HU-09, HU-10) | Aviso a 500 m; sugerencia de seguir al chofer; «ha subido» en la lista del chofer | 6 | Andrés | 3 | Por hacer |
+| T17 | Créditos: recarga y pago (HU-11, HU-12) | Recarga aprobada; cobro al subir; comprobante | 10 | Sebastian | 3 y 4 | Por hacer |
+| T18 | Retiro del chofer (HU-13) | El chofer retira y el saldo no queda negativo | 3 | Hugo | 4 | Por hacer |
+| T19 | Chats (HU-14, HU-15) | Chat directo y chat de ruta por WebSocket | 8 | Sebastian | 4 | Por hacer |
+| T20 | Modificación de rutas y aviso de mínimo (HU-16, HU-17) | Cambio grande pendiente de aprobación; aviso con menos de 15 | 6 | Andrés | 4 | Por hacer |
+| T21 | Trazabilidad y pruebas completas | `trazabilidad.md` completa; todos los tests en verde | 5 | Hugo | Cierre | Empezada: `trazabilidad.md` llega con la base |
+| T22 | Despliegue en hosting gratuito | App publicada con HTTPS | 5 | Sebastian | Cierre | Por hacer |
+| T23 | Simulador de escenarios y panel de demo | Los escenarios corren desde la terminal y desde el panel, usando los mismos servicios que la app | 10 | Hugo | 2 a 4 | Por hacer |
+| T24 | Guion y ensayo de la demo | Recorrido ensayado y cronometrado; video de respaldo | 3 | Hugo | Cierre | Por hacer |
 | T25 | Modo registro de paradas y horas (HU-18) | 5 criterios en verde; una ruta grabada desde el celular por el túnel HTTPS | 8 | Hugo | 1 | Hecho en la base (C-18) |
-| T26 | Grabar la Ruta Norte con el modo registro | Paradas y horas de la Ruta Norte en la app; respaldo del registro en `rutas/datos/registros/` | 2 | Sebastian | 2 | Por hacer: en el primer viaje de ingreso que pueda tomar |
+| T26 | Grabar la primera ruta con el modo registro | Paradas y horas de una ruta en la app; respaldo en `rutas/datos/registros/` y viaje en `viajes-grabados.md` | 2 | Sebastian | 2 | Hecho el 25/11: Ruta Sur, ingreso de las 06:40 (REG-01) |
 
 Esfuerzo total: **152 h-p**: 146 desde el Sprint 1 y 6 del perfil, que ya se hizo. T25 y T26 suman 10 h-p a las 142 del 16/11 (C-18).
 
@@ -86,14 +86,15 @@ Esfuerzo total: **152 h-p**: 146 desde el Sprint 1 y 6 del perfil, que ya se hiz
 | Sprint 4 | 26 (incluye 5 de T17 y 4 de T23) | La supera en 2 |
 | Cierre | 13 | — |
 
-**Reparto** **[ACUERDO]** (PO18, C-19):
+**Reparto del 18/11** **[ACUERDO]** (C-19, C-26). En la reunión del 18/11, dirigida por Andrés como Scrum Master, cada uno tomó sus tareas y quedó asignado en su issue de GitHub:
 
-- La base del código la dejó Hugo: T05 a T10, T12 y T25, con 42 h-p estimadas.
-- Desde la base, **Andrés reparte** T11, T14 a T20 y T23 en el Sprint Planning del sábado 21/11, y decide quién se encarga de las pruebas. Cada tarea tiene su issue en GitHub, sin responsable, para que él lo asigne: T01 [#1](https://github.com/hugozuniga770/UPBus/issues/1), T02 [#2](https://github.com/hugozuniga770/UPBus/issues/2), T03 [#3](https://github.com/hugozuniga770/UPBus/issues/3), base [#4](https://github.com/hugozuniga770/UPBus/issues/4), T26 [#5](https://github.com/hugozuniga770/UPBus/issues/5), T11 [#6](https://github.com/hugozuniga770/UPBus/issues/6), T13 [#7](https://github.com/hugozuniga770/UPBus/issues/7), T23 [#8](https://github.com/hugozuniga770/UPBus/issues/8), T14 [#9](https://github.com/hugozuniga770/UPBus/issues/9), T15 [#10](https://github.com/hugozuniga770/UPBus/issues/10), T16 [#11](https://github.com/hugozuniga770/UPBus/issues/11), T17 [#12](https://github.com/hugozuniga770/UPBus/issues/12), T18 [#13](https://github.com/hugozuniga770/UPBus/issues/13), T19 [#14](https://github.com/hugozuniga770/UPBus/issues/14), T20 [#15](https://github.com/hugozuniga770/UPBus/issues/15), T21 [#16](https://github.com/hugozuniga770/UPBus/issues/16), T22 [#17](https://github.com/hugozuniga770/UPBus/issues/17) y T24 [#18](https://github.com/hugozuniga770/UPBus/issues/18). Cada issue de código trae sus criterios, con el nombre de cada test, dónde va el código, de qué depende y la Definition of Done.
-- El reparto por áreas del 13/11 queda como sugerencia: Hugo, cuentas y créditos; Sebastian, rutas, viajes, mapa y simulador; Andrés, mensajes.
-- T26 es de Sebastian, que ya conoce la Ruta Norte. T13 sigue con Andrés (ENT-07) y Hugo (estudiantes).
+| Integrante | Tareas | Issues |
+|---|---|---|
+| Hugo Zuñiga | La base del código (T05 a T10, T12 y T25), T02, T14 («Voy a subir»), T18 (retiro), T21 (trazabilidad), T23 (simulador) y T24 (demo) | [#2](https://github.com/hugozuniga770/UPBus/issues/2), [#9](https://github.com/hugozuniga770/UPBus/issues/9), [#13](https://github.com/hugozuniga770/UPBus/issues/13), [#16](https://github.com/hugozuniga770/UPBus/issues/16), [#8](https://github.com/hugozuniga770/UPBus/issues/8), [#18](https://github.com/hugozuniga770/UPBus/issues/18) |
+| Sebastian Cruz | T26 (grabar rutas), T11 (viajes y bus en vivo), T17 (créditos), T19 (chats) y T22 (despliegue) | [#5](https://github.com/hugozuniga770/UPBus/issues/5), [#6](https://github.com/hugozuniga770/UPBus/issues/6), [#12](https://github.com/hugozuniga770/UPBus/issues/12), [#14](https://github.com/hugozuniga770/UPBus/issues/14), [#17](https://github.com/hugozuniga770/UPBus/issues/17) |
+| Andrés Laura Vargas | Revisión de T01, T03 (arquitectura), T13 (entrevistas), T15 (paradas propuestas), T16 (aviso y abordaje) y T20 (rutas y mínimo) | [#1](https://github.com/hugozuniga770/UPBus/issues/1), [#3](https://github.com/hugozuniga770/UPBus/issues/3), [#7](https://github.com/hugozuniga770/UPBus/issues/7), [#10](https://github.com/hugozuniga770/UPBus/issues/10), [#11](https://github.com/hugozuniga770/UPBus/issues/11), [#15](https://github.com/hugozuniga770/UPBus/issues/15) |
 
-Las horas por persona se recalculan cuando Andrés reparta las tareas ([sesión 15](sesion-15-costos.md), sección 7).
+Horas estimadas por persona: Hugo 88,5, Sebastian 37 y Andrés 26,5 ([sesión 15](sesion-15-costos.md), sección 7). Andrés revisa en cada Daily que las tareas avancen. Cada integrante puede trabajar su tarea con un asistente de IA siguiendo `AGENTS.md`, y lo declara en la participación de su parte.
 
 **Qué hace cada uno en el Sprint 1.** En Scrum los tres trabajan desde el primer sprint, no solo desde que empieza el código:
 
@@ -101,7 +102,7 @@ Las horas por persona se recalculan cuando Andrés reparta las tareas ([sesión 
 |---|---|
 | Hugo | T01, T02, T04 y la base del código (T05 a T10, T12 y T25); T03 con Sebastian |
 | Sebastian | T03 con Hugo; revisa HU-04 a HU-06 y HU-18 en la sesión 7; prepara T26 con la [guía del modo registro](https://github.com/hugozuniga770/UPBus/blob/develop/docs/guia-modo-registro.md) |
-| Andrés | ENT-03 y ENT-07 (T13); revisa el Pull Request de la base; arma el tablero de GitHub Projects y la protección de `main`; prepara el reparto del 21/11 |
+| Andrés | ENT-03 y ENT-07 (T13); revisa el Pull Request de la base; arma el tablero de GitHub Projects y la protección de `main`; dirige el reparto del 18/11 |
 
 ## 5. Orden y dependencias
 
@@ -202,15 +203,16 @@ Al cerrar cada sprint se anota aquí lo que de verdad pasó, comparado con el Ga
 | T05 a T08 | 17/11 | 20/11 | 18/11 | 18/11 | 2 días antes, en la base (C-19) |
 | T09, T10 y T12 | 20/11 | 26/11 | 18/11 | 18/11 | Se adelantaron al Sprint 1, en la base |
 | T25 | — | — | 18/11 | 18/11 | Tarea nueva (C-18) |
+| T26 | 20/11 | 23/11 | 25/11 | 25/11 | Dentro del Sprint 2, con la Ruta Sur (C-24) |
 | T13 (ENT-03) | 20/11 | 23/11 | 18/11 | 18/11 | Se adelantó (C-14) |
 
-### 6.3 Gantt actualizado al 18/11/2026
+### 6.3 Gantt actualizado al 25/11/2026
 
-Rehecho con la base terminada y las sesiones de sábado y domingo. El Gantt base de la sección 6.1 no se borra: es contra lo que se compara lo real. Quién hace cada barra lo decide Andrés en cada Planning.
+Con la base terminada, el reparto del 18/11 y la primera ruta grabada. El Gantt base de la sección 6.1 no se borra: es contra lo que se compara lo real. Entre paréntesis, quién tomó cada tarea.
 
 ```mermaid
 gantt
-    title UPBus · Gantt actualizado al 18/11/2026
+    title UPBus · Gantt actualizado al 25/11/2026
     dateFormat YYYY-MM-DD
     axisFormat %d/%m
     todayMarker off
@@ -219,35 +221,36 @@ gantt
     T04 Entrevistas ENT-01 y ENT-02         :done, t04, 2026-11-16, 1d
     T13 ENT-03 a Don Iván                   :done, t13a, 2026-11-18, 1d
     Base del código (T05 a T10, T12 y T25)  :done, base, 2026-11-18, 1d
-    Pull Request de la base a develop       :active, pr, 2026-11-19, 2d
+    Reparto de tareas (Andrés)              :milestone, r1, 2026-11-18, 0d
     Avance al docente                       :milestone, m1, 2026-11-19, 0d
     section Sprint 2
-    T26 Grabar la Ruta Norte                :t26, 2026-11-20, 4d
-    T13 ENT-07 y estudiantes                :t13b, 2026-11-20, 5d
-    Planning y reparto (Andrés)             :milestone, p2, 2026-11-21, 0d
-    T11 Viajes y bus en vivo                :crit, t11, 2026-11-21, 2d
-    T23 Simulador, parte 1                  :t23a, 2026-11-22, 1d
+    T11 Viajes y bus en vivo (Sebastian)    :active, t11, 2026-11-21, 6d
+    T13 ENT-07 y estudiantes (Andrés)       :active, t13b, 2026-11-20, 7d
+    T26 Ruta Sur grabada (Sebastian)        :done, t26, 2026-11-25, 1d
+    Horas con el viaje real (C-23)          :done, c23, 2026-11-25, 1d
     Review del Sprint 2                     :milestone, m2, 2026-11-26, 0d
     section Sprint 3
-    T14 Voy a subir                         :crit, t14, 2026-11-28, 2d
-    T15 Paradas propuestas                  :t15, 2026-11-28, 2d
-    T16 Aviso y abordaje                    :crit, t16, 2026-11-29, 1d
-    T17 Créditos, parte 1                   :crit, t17a, 2026-11-29, 1d
+    T14 Voy a subir (Hugo)                  :crit, t14, 2026-11-28, 2d
+    T15 Paradas propuestas (Andrés)         :t15, 2026-11-28, 2d
+    T16 Aviso y abordaje (Andrés)           :crit, t16, 2026-11-29, 1d
+    T17 Créditos, parte 1 (Sebastian)       :crit, t17a, 2026-11-29, 1d
+    T23 Simulador, parte 1 (Hugo)           :t23a, 2026-11-29, 1d
     Review del Sprint 3                     :milestone, m3, 2026-12-03, 0d
     section Sprint 4
-    T17 Créditos, parte 2, y T18 Retiro     :crit, t17b, 2026-12-05, 2d
-    T19 Chats                               :t19, 2026-12-05, 2d
-    T20 Rutas y aviso de mínimo             :t20, 2026-12-05, 2d
-    T23 Simulador, parte 2                  :t23b, 2026-12-06, 1d
+    T17 Créditos, parte 2 (Sebastian)       :crit, t17b, 2026-12-05, 1d
+    T18 Retiro (Hugo)                       :crit, t18, 2026-12-06, 1d
+    T19 Chats (Sebastian)                   :t19, 2026-12-05, 2d
+    T20 Rutas y aviso de mínimo (Andrés)    :t20, 2026-12-05, 2d
+    T23 Simulador, parte 2 (Hugo)           :t23b, 2026-12-05, 1d
     Review del Sprint 4                     :milestone, m4, 2026-12-10, 0d
     section Cierre
-    T21 Trazabilidad y pruebas              :crit, t21, 2026-12-12, 1d
-    T22 Despliegue                          :crit, t22, 2026-12-12, 2d
-    T24 Guion y ensayo de la demo           :crit, t24, 2026-12-14, 1d
+    T21 Trazabilidad y pruebas (Hugo)       :crit, t21, 2026-12-12, 1d
+    T22 Despliegue (Sebastian)              :crit, t22, 2026-12-12, 2d
+    T24 Guion y ensayo de la demo (Hugo)    :crit, t24, 2026-12-14, 1d
     Entrega final                           :milestone, m5, 2026-12-15, 0d
 ```
 
-**Lo que muestra.** Con la base hecha, el Sprint 2 queda con holgura y el riesgo 7 desaparece. La presión pasa a los fines de semana del Sprint 3 y del Sprint 4, que tienen más horas que la capacidad (sección 4). Si una sesión no alcanza, se aplican los recortes de la sección 9.
+**Lo que muestra.** El Sprint 2 cierra el 26/11 con la primera ruta real en la app y T11 en curso. La Ruta Sur ya tiene paradas, así que T11 y T14 se prueban con datos reales. La presión sigue en los fines de semana del Sprint 3 y del Sprint 4, que tienen más horas que la capacidad (sección 4). Si una sesión no alcanza, se aplican los recortes de la sección 9.
 
 ## 7. Disponibilidad y capacidad
 
@@ -270,7 +273,7 @@ gantt
 | 8 | Solo se entrevistó la Ruta Norte | Las otras rutas tienen problemas distintos | ENT-04 a ENT-06 con estudiantes de otras rutas, en el Sprint 2 |
 | 9 | La UPB pensaba hacer su propia aplicación de transporte el próximo año (ENT-03) | La encargada del servicio confirma un proyecto propio | Preguntarlo en ENT-07 y presentar UPBus como prueba piloto de esa idea |
 | 10 | El túnel HTTPS o el GPS fallan en el viaje de grabación (T26) | La página no abre en el celular o no pide permiso de ubicación | Probar el túnel y el permiso el día anterior. Si se corta la señal, las marcas esperan en el celular; si algo más falla, se descarga el respaldo y se importa. Plan B: capturas de Maps con la hora (P-29) |
-| 11 | La base la hizo una sola persona y el resto del equipo no la conoce | En el Planning del 21/11 nadie sabe dónde va cada cosa | Recorrido de la base al empezar la sesión del sábado, con la guía de desarrollo y `AGENTS.md`; cada historia sigue el mismo molde que HU-03 y HU-18 |
+| 11 | La base la hizo una sola persona y el resto del equipo no la conoce | En la primera sesión de implementación nadie sabe dónde va cada cosa | Recorrido de la base al empezar la sesión del sábado, con la guía de desarrollo y `AGENTS.md`; cada historia sigue el mismo molde que HU-03 y HU-18 |
 
 ## 9. Recortes aprobados (en este orden)
 
@@ -292,7 +295,7 @@ No se recortan: registro, inicio de sesión, bus en vivo (lo que más pidieron l
 | Perfil | 07/11/2026 | Informe y presentación del perfil | Hecho |
 | Entrevistas | 16/11/2026 | ENT-01 (chofer) y ENT-02 (estudiante) | Hecho |
 | Avance | 19/11/2026 | Documentación de las sesiones 6 a 15 y el incremento del Sprint 1 | Listo: base con HU-01 a HU-04 y HU-18 en el Pull Request a `develop` |
-| Ruta Norte grabada | Entre el 20/11 y el 24/11 | Paradas y horas reales de la Ruta Norte en la app (T26) | Pendiente |
+| Primera ruta grabada | Sprint 2 | Paradas y horas reales de una ruta en la app (T26) | Hecho el 25/11: Ruta Sur, ingreso de las 06:40 (REG-01) |
 | Review Sprint 2 | 26/11/2026 | Bus en vivo en el mapa | Pendiente |
 | Review Sprint 3 | 03/12/2026 | «Voy a subir» de punta a punta | Pendiente |
 | Review Sprint 4 | 10/12/2026 | Créditos y chats | Pendiente |
@@ -314,6 +317,7 @@ Al cerrar cada sprint se anota aquí la fecha real y el SHA del commit de cierre
 | 18/11/2026 | Se agregan T25 (modo registro, 8 h-p) y T26 (grabar la Ruta Norte, 2 h-p); el total pasa a 152 h-p (C-18) | Reemplazar las capturas de Maps por el modo registro |
 | 18/11/2026 | Hugo deja la base: T05 a T10, T12 y T25 quedan hechas; T05 a T07, T10 y T12 cambian de responsable (C-19) | Decisión del equipo: base primero, después se reparte |
 | 18/11/2026 | Andrés reparte las tareas desde el 21/11; sesiones de sábado y domingo; Gantt actualizado (sección 6.3) | Scrum Master de la implementación (C-19) |
+| 25/11/2026 | Responsables según el reparto del 18/11 (C-26); T26 hecha con la Ruta Sur (C-24); Gantt actualizado al 25/11 | Reparto del equipo y primer viaje grabado |
 
 ## 12. Dudas abiertas
 
@@ -324,5 +328,7 @@ Las preguntas P-01 a P-31 están en la [sección 6 de los requisitos](sesion-06-
 - **Hugo Zuñiga:** definió los sprints, el reparto y las fechas, hizo las entrevistas del 16/11 y aprueba este plan.
 - **Asistencia de IA:** se usó Claude (Anthropic) para proponer las tareas, las estimaciones, el orden y los riesgos a partir de las decisiones del Product Owner, y el 16/11 para ajustar el plan con las entrevistas y dibujar el Gantt.
 - **Hugo Zuñiga (18/11/2026):** decidió el modo registro, dejó la base del código y acordó con el equipo que Andrés dirija la implementación en sesiones de sábado y domingo.
-- **Andrés Laura Vargas (Scrum Master):** desde el 21/11 reparte las tareas y supervisa que se cumplan.
+- **Andrés Laura Vargas (Scrum Master):** dirigió el reparto del 18/11 y supervisa que las tareas se cumplan.
 - **Asistencia de IA (18/11/2026):** se usó Claude (Anthropic) para construir la base del código con Hugo, sumar T25 y T26, rehacer los totales y dibujar el Gantt actualizado.
+- **Sebastian Cruz (25/11/2026):** grabó la Ruta Sur con el modo registro (T26).
+- **Asistencia de IA (25/11/2026):** se usó Claude (Anthropic) para pasar el reparto del 18/11 a la tabla de tareas y rehacer el Gantt al 25/11.

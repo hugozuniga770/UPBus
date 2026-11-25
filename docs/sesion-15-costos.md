@@ -4,7 +4,7 @@
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I)
 - Fecha: 16/11/2026 · Sprint 1 · Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
-- Actualizado: 18/11/2026 · T25 y T26 suman 10 h-p (152 en total); la base del código cambia responsables y las tareas por asignar las reparte Andrés (C-18, C-19)
+- Actualizado: 25/11/2026 · horas por persona según el reparto del 18/11 (C-26). El 18/11/2026: T25 y T26 suman 10 h-p (152 en total); la base del código cambia responsables y las tareas por asignar las reparte Andrés (C-18, C-19)
 - Hoja de cálculo con las cuentas al día: «UPBus · Costos y horas» (Claude Sheets, privada del equipo)
 - Plan: [Sesiones 8–9](sesion-08-09-plan.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
@@ -100,17 +100,16 @@ Con 142 h-p (16/11), el costo total era 10.452,69 Bs y el precio con factura, 14
 
 ## 7. Horas y costo por persona
 
-Las tareas compartidas se reparten por igual: las de «Hugo y Sebastian» y las de «Andrés y Hugo» entre dos, y las de «Los tres» entre tres. Las tareas de código que siguen a la base (T11, T14 a T20 y T23) están **por asignar**: las reparte Andrés en el Sprint Planning del 21/11 (C-19).
+Los responsables son los del reparto del 18/11, dirigido por Andrés (C-26). Las tareas compartidas se reparten por igual: las de «Andrés y Hugo» entre dos y las de «Los tres» entre tres.
 
-| Persona | Horas estimadas | Costo estimado (Bs) |
-|---|---:|---:|
-| Hugo Zuñiga | 63,8 | 3.509,02 |
-| Sebastian Cruz | 10,8 | 595,53 |
-| Andrés Laura Vargas | 8,3 | 458,10 |
-| Por asignar (las reparte Andrés) | 69,0 | 3.793,04 |
-| **Total** | **152,0** | **8.355,68** |
+| Persona | Tareas | Horas estimadas | Costo estimado (Bs) |
+|---|---|---:|---:|
+| Hugo Zuñiga | Base del código (T05 a T10, T12 y T25), T01, T02, T04, T14, T18, T21, T23 y T24 | 88,5 | 4.864,99 |
+| Sebastian Cruz | T11, T17, T19, T22 y T26 | 37,0 | 2.033,95 |
+| Andrés Laura Vargas | T03, T13, T15, T16 y T20 | 26,5 | 1.456,75 |
+| **Total** | | **152,0** | **8.355,68** |
 
-Hugo lleva más horas porque hizo la base del código (42 h-p estimadas). Cuando Andrés reparta las 69 h-p por asignar, se anota el responsable de cada tarea en la hoja «Tareas» y esta tabla se recalcula sola.
+Hugo lleva más horas porque hizo la base del código (42 h-p estimadas) antes del reparto. Si una tarea cambia de responsable, se cambia en la hoja «Tareas» y esta tabla se recalcula sola.
 
 ## 8. Costo de operar el servicio (fuera del proyecto)
 
@@ -150,4 +149,4 @@ Al 18/11/2026 no hay horas reales registradas. T00, T04 y la base del código (T
 ## 11. Participación y asistencia utilizada
 
 - **Hugo Zuñiga (Product Owner):** pidió el cálculo, aprueba la tarifa y los supuestos, y lleva el registro de horas.
-- **Asistencia de IA:** se usó Claude (Anthropic) para buscar los sueldos de referencia y las tasas de impuestos, armar la hoja de cálculo y redactar este documento, y el 18/11/2026 para sumar T25 y T26 a la hoja y recalcular los totales.
+- **Asistencia de IA:** se usó Claude (Anthropic) para buscar los sueldos de referencia y las tasas de impuestos, armar la hoja de cálculo y redactar este documento; el 18/11/2026 para sumar T25 y T26 a la hoja y recalcular los totales, y el 25/11/2026 para pasar el reparto a la hoja.
