@@ -76,6 +76,17 @@ export const api = {
   // HU-04
   rutas: () => pedir("GET", "/rutas"),
   ruta: (id, horario) => pedir("GET", `/rutas/${id}${horario ? `?horario=${horario}` : ""}`),
+  // HU-05 y HU-06
+  viajes: (filtros = {}) => {
+    const consulta = new URLSearchParams(
+      Object.entries(filtros).filter(([, valor]) => valor !== undefined && valor !== null && valor !== ""),
+    );
+    return pedir("GET", `/viajes${consulta.size ? `?${consulta}` : ""}`);
+  },
+  viaje: (id) => pedir("GET", `/viajes/${id}`),
+  iniciarViaje: (id) => pedir("POST", `/viajes/${id}/iniciar`),
+  terminarViaje: (id) => pedir("POST", `/viajes/${id}/terminar`),
+  registrarPosicion: (id, posicion) => pedir("POST", `/viajes/${id}/posiciones`, posicion),
   // HU-18
   iniciarRegistro: (datos) => pedir("POST", "/registros", datos),
   registroEnCurso: () => pedir("GET", "/registros/en-curso"),

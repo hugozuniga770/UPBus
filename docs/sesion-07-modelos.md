@@ -123,49 +123,49 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 
 ### HU-05 — Iniciar y terminar mi viaje
 
-**CA1 — El chofer inicia su viaje** ⏳ `test_HU05_CA1_el_chofer_inicia_su_viaje`
+**CA1 — El chofer inicia su viaje** ✅ `test_HU05_CA1_el_chofer_inicia_su_viaje`
 - Dado: Marco tiene asignado el viaje Ruta Norte 06:40 del lunes 16/11, Programado, y son las 06:38.
 - Cuando: lo inicia.
 - Entonces: el viaje pasa a En curso con la hora de inicio 06:38.
 
-**CA2 — Rechaza un segundo viaje en curso** ⏳ `test_HU05_CA2_rechaza_un_segundo_viaje_en_curso`
+**CA2 — Rechaza un segundo viaje en curso** ✅ `test_HU05_CA2_rechaza_un_segundo_viaje_en_curso`
 - Dado: Marco tiene En curso el viaje de las 06:40.
 - Cuando: intenta iniciar otro viaje suyo.
 - Entonces: se rechaza por «ya tienes un viaje en curso» y el segundo sigue Programado.
 
-**CA3 — El chofer termina su viaje** ⏳ `test_HU05_CA3_el_chofer_termina_su_viaje`
+**CA3 — El chofer termina su viaje** ✅ `test_HU05_CA3_el_chofer_termina_su_viaje`
 - Dado: el viaje de las 06:40 está En curso.
 - Cuando: Marco lo termina a las 07:38.
 - Entonces: pasa a Terminado con su hora de fin, y se cierran los avisos y las ubicaciones compartidas de ese viaje.
 
-**CA4 — Rechaza iniciar un viaje ajeno** ⏳ `test_HU05_CA4_rechaza_iniciar_un_viaje_ajeno`
+**CA4 — Rechaza iniciar un viaje ajeno** ✅ `test_HU05_CA4_rechaza_iniciar_un_viaje_ajeno`
 - Dado: el viaje Ruta Sur 06:40 está asignado a otro chofer.
 - Cuando: Marco intenta iniciarlo.
 - Entonces: se rechaza por «este viaje no es tuyo».
 
 ### HU-06 — Ver el bus en vivo y la hora aproximada en mi parada
 
-**CA1 — La posición del bus llega a quienes miran la ruta** ⏳ `test_HU06_CA1_la_posicion_del_bus_llega_a_quienes_miran_la_ruta`
+**CA1 — La posición del bus llega a quienes miran la ruta** ✅ `test_HU06_CA1_la_posicion_del_bus_llega_a_quienes_miran_la_ruta`
 - Dado: el viaje de las 06:40 está En curso e Ismael mira la Ruta Norte.
 - Cuando: llega una posición del bus.
 - Entonces: queda guardada como la última del viaje e Ismael la recibe por el canal en tiempo real (WebSocket).
 
-**CA2 — Rechaza posiciones de un viaje que no está en curso** ⏳ `test_HU06_CA2_rechaza_posiciones_de_un_viaje_que_no_esta_en_curso`
+**CA2 — Rechaza posiciones de un viaje que no está en curso** ✅ `test_HU06_CA2_rechaza_posiciones_de_un_viaje_que_no_esta_en_curso`
 - Dado: el viaje de las 06:40 está Terminado.
 - Cuando: llega una posición para ese viaje.
 - Entonces: se rechaza por «el viaje no está en curso» y no se guarda.
 
-**CA3 — Pasar a menos de 50 m registra un paso** ⏳ `test_HU06_CA3_pasar_a_menos_de_50_m_registra_un_paso`
+**CA3 — Pasar a menos de 50 m registra un paso** ✅ `test_HU06_CA3_pasar_a_menos_de_50_m_registra_un_paso`
 - Dado: el viaje salió a las 06:40 y Sevilla está en la ruta.
 - Cuando: el bus pasa a 30 m de Sevilla a las 06:58.
 - Entonces: se registra un paso por Sevilla a los 18 minutos y la hora aproximada se recalcula (RF-11). Usa `registrar_paso`, el mismo servicio del modo registro.
 
-**CA4 — Pasar a 80 m no cuenta como llegada** ⏳ `test_HU06_CA4_pasar_a_80_m_no_cuenta_como_llegada`
+**CA4 — Pasar a 80 m no cuenta como llegada** ✅ `test_HU06_CA4_pasar_a_80_m_no_cuenta_como_llegada`
 - Dado: el mismo viaje.
 - Cuando: el bus pasa a 80 m de Sevilla.
 - Entonces: no se registra ningún paso.
 
-**CA5 — Sin señal se ve la última posición con su hora** ⏳ `test_HU06_CA5_sin_senal_se_ve_la_ultima_posicion_con_su_hora`
+**CA5 — Sin señal se ve la última posición con su hora** ✅ `test_HU06_CA5_sin_senal_se_ve_la_ultima_posicion_con_su_hora`
 - Dado: la última posición del bus llegó a las 06:52 y después dejó de llegar señal.
 - Cuando: Ismael abre el viaje a las 06:55.
 - Entonces: ve la posición de las 06:52 con su hora.
@@ -614,8 +614,8 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-02 | 4 | 4 | 0 |
 | HU-03 | 4 | 4 | 0 |
 | HU-04 | 2 | 2 | 0 |
-| HU-05 | 4 | 0 | 4 |
-| HU-06 | 5 | 0 | 5 |
+| HU-05 | 4 | 4 | 0 |
+| HU-06 | 5 | 5 | 0 |
 | HU-07 | 7 | 0 | 7 |
 | HU-08 | 4 | 0 | 4 |
 | HU-09 | 5 | 0 | 5 |
@@ -628,13 +628,13 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-16 | 4 | 0 | 4 |
 | HU-17 | 4 | 0 | 4 |
 | HU-18 | 5 | 5 | 0 |
-| **Total** | **73** | **19** | **54** |
+| **Total** | **73** | **28** | **45** |
 
-Además de los 19 tests de criterios, hay 4 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur y conectar el WebSocket del viaje) y 10 pruebas de interfaz en Vitest: 3 de criterios (HU01-CA3, HU02-CA3 y HU18-CA5) y 7 de soporte (el cliente de la API, la cola y el respaldo del modo registro). Las pruebas de soporte no cuentan como criterios.
+Además de los 28 tests de criterios, hay 4 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur y conectar el WebSocket del viaje) y 11 pruebas de interfaz en Vitest: 4 de historias (HU01, HU02, HU05 y HU18) y 7 de soporte (el cliente de la API, la cola y el respaldo del modo registro). Las pruebas de soporte no cuentan como criterios.
 
 ## 8. Participación y asistencia utilizada
 
 - **Hugo Zuñiga (Product Owner):** definió las historias a partir de los requisitos, decidió el modo registro (HU-18) y aprueba este documento.
 - **Andrés Laura Vargas (Scrum Master):** dirigió el reparto del 18/11, en el que cada uno tomó sus historias con sus tests (C-26).
-- **Sebastian Cruz:** revisión pendiente de HU-04, HU-05, HU-06 y HU-18, que tocan rutas y viajes.
-- **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base; el 25/11/2026, para ajustar HU18-CA2 con lo que mostró el primer viaje real (C-23).
+- **Sebastian Cruz:** implementó y verificó HU-05 y HU-06 (T11, issue #6), además de revisar las historias que tocan rutas y viajes.
+- **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base; el 25/11/2026, para ajustar HU18-CA2 con lo que mostró el primer viaje real (C-23). Sebastian usó OpenAI Codex para implementar y probar HU-05 y HU-06 siguiendo la skill `implementar-historia` del repositorio.

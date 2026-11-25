@@ -8,7 +8,7 @@
 
 - Cada criterio de la sesión 7 es un test con el mismo nombre. Cuando una historia se termina, quien la hizo agrega aquí sus filas, en el mismo Pull Request.
 - «Código» nombra el servicio, la regla o la vista que cumple el criterio, para encontrarlo rápido.
-- Al 18/11/2026 hay **19 de 73** criterios con su test en verde.
+- Al 25/11/2026 hay **28 de 73** criterios con su test en verde.
 
 ## 1. Criterios con su test (base del código)
 
@@ -28,6 +28,15 @@
 | HU03-CA4 | RF-04 | `tests/test_hu03_usuarios.py::test_HU03_CA4_eliminar_desactiva_la_cuenta` | `cuentas.servicios.eliminar_cuenta` | — |
 | HU04-CA1 | RF-05 | `tests/test_hu04_rutas.py::test_HU04_CA1_ve_la_ruta_con_recorrido_paradas_y_horarios` | `rutas.servicios.ver_ruta` | — |
 | HU04-CA2 | RF-05 | `tests/test_hu04_rutas.py::test_HU04_CA2_el_estudiante_ve_solo_las_paradas_aprobadas` | `rutas.servicios.paradas_visibles` | — |
+| HU05-CA1 | RF-06 | `tests/test_hu05_viajes.py::test_HU05_CA1_el_chofer_inicia_su_viaje` | `viajes.servicios.iniciar_viaje` | `frontend/src/paginas/Viajes.test.jsx` |
+| HU05-CA2 | RF-06 | `tests/test_hu05_viajes.py::test_HU05_CA2_rechaza_un_segundo_viaje_en_curso` | `viajes.reglas.verificar_sin_viaje_en_curso` | — |
+| HU05-CA3 | RF-06 | `tests/test_hu05_viajes.py::test_HU05_CA3_el_chofer_termina_su_viaje` | `viajes.servicios.terminar_viaje` | `frontend/src/paginas/Viajes.jsx` |
+| HU05-CA4 | RF-03, RF-06 | `tests/test_hu05_viajes.py::test_HU05_CA4_rechaza_iniciar_un_viaje_ajeno` | `viajes.reglas.verificar_es_su_viaje` | — |
+| HU06-CA1 | RF-07 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA1_la_posicion_del_bus_llega_a_quienes_miran_la_ruta` | `viajes.servicios.registrar_posicion`, `viajes.consumers.ViajeConsumer` | `frontend/src/paginas/Rutas.jsx` |
+| HU06-CA2 | RF-07 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA2_rechaza_posiciones_de_un_viaje_que_no_esta_en_curso` | `viajes.reglas.verificar_en_curso` | — |
+| HU06-CA3 | RF-11 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA3_pasar_a_menos_de_50_m_registra_un_paso` | `viajes.servicios.registrar_posicion`, `rutas.servicios.registrar_paso` | — |
+| HU06-CA4 | RF-11 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA4_pasar_a_80_m_no_cuenta_como_llegada` | `rutas.reglas.parada_mas_cercana` | — |
+| HU06-CA5 | RF-07 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA5_sin_senal_se_ve_la_ultima_posicion_con_su_hora` | `viajes.serializadores.viaje_a_dict` | `frontend/src/paginas/Rutas.jsx` |
 | HU18-CA1 | RF-23, RF-11 | `tests/test_hu18_modo_registro.py::test_HU18_CA1_el_primer_registro_crea_las_paradas_y_sus_horas` | `rutas.servicios.terminar_registro`, `rutas.reglas.hora_aproximada` | — |
 | HU18-CA2 | RF-23, RF-11 | `tests/test_hu18_modo_registro.py::test_HU18_CA2_un_segundo_registro_ajusta_la_hora_sin_duplicar_la_parada` | `rutas.reglas.parada_mas_cercana`, `rutas.reglas.salida_programada`, `rutas.servicios.minutos_aprendidos` | — |
 | HU18-CA3 | RF-23 | `tests/test_hu18_modo_registro.py::test_HU18_CA3_un_estudiante_no_puede_usar_el_modo_registro` | `rutas.reglas.verificar_puede_registrar` | — |
@@ -50,9 +59,10 @@ No son criterios: prueban herramientas que usan las historias.
 
 ## 3. Criterios por hacer
 
-Los 54 criterios restantes (HU-05 a HU-17) están en la [sesión 7](sesion-07-modelos.md), cada uno con el nombre de su test, y en el issue de su tarea. Cuando se terminan, sus filas pasan a la sección 1.
+Los 45 criterios restantes (HU-07 a HU-17) están en la [sesión 7](sesion-07-modelos.md), cada uno con el nombre de su test, y en el issue de su tarea. Cuando se terminan, sus filas pasan a la sección 1.
 
 ## 4. Participación y asistencia utilizada
 
 - **Hugo Zuñiga:** dejó la base con estos tests.
-- **Asistencia de IA:** se usó Claude (Anthropic) para escribir los tests de la base y esta tabla.
+- **Sebastian Cruz:** agregó la trazabilidad de HU-05 y HU-06 al implementar T11.
+- **Asistencia de IA:** se usó Claude (Anthropic) para escribir los tests de la base y esta tabla; Sebastian usó OpenAI Codex para implementar y documentar HU-05 y HU-06 siguiendo la skill del repositorio.

@@ -8,7 +8,7 @@ const TARJETAS = {
   usuarios: { titulo: "Usuarios", texto: "Crea y desactiva cuentas de choferes y estudiantes.", a: "/usuarios", icono: "👥" },
   subir: { titulo: "Voy a subir", texto: "Avisa al chofer y comparte tu ubicación.", pendiente: "HU-07", icono: "✋" },
   creditos: { titulo: "Mis créditos", texto: "Recarga y paga tus viajes desde la app.", pendiente: "HU-11", icono: "💳" },
-  viajes: { titulo: "Mis viajes", texto: "Inicia tu ruta y comparte la ubicación del bus.", pendiente: "HU-05", icono: "🚌" },
+  viajes: { titulo: "Mis viajes", texto: "Inicia tu ruta y comparte la ubicación del bus.", a: "/viajes", icono: "🚌" },
 };
 
 const POR_ROL = {

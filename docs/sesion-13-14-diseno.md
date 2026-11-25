@@ -3,7 +3,7 @@
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25) · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
-- Estado: la sección 2 y las secciones 4 a 6 describen la **base del código, ya construida**. La sección 3 es **[PROPUESTA]** para las historias que faltan.
+- Estado: la sección 2 y las secciones 4 a 6 describen el **código ya construido**. En la sección 3, `Viaje` y `PosicionDeViaje` ya están implementados; los demás modelos son **[PROPUESTA]** para las historias que faltan.
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Historias: [Sesión 7](sesion-07-modelos.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Trazabilidad: [trazabilidad.md](trazabilidad.md)
 
 ## 0. Cómo leer este documento
@@ -191,7 +191,7 @@ erDiagram
 
 | Modelo | App | Historia | Notas |
 |---|---|---|---|
-| `Viaje` | viajes | HU-05, HU-06 | Guarda la última posición para mostrarla si se corta la señal (HU06-CA5). Un chofer tiene un solo viaje en curso |
+| `Viaje` y `PosicionDeViaje` | viajes | HU-05, HU-06 | Implementados. `Viaje` guarda la última posición; `PosicionDeViaje.id_cliente` evita duplicar reenvíos. Un chofer tiene un solo viaje en curso |
 | `AvisoDeSubida` | viajes | HU-07, HU-09 | Uno por estudiante y viaje (HU07-CA2). Al pasar el bus, los confirmados que no subieron pasan a «no se presentó» |
 | `UbicacionDelEstudiante` | viajes | HU-07 | Solo se guarda la última; se borra al subir o al terminar el viaje |
 | `Abordaje` | viajes | HU-10, HU-12 | `id_cliente` único para que un reenvío no cobre dos veces (HU12-CA3) |
@@ -206,7 +206,7 @@ erDiagram
 | `comun` | `Rechazo` (400), `SinPermiso` (403), `NoExiste` (404); `distancia_en_metros`, `coordenadas_validas`; `ahora`, `a_hora_local` | `leer` (valida un serializador) | `manejar_excepcion` y `falla_csrf`: todo rechazo sale como `{"causa": ...}` |
 | `cuentas` | `verificar_persona_en_padron`, `verificar_correo_del_padron`, `verificar_persona_activa`, `verificar_sin_cuenta`, `verificar_contrasenas_iguales`, `verificar_contrasena`, `rol_desde_el_padron`, `verificar_credenciales`, `verificar_es_administrador`, `verificar_rol_valido`, `verificar_correo_libre`, `verificar_codigo_libre`, `verificar_no_es_uno_mismo` | `registrar`, `autenticar`, `listar_cuentas`, `crear_cuenta`, `buscar_cuenta`, `eliminar_cuenta` | `CsrfVista`, `RegistroVista`, `SesionVista`, `UsuariosVista`, `UsuarioVista` |
 | `rutas` | `verificar_puede_registrar`, `verificar_horario_de_la_ruta`, `verificar_sin_registro_en_curso`, `verificar_es_su_registro`, `verificar_registro_en_curso`, `verificar_coordenadas`, `verificar_lejos_de_las_otras_marcas`, `verificar_hay_marcas`, `estado_de_una_parada_nueva`, `llego_a_la_parada`, `parada_mas_cercana`, `minutos_entre`, `salida_programada`, `promedio_de_los_ultimos`, `hora_aproximada`, `llegada_limite` | `listar_rutas`, `ver_ruta`, `paradas_visibles`, `horas_aproximadas`, `registrar_paso`, `reordenar_paradas`, `iniciar_registro`, `marcar_parada`, `agregar_puntos`, `terminar_registro`, `cancelar_registro`, `importar_registro` | `RutasVista`, `RutaVista`, `RegistrosVista`, `RegistroEnCursoVista`, `MarcasVista`, `PuntosVista`, `TerminarRegistroVista`, `CancelarRegistroVista` |
-| `viajes` | Por hacer (T11, T14, T16, T17) | Por hacer | `ViajeConsumer` ya conecta al grupo `viaje_<id>` |
+| `viajes` | `verificar_es_su_viaje`, `verificar_programado`, `verificar_sin_viaje_en_curso`, `verificar_en_curso`, `verificar_coordenadas` | `listar_viajes`, `buscar_viaje`, `iniciar_viaje`, `terminar_viaje`, `registrar_posicion` | Vistas de viajes y posiciones; `ViajeConsumer` entrega posiciones al grupo `viaje_<id>` |
 | `mensajes` | Por hacer (T19) | Por hacer | Por hacer |
 
 Comandos: `importar_padron` (cuentas), `cargar_rutas` e `importar_registro` (rutas).
@@ -226,13 +226,17 @@ Todas las rutas empiezan con `/api/` y responden JSON. Toda escritura lleva el t
 | `DELETE usuarios/<id>` | Administrador | Desactiva la cuenta | HU-03 |
 | `GET rutas` | Con sesión | Las rutas con sus horarios | HU-04 |
 | `GET rutas/<id>?horario=<id>` | Con sesión | La ruta con recorrido, paradas y hora aproximada | HU-04 |
+| `GET viajes?ruta=<id>&estado=en_curso` | Con sesión | Lista los viajes visibles; para estudiantes, solo los que están en curso | HU-05, HU-06 |
+| `GET viajes/<id>` | Con sesión | Detalle y última posición conocida del viaje | HU-06 |
+| `POST viajes/<id>/iniciar` · `POST viajes/<id>/terminar` | Chofer asignado | Cambia el estado y guarda la hora de inicio o fin | HU-05 |
+| `POST viajes/<id>/posiciones` | Chofer asignado | Guarda una posición única, registra pasos cercanos y la publica por WebSocket | HU-06 |
 | `POST registros` | Chofer o administrador | Inicia un registro | HU-18 |
 | `GET registros/en-curso` | Chofer o administrador | El registro sin terminar, si hay | HU-18 |
 | `POST registros/<id>/marcas` | Quien graba | Guarda una marca; un reenvío no duplica | HU-18 |
 | `POST registros/<id>/puntos` | Quien graba | Guarda puntos del recorrido | HU-18 |
 | `POST registros/<id>/terminar` | Quien graba | Crea o une paradas y recalcula horas | HU-18 |
 | `POST registros/<id>/cancelar` | Quien graba | Cancela sin crear nada | HU-18 |
-| `ws/viajes/<id>/` (WebSocket) | Con sesión | Canal del viaje; hoy confirma la conexión | HU-06 (por hacer) |
+| `ws/viajes/<id>/` (WebSocket) | Con sesión | Canal que confirma la conexión y entrega la posición del bus | HU-06 |
 
 ## 6. Interfaz
 
@@ -241,7 +245,8 @@ Todas las rutas empiezan con `/api/` y responden JSON. Toda escritura lleva el t
 | `/ingresar` | Iniciar sesión con código o correo | Cualquiera | HU-02 |
 | `/registrarse` | Crear la cuenta con el padrón | Persona del padrón | HU-01 |
 | `/` | Inicio con tarjetas según el rol; las que faltan dicen «Próximamente» con su historia | Con sesión | — |
-| `/rutas` | Mapa con el recorrido, las paradas y la hora aproximada; tarjeta que sube desde abajo | Con sesión | HU-04 |
+| `/rutas` | Mapa con recorrido, paradas, horas aproximadas y el bus del viaje en curso | Con sesión | HU-04, HU-06 |
+| `/viajes` | Iniciar o terminar el viaje asignado y compartir el GPS del bus | Chofer | HU-05, HU-06 |
 | `/modo-registro` | Grabar paradas y horas con el GPS | Chofer o administrador | HU-18 |
 | `/usuarios` | Crear choferes y personas, y desactivar cuentas | Administrador | HU-03 |
 
@@ -263,5 +268,5 @@ Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `Error
 ## 8. Participación y asistencia utilizada
 
 - **Hugo Zuñiga:** decidió la tecnología (PO13) y aprueba este diseño.
-- **Sebastian Cruz:** revisión pendiente, junto con T03.
-- **Asistencia de IA:** se usó Claude (Anthropic) para construir la base y describir aquí su diseño, y para proponer los modelos de la sección 3.
+- **Sebastian Cruz:** implementó el diseño de viajes y bus en vivo de T11 (HU-05 y HU-06); mantiene pendiente la revisión de T03.
+- **Asistencia de IA:** se usó Claude (Anthropic) para construir la base, describir su diseño y proponer los modelos de la sección 3. Sebastian usó OpenAI Codex para implementar y verificar T11 siguiendo la skill `implementar-historia`.
