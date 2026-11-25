@@ -4,7 +4,7 @@
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I) · Aprueba los requisitos: Hugo Zuñiga, como Product Owner
 - Fecha: 13/11/2026 · Sprint 1 · Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
-- Actualizado: 18/11/2026 · modo registro de paradas y horas, BUS-RF-23 (C-18); padrón con la lista de la clase fuera del repositorio (C-20); criterios nuevos en RF-01, RF-02 y RF-04 (C-21); preguntas P-28 a P-31. Antes, ese mismo día: entrevista ENT-03 a Don Iván (C-16, C-17) y P-25 a P-27. El 16/11/2026: ENT-01 y ENT-02 (C-08 a C-11) y P-19 a P-24
+- Actualizado: 25/11/2026 · las horas se miden desde la salida programada (C-23), primer viaje grabado (REG-01, Ruta Sur) y P-32. El 18/11/2026: modo registro de paradas y horas, BUS-RF-23 (C-18); padrón con la lista de la clase fuera del repositorio (C-20); criterios nuevos en RF-01, RF-02 y RF-04 (C-21); preguntas P-28 a P-31. Antes, ese mismo día: entrevista ENT-03 a Don Iván (C-16, C-17) y P-25 a P-27. El 16/11/2026: ENT-01 y ENT-02 (C-08 a C-11) y P-19 a P-24
 - Historias y criterios: [Sesión 7](sesion-07-modelos.md) · Plan: [Sesiones 8–9](sesion-08-09-plan.md) · Entrevistas: [entrevistas.md](entrevistas.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
 ## 0. Cómo leer este documento
@@ -46,6 +46,7 @@ Cada requisito tiene un ID con el prefijo `BUS` (por ejemplo, `BUS-RF-09`). Dent
 | DOC | Indicaciones del docente comunicadas por Hugo, **fecha no registrada** | (1) Créditos en la app en lugar de pagar por QR. (2) Sin espera de 5 minutos: el bus pasa a una hora aproximada y quien no está se queda. |
 | ENT | Entrevistas del 16/11/2026: ENT-01 (chofer de la Ruta Norte) y ENT-02 (estudiante de la Ruta Norte, anónima), y del 18/11/2026: ENT-03 (Don Iván, coordinador del servicio). Detalle en [entrevistas.md](entrevistas.md) | Paradas reales de la Ruta Norte, cómo se paga hoy, el dispositivo del chofer, que la ubicación se corta y cuánto espera el bus |
 | PO18 | Decisiones del Product Owner (Hugo Zuñiga), 18/11/2026 | Modo registro para grabar las paradas y sus horas en un viaje real, en lugar de capturas de Maps; padrón con la lista de la clase y correos de ejemplo; roles para la implementación |
+| REG-01 | Viaje grabado con el modo registro: Ruta Sur, ingreso de las 06:40, 25/11/2026 ([viajes-grabados.md](viajes-grabados.md)) | Paradas, horas y personas que subieron en cada parada |
 
 ## 2. Alcance del MVP
 
@@ -213,7 +214,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Origen: PO13; DOC. Prioridad: media.
 - Estado: **[ACUERDO]** (PO13, DOC). Cantidad de viajes del promedio **[PROVISIONAL]** (P-11).
 - Requisito: el bus «llega» a una parada cuando pasa a menos de 50 m. El sistema guarda la hora real de cada paso. La hora aproximada de una parada es la del primer viaje registrado y luego se ajusta con el promedio de los últimos viajes. A cada estudiante se le muestra a qué hora aproximada pasará el bus por su parada.
-- Cómo se calcula: cada paso guarda cuántos minutos después de la salida llegó el bus a la parada. La hora aproximada es la hora de salida del horario más el promedio de esos minutos en los últimos 5 pasos (P-11), redondeado al minuto. Si ese horario todavía no tiene pasos, se usan los de otro horario del mismo sentido; si tampoco hay, la parada se muestra sin hora. Los pasos salen del modo registro (RF-23) y, cuando exista, del viaje en vivo (RF-07).
+- Cómo se calcula: cada paso guarda cuántos minutos después de la **salida programada** del horario llegó el bus a la parada, aunque haya salido antes o después (C-23). La hora aproximada es esa salida más el promedio de esos minutos en los últimos 5 pasos (P-11), redondeada hacia abajo para que nadie llegue tarde: si el bus pasó a las 07:00:54, la parada muestra 07:00. Si ese horario todavía no tiene pasos, se usan los de otro horario del mismo sentido; si tampoco hay, la parada se muestra sin hora. Los pasos salen del modo registro (RF-23) y, cuando exista, del viaje en vivo (RF-07).
 - Criterio de aceptación:
   - Aceptación: en el primer viaje, el bus pasa a 30 m de Sevilla a las 06:58. La hora aproximada de esa parada queda en 06:58.
   - Límite: en el segundo viaje pasa a las 07:02. La hora aproximada pasa a ser 07:00.
@@ -330,7 +331,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Estado: **[ACUERDO]** (PO18). Reemplaza el plan de sacar capturas de Maps en cada parada (C-18). Usa el GPS real, no simulado.
 - Requisito: un chofer o un administrador inicia un **registro** en un viaje real, eligiendo la ruta y el horario. Mientras el registro está en curso:
   1. La página sigue el GPS del celular, guarda el recorrido (un punto cada 15 segundos o cada 40 m) y mantiene la pantalla encendida.
-  2. Al llegar a una parada, la persona toca «Parada» y se guardan la posición, la precisión del GPS y la hora. La primera marca es la salida y los minutos se cuentan desde ella.
+  2. Al llegar a una parada, la persona toca «Parada» y se guardan la posición, la precisión del GPS y la hora. Los minutos se cuentan desde la salida programada del horario (C-23).
   3. Si no hay señal, las marcas esperan en el celular y se envían cuando vuelve la conexión. Una marca reenviada se guarda una sola vez. La persona puede descargar un respaldo del registro, que el administrador importa después si algo falló.
 
   Al terminar el registro, cada marca a menos de 50 m de una parada que ya existe cuenta como un paso por esa parada; si no hay ninguna, se crea una parada nueva. La parada nueva queda **aprobada** si la grabó un administrador y **propuesta** si la grabó un chofer (P-28). Con los pasos se recalculan las horas aproximadas (RF-11) y el orden de las paradas, que sale de los minutos promedio de los viajes de ingreso. El primer registro con dos o más puntos da el recorrido de la ruta.
@@ -343,7 +344,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
   5. quiere terminar sin haber marcado ninguna parada («no marcaste ninguna parada»).
 - Criterio de aceptación:
   - Aceptación: el viernes 20/11, Sebastian (administrador) graba la Ruta Norte de las 06:40 y marca La Fontana a las 06:40, Sevilla a las 06:58 y Campus UPB a las 07:35. Al terminar quedan tres paradas aprobadas, en ese orden, y la hora aproximada de Sevilla es 06:58.
-  - Límite: el lunes 23/11 graba de nuevo: sale a las 06:41 y marca a 30 m de Sevilla a las 07:03 (22 minutos). No se crea otra parada y la hora aproximada de Sevilla pasa a 07:00, el promedio de 18 y 22 minutos.
+  - Límite: el lunes 23/11 graba de nuevo: el bus sale a las 06:41 y marca a 30 m de Sevilla a las 07:02, 22 minutos después de la salida programada de las 06:40. No se crea otra parada y la hora aproximada de Sevilla pasa a 07:00, el promedio de 18 y 22 minutos.
   - Rechazo: Ismael (estudiante) intenta iniciar un registro. Se rechaza por «solo un chofer o un administrador puede usar el modo registro».
   - Rechazo: Sebastian marca otra parada a 20 m de Sevilla. Se rechaza por «ya marcaste una parada a menos de 50 m» y no se guarda.
   - Límite: sin señal, la marca de Sevilla se envía dos veces. Se guarda una sola vez.
@@ -403,6 +404,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 | RF-22 | 15 confirmados exactos | No hay aviso (con 14 sí) |
 | RF-23 | Una marca a 50 m exactos de una parada que ya existe | Se crea una parada nueva: para contar como la misma debe estar a menos de 50 m **[PROVISIONAL]** |
 | RF-23 | La misma marca llega dos veces (se reenvió sin señal) | Se guarda una sola vez |
+| RF-11 | El bus pasa por la parada a las 07:00:54 | La parada muestra 07:00: se redondea hacia abajo (C-23) |
 
 ## 6. Preguntas abiertas para el Product Owner
 
@@ -427,7 +429,7 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 | P-15 | ¿La recarga tiene monto máximo? | No | RF-15 |
 | P-16 | ¿Qué hosting gratuito se usa? | Se decide en el Sprint 2 | RT-08 |
 | P-17 | ¿Con cuánta anticipación se avisa al administrador que hay menos de 15? | 30 minutos antes de la salida | RF-22 |
-| P-18 | ¿Cuáles son las paradas reales de cada ruta, su orden y sus coordenadas? Respondida en parte (ENT-01): la Ruta Norte pasa por «varios puntos de Sevilla», Petrol y parte de Campos. Faltan el orden, las coordenadas y las demás rutas (ENT-03). Se responde con el modo registro: Sebastian Cruz graba la Ruta Norte en un viaje real (RF-23, tarea T26) | Las paradas de la sección 0, solo en los ejemplos y los tests | RF-05, RF-23 |
+| P-18 | ¿Cuáles son las paradas reales de cada ruta, su orden y sus coordenadas? Respondida en parte (ENT-01): la Ruta Norte pasa por «varios puntos de Sevilla», Petrol y parte de Campos. Faltan el orden, las coordenadas y las demás rutas (ENT-03). Se responde con el modo registro: la primera ruta grabada es la Ruta Sur (REG-01, 25/11); la Ruta Norte y las demás se graban en los viajes siguientes (C-24) | Las paradas de la sección 0, solo en los ejemplos y los tests | RF-05, RF-23 |
 | P-19 | El chofer de ENT-01 espera «hasta dos minutos», y como máximo uno más; Don Iván dice «mayormente son 2 minutos» (ENT-03); el docente indicó que el bus no espera. ¿Se da una tolerancia de espera? | Sin espera, como indicó el docente (DOC) | RF-09 |
 | P-20 | ¿Qué pantalla tiene el bus (sistema y navegador) y le da su ubicación a una página web? ENT-01 dice que la pantalla tiene GPS; Don Iván dice que usan «el GPS del WhatsApp» (ENT-03) | Se asume el celular del chofer; se confirma con una prueba en el bus | RF-07 |
 | P-21 | El chofer mencionó una aplicación que «salió para los transportistas». ¿Cuál es y qué hace? Don Iván no la conoce, pero dijo que el próximo año habría una aplicación y «varios cambios sobre el transporte» (ENT-03); se pregunta en ENT-07 | Se investiga como referencia; no cambia el alcance | Alcance |
@@ -441,6 +443,7 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 | P-29 | Si el túnel HTTPS o el GPS fallan en el viaje de grabación, ¿qué se hace? | Si la página no abre: capturas de Maps con la hora de cada parada. Si abre pero se corta la señal: las marcas esperan en el celular, o se descarga el respaldo y el administrador lo importa | RF-23 |
 | P-30 | ¿Se graban también los viajes de salida (de la U al punto final)? ¿Paran en las mismas paradas, en orden inverso? | Se puede grabar cualquier horario; el orden de las paradas sale de los viajes de ingreso y las horas, de cada horario | RF-05, RF-11, RF-23 |
 | P-31 | Cuando exista «subió» (RF-14), ¿cada abordaje en una parada cuenta también como un paso para ajustar la hora aproximada? | Sí, a partir de HU-10; mientras tanto, solo cuentan el modo registro y el viaje en vivo | RF-11, RF-14 |
+| P-32 | ¿El modo registro debería contar cuántas personas suben en cada parada? | No en el MVP: se anotan aparte, como en REG-01, y sirven para el simulador y para revisar el mínimo de RF-22 | RF-22, RF-23 |
 
 ## 7. Siguiente paso
 
@@ -457,6 +460,8 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 - **Asistencia de IA (16/11/2026):** se usó Claude (Anthropic) para pasar las entrevistas a este documento, cambiar los ejemplos (C-09) y redactar las preguntas P-19 a P-24.
 - **Hugo Zuñiga (18/11/2026):** decidió el modo registro en lugar de las capturas de Maps, entregó la lista de la clase para el padrón y pidió correos de ejemplo para quienes no tienen correo de la UPB.
 - **Asistencia de IA (18/11/2026):** se usó Claude (Anthropic) para redactar BUS-RF-23, los criterios nuevos de RF-01, RF-02 y RF-04 y las preguntas P-28 a P-31, a partir de las decisiones de Hugo y de la base del código.
+- **Sebastian Cruz (25/11/2026):** grabó el primer viaje real, la Ruta Sur (REG-01), y anotó cuántas personas subieron en cada parada.
+- **Asistencia de IA (25/11/2026):** se usó Claude (Anthropic) para ajustar RF-11 y RF-23 con lo que mostró ese viaje (C-23) y redactar P-32.
 
 ## 9. Anexo — Datos de la guía de buses (GUIA)
 

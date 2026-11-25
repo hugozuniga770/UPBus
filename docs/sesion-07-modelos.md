@@ -3,6 +3,7 @@
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I) · Aprueba: Hugo Zuñiga, como Product Owner
+- Actualizado: 25/11/2026 · HU18-CA2 con las horas medidas desde la salida programada (C-23)
 - Fecha: 18/11/2026 · Sprint 1 · Tarea T02 del [plan](sesion-08-09-plan.md) · Issue: [#2](https://github.com/hugozuniga770/UPBus/issues/2) · Milestone: Sprint 1
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
@@ -425,7 +426,7 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 
 **CA2 — Un segundo registro ajusta la hora sin duplicar la parada** ✅ `test_HU18_CA2_un_segundo_registro_ajusta_la_hora_sin_duplicar_la_parada`
 - Dado: el registro de CA1.
-- Cuando: el lunes 23/11 Sebastian sale a las 06:41 y marca a 30 m de Sevilla a las 07:03 (22 minutos).
+- Cuando: el lunes 23/11 el bus sale a las 06:41 y Sebastian marca a 30 m de Sevilla a las 07:02, 22 minutos después de la salida programada de las 06:40.
 - Entonces: sigue habiendo una sola parada Sevilla y su hora aproximada pasa a 07:00, el promedio de 18 y 22 minutos.
 
 **CA3 — Un estudiante no puede usar el modo registro** ✅ `test_HU18_CA3_un_estudiante_no_puede_usar_el_modo_registro`
@@ -629,11 +630,11 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-18 | 5 | 5 | 0 |
 | **Total** | **73** | **19** | **54** |
 
-Además de los 19 tests de criterios, la base tiene 3 tests de soporte en pytest (importar el padrón, importar un respaldo del modo registro y conectar el WebSocket del viaje) y 8 pruebas de interfaz en Vitest: 3 de criterios (HU01-CA3, HU02-CA3 y HU18-CA5) y 5 de soporte (el cliente de la API y la cola del modo registro). Las pruebas de soporte no cuentan como criterios.
+Además de los 19 tests de criterios, hay 4 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur y conectar el WebSocket del viaje) y 10 pruebas de interfaz en Vitest: 3 de criterios (HU01-CA3, HU02-CA3 y HU18-CA5) y 7 de soporte (el cliente de la API, la cola y el respaldo del modo registro). Las pruebas de soporte no cuentan como criterios.
 
 ## 8. Participación y asistencia utilizada
 
 - **Hugo Zuñiga (Product Owner):** definió las historias a partir de los requisitos, decidió el modo registro (HU-18) y aprueba este documento.
-- **Andrés Laura Vargas (Scrum Master):** usa la sección 7 para repartir las historias y los tests en el Sprint Planning del 21/11.
+- **Andrés Laura Vargas (Scrum Master):** dirigió el reparto del 18/11, en el que cada uno tomó sus historias con sus tests (C-26).
 - **Sebastian Cruz:** revisión pendiente de HU-04, HU-05, HU-06 y HU-18, que tocan rutas y viajes.
-- **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base.
+- **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base; el 25/11/2026, para ajustar HU18-CA2 con lo que mostró el primer viaje real (C-23).

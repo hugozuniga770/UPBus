@@ -61,7 +61,7 @@ def test_HU18_CA2_un_segundo_registro_ajusta_la_hora_sin_duplicar_la_parada(clie
 
     registro_id = iniciar(cliente, ruta_norte, horario_0640).json()["registro"]["id"]
     marcar(cliente, registro_id, "La Fontana", LA_FONTANA, hora(23, 6, 41))
-    marcar(cliente, registro_id, "Sevilla", punto_a(SEVILLA, metros_al_norte=30), hora(23, 7, 3))
+    marcar(cliente, registro_id, "Sevilla", punto_a(SEVILLA, metros_al_norte=30), hora(23, 7, 2))
     cliente.post(f"/api/registros/{registro_id}/terminar")
 
     assert Parada.objects.filter(ruta=ruta_norte, nombre="Sevilla").count() == 1
