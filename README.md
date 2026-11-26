@@ -38,7 +38,7 @@ En el MVP la ubicación del bus y de los estudiantes, la recarga de créditos, e
 | Documento | Contenido | Estado |
 |---|---|---|
 | [sesion-06-requisitos.md](docs/sesion-06-requisitos.md) | Requisitos, alcance, lo que se simula y preguntas abiertas | Listo para revisión · RF-23 el 18/11 |
-| [sesion-07-modelos.md](docs/sesion-07-modelos.md) | 18 historias, 75 criterios Dado/Cuando/Entonces con el nombre de su test, casos de uso, estados y trazabilidad | Listo para revisión |
+| [sesion-07-modelos.md](docs/sesion-07-modelos.md) | 18 historias, 75 criterios Dado/Cuando/Entonces con el nombre de su test, casos de uso, estados y trazabilidad | Aprobado el 26/11 |
 | [sesion-08-09-plan.md](docs/sesion-08-09-plan.md) | Plan por sprints, tareas, Gantt, riesgos y recortes | Listo para revisión |
 | [sesion-12-arquitectura.md](docs/sesion-12-arquitectura.md) | Arquitectura y verificación de un flujo | Pendiente |
 | [sesion-13-14-diseno.md](docs/sesion-13-14-diseno.md) | Arquitectura FE / MW / Padrón / BD, datos, clases y API | Base descrita; modelos que faltan propuestos |

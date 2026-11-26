@@ -2,8 +2,8 @@
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
-- Docente: Ing. Alejandro Rodríguez (Certificación I) · Aprueba: Hugo Zuñiga, como Product Owner
-- Actualizado: 26/11/2026 · HU-07 en verde salvo CA6, que llega con T16 (T14). El 25/11/2026: revisión del Product Owner (PO25): HU-07 CA3, HU-10, HU-11, HU-12 y HU-16, con dos criterios nuevos (HU10-CA5 y HU11-CA5), 75 en total (C-28 a C-32). Antes, ese día: HU18-CA2 con las horas medidas desde la salida programada (C-23)
+- Docente: Ing. Alejandro Rodríguez (Certificación I) · Aprobado por Hugo Zuñiga, como Product Owner, el 26/11/2026
+- Actualizado: 26/11/2026 · aprobado por el Product Owner (T02) y HU-07 en verde salvo CA6, que llega con T16 (T14). El 25/11/2026: revisión del Product Owner (PO25): HU-07 CA3, HU-10, HU-11, HU-12 y HU-16, con dos criterios nuevos (HU10-CA5 y HU11-CA5), 75 en total (C-28 a C-32). Antes, ese día: HU18-CA2 con las horas medidas desde la salida programada (C-23)
 - Fecha: 18/11/2026 · Sprint 1 · Tarea T02 del [plan](sesion-08-09-plan.md) · Issue: [#2](https://github.com/hugozuniga770/UPBus/issues/2) · Milestone: Sprint 1
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
@@ -644,7 +644,7 @@ Además de los 34 tests de criterios, hay 17 tests de soporte en pytest (importa
 
 ## 8. Participación y asistencia utilizada
 
-- **Hugo Zuñiga (Product Owner):** definió las historias a partir de los requisitos, decidió el modo registro (HU-18) y aprueba este documento.
+- **Hugo Zuñiga (Product Owner):** definió las historias a partir de los requisitos, decidió el modo registro (HU-18) y aprobó este documento el 26/11/2026, con los cambios de su revisión del 25/11 (PO25).
 - **Hugo Zuñiga (25/11/2026, noche):** revisó las 18 historias (T02) y decidió los cambios de PO25: pago iniciado por el estudiante, abordaje automático, ajustes de créditos del administrador y todo cambio de ruta con aprobación (C-29 a C-32).
 - **Andrés Laura Vargas (Scrum Master):** dirigió el reparto del 18/11, en el que cada uno tomó sus historias con sus tests (C-26).
 - **Sebastian Cruz:** implementó y verificó HU-05 y HU-06 (T11, issue #6), además de revisar las historias que tocan rutas y viajes.
