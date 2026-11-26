@@ -201,7 +201,7 @@ erDiagram
 | `AvisoDeSubida` | viajes | HU-07, HU-09, HU-10 | Implementado. Un aviso activo por estudiante y viaje (HU07-CA2). Cuando el bus llega a otra parada, los confirmados en las que ya pasó quedan «no se presentó»; al terminar el viaje, todos los confirmados (P-33). La ubicación del estudiante va en el mismo aviso (`ubicacion_latitud`, `ubicacion_longitud`, `ubicacion_en`): solo la última, y se borra al cancelar, al cerrarse o al terminar el viaje; con T16, también al subir. Con esa ubicación, T16 detecta que subió: el bus a más de 100 m de su parada y dos ubicaciones seguidas a menos de 50 m del bus (P-33). El abordaje es su estado A bordo, con quién lo marcó: el estudiante, el chofer o la app (C-30); subir no cobra (C-31) |
 | `PagoDeViaje` | `creditos` (app nueva) o viajes | HU-12 | Uno por estudiante y viaje. Con créditos genera el cobro, el abono al chofer y el comprobante; en efectivo lo marca el chofer, sin movimiento. `id_cliente` único para que un reenvío no cobre dos veces (HU12-CA3) |
 | `Recarga` y `Movimiento` | `creditos` (app nueva) o viajes | HU-11 a HU-13 | El saldo es la suma de los movimientos; nunca se guarda aparte. Cada cobro, devolución, retiro o ajuste es un movimiento completo o ninguno (RC-03). El ajuste del administrador lleva su motivo y quién lo hizo, y no deja el saldo en negativo (C-29) |
-| `Mensaje` y `MiembroDeRuta` | mensajes | HU-14, HU-15 | Solo texto (P-10) |
+| `Mensaje` y `MiembroDeRuta` | mensajes | HU-14, HU-15 | Implementados. Solo texto (P-10). Un mensaje directo pertenece a un viaje y a la conversación privada de un estudiante; uno de ruta pertenece a una ruta. `Mensaje.id_cliente` evita duplicar reenvíos y `MiembroDeRuta` guarda la ruta elegida por cada persona |
 | `CambioDeRuta` | rutas | HU-16 | Todo cambio del chofer queda pendiente hasta que un administrador lo aprueba; los del administrador se aplican directamente (C-32) |
 
 ## 4. Clases y funciones por capa (lo que hay)
@@ -212,7 +212,7 @@ erDiagram
 | `cuentas` | `verificar_persona_en_padron`, `verificar_correo_del_padron`, `verificar_persona_activa`, `verificar_sin_cuenta`, `verificar_contrasenas_iguales`, `verificar_contrasena`, `rol_desde_el_padron`, `verificar_credenciales`, `verificar_es_administrador`, `verificar_rol_valido`, `verificar_correo_libre`, `verificar_codigo_libre`, `verificar_no_es_uno_mismo` | `registrar`, `autenticar`, `listar_cuentas`, `crear_cuenta`, `buscar_cuenta`, `eliminar_cuenta` | `CsrfVista`, `RegistroVista`, `SesionVista`, `UsuariosVista`, `UsuarioVista` |
 | `rutas` | `verificar_puede_registrar`, `verificar_horario_de_la_ruta`, `verificar_sin_registro_en_curso`, `verificar_es_su_registro`, `verificar_registro_en_curso`, `verificar_coordenadas`, `verificar_lejos_de_las_otras_marcas`, `verificar_hay_marcas`, `estado_de_una_parada_nueva`, `radio_de_llegada`, `llego_a_la_parada`, `parada_mas_cercana`, `minutos_entre`, `salida_programada`, `promedio_de_los_ultimos`, `hora_aproximada`, `llegada_limite` | `listar_rutas`, `ver_ruta`, `paradas_visibles`, `horas_aproximadas`, `registrar_paso`, `reordenar_paradas`, `iniciar_registro`, `marcar_parada`, `agregar_puntos`, `terminar_registro`, `cancelar_registro`, `importar_registro` | `RutasVista`, `RutaVista`, `RegistrosVista`, `RegistroEnCursoVista`, `MarcasVista`, `PuntosVista`, `TerminarRegistroVista`, `CancelarRegistroVista` |
 | `viajes` | `verificar_es_su_viaje`, `verificar_programado`, `verificar_sin_viaje_en_curso`, `verificar_en_curso`, `verificar_coordenadas`, `verificar_puede_avisar`, `verificar_viaje_abierto`, `verificar_parada_de_la_ruta`, `verificar_bus_no_paso`, `verificar_sin_aviso_activo`, `verificar_es_su_aviso`, `verificar_aviso_confirmado`, `verificar_puede_ver_avisos`; del simulador: `verificar_escenario`, `verificar_velocidad`, `verificar_recorrido`, `verificar_hay_paradas`, `verificar_sin_simulacion_en_curso` | `listar_viajes`, `buscar_viaje`, `iniciar_viaje`, `terminar_viaje`, `registrar_posicion`, `avisar_que_va_a_subir`, `cancelar_aviso`, `compartir_ubicacion`, `avisos_del_viaje`, `aviso_activo_de`, `dejar_de_compartir`, `cerrar_no_presentados`, `cerrar_avisos_del_viaje`. En `simulador.py` (T23): `trayecto`, `correr`, `panel`, `iniciar_simulacion`, `detener_simulacion` | Vistas de viajes y posiciones; `ViajeConsumer` entrega posiciones al grupo `viaje_<id>`; `ChoferDelViajeConsumer`, canal privado del chofer; `SimulacionesVista` y `DetenerSimulacionVista`, panel de demo |
-| `mensajes` | Por hacer (T19) | Por hacer | Por hacer |
+| `mensajes` | `verificar_texto`, `verificar_confirmado`, `verificar_chofer_del_viaje`, `verificar_respuesta_rapida`, `verificar_mismo_reenvio`, `verificar_puede_elegir_ruta`, `verificar_es_miembro_de_la_ruta` | `enviar_mensaje_directo`, `mensajes_directos`, `elegir_ruta`, `membresia_de_ruta`, `enviar_mensaje_de_ruta`, `mensajes_de_ruta` | `MensajesDirectosVista`, `MiembroDeRutaVista`, `MensajesDeRutaVista`; `ChatDirectoConsumer` y `ChatDeRutaConsumer` entregan cada mensaje en su canal privado |
 
 Comandos: `importar_padron` (cuentas), `cargar_rutas` e `importar_registro` (rutas), `simular` (viajes, T23).
 
@@ -238,6 +238,9 @@ Todas las rutas empiezan con `/api/` y responden JSON. Toda escritura lleva el t
 | `POST viajes/<id>/avisos` · `GET viajes/<id>/avisos` | Estudiante o administrador · chofer del viaje o administrador | Avisa «Voy a subir» · lista quién va a subir, con su ubicación | HU-07 |
 | `GET viajes/<id>/mi-aviso` | Con sesión | El aviso activo de quien pregunta, si tiene | HU-07 |
 | `POST avisos/<id>/cancelar` · `POST avisos/<id>/ubicacion` | El estudiante del aviso | Cancela mientras el bus no pasó · comparte su ubicación | HU-07 |
+| `GET` · `POST viajes/<id>/mensajes` | Estudiante confirmado · chofer asignado | Historial privado · envía texto o una respuesta rápida; `id_cliente` evita duplicados | HU-14 |
+| `GET` · `POST rutas/<id>/miembro` | Con sesión · estudiante o administrador | Consulta si puede entrar · elige la ruta | HU-15 |
+| `GET` · `POST rutas/<id>/mensajes` | Miembro, chofer de la ruta o administrador | Historial · envía un mensaje de texto; `id_cliente` evita duplicados | HU-15 |
 | `POST registros` | Chofer o administrador | Inicia un registro | HU-18 |
 | `GET registros/en-curso` | Chofer o administrador | El registro sin terminar, si hay | HU-18 |
 | `POST registros/<id>/marcas` | Quien graba | Guarda una marca; un reenvío no duplica | HU-18 |
@@ -246,6 +249,8 @@ Todas las rutas empiezan con `/api/` y responden JSON. Toda escritura lleva el t
 | `POST registros/<id>/cancelar` | Quien graba | Cancela sin crear nada | HU-18 |
 | `ws/viajes/<id>/` (WebSocket) | Cualquiera desde la app (solo se valida el origen; la posición del bus no es un dato personal) | Canal que confirma la conexión y entrega la posición del bus | HU-06 |
 | `ws/viajes/<id>/chofer/` (WebSocket) | Chofer del viaje o administrador | Canal privado: «Ismael va a subir en Sevilla», avisos cerrados y ubicaciones | HU-07 |
+| `ws/mensajes/viajes/<viaje>/<estudiante>/` (WebSocket) | Ese estudiante confirmado o el chofer asignado | Entrega en tiempo real solo la conversación directa indicada | HU-14 |
+| `ws/mensajes/rutas/<ruta>/` (WebSocket) | Miembro, chofer de la ruta o administrador | Entrega los mensajes del chat de la ruta | HU-15 |
 | `GET simulaciones` · `POST simulaciones` | Administrador | Escenarios y simulaciones corridas · inicia una (202); una a la vez | T23 |
 | `POST simulaciones/<id>/detener` | Administrador | Detiene la simulación y termina su viaje | T23 |
 
@@ -256,8 +261,8 @@ Todas las rutas empiezan con `/api/` y responden JSON. Toda escritura lleva el t
 | `/ingresar` | Iniciar sesión con código o correo | Cualquiera | HU-02 |
 | `/registrarse` | Crear la cuenta con el padrón | Persona del padrón | HU-01 |
 | `/` | Inicio con tarjetas según el rol; las que faltan dicen «Próximamente» con su historia | Con sesión | — |
-| `/rutas` | Mapa con recorrido, paradas, horas aproximadas y el bus del viaje en curso; «Voy a subir», cancelar y compartir la ubicación | Con sesión | HU-04, HU-06, HU-07 |
-| `/viajes` | Iniciar o terminar el viaje asignado, compartir el GPS del bus y ver quién va a subir | Chofer | HU-05, HU-06, HU-07 |
+| `/rutas` | Mapa con recorrido, paradas, horas aproximadas y el bus del viaje en curso; «Voy a subir», chat directo con el chofer y chat de la ruta | Con sesión | HU-04, HU-06, HU-07, HU-14, HU-15 |
+| `/viajes` | Iniciar o terminar el viaje asignado, compartir el GPS del bus, ver quién va a subir y responderle con botones rápidos | Chofer | HU-05, HU-06, HU-07, HU-14 |
 | `/modo-registro` | Grabar paradas y horas con el GPS | Chofer o administrador | HU-18 |
 | `/usuarios` | Crear choferes y personas, y desactivar cuentas | Administrador | HU-03 |
 | `/demo` | Panel de demo: correr y detener escenarios del simulador | Administrador | T23 |
@@ -279,6 +284,7 @@ Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `Error
 | Subir y pagar son dos pasos distintos (C-31) | Así se paga hoy: el chofer revisa los comprobantes al final. Además, el abordaje automático no podría cobrar sin que el estudiante lo pida |
 | Los viajes del simulador no guardan pasos (C-28) | Las horas que ve el estudiante salen solo de viajes reales |
 | Distancia de llegada configurable (`UPBUS_RADIO_DE_LLEGADA_M`, C-34) | Empieza en 50 m y se calibra con los viajes de prueba sin cambiar el código; la leen las reglas con `radio_de_llegada()` |
+| Un grupo WebSocket por viaje y estudiante para el chat directo | Impide que los demás confirmados del mismo viaje reciban una conversación ajena; el chat de ruta sí usa un grupo común para sus miembros |
 
 ## 8. Participación y asistencia utilizada
 
@@ -288,3 +294,5 @@ Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `Error
 - **Hugo Zuñiga (25/11/2026):** implementó `AvisoDeSubida`, el canal privado del chofer y las rutas de HU-07 (T14), con asistencia de Claude (Anthropic).
 - **Sebastian Cruz (T22):** preparó el diseño de despliegue en Render con un solo proceso y PostgreSQL.
 - **Asistencia de IA (T22):** Sebastian usó OpenAI Codex para implementar y verificar la configuración de despliegue.
+- **Sebastian Cruz (T19):** implementó `Mensaje`, `MiembroDeRuta`, los servicios, la API, los canales privados y la interfaz de HU-14 y HU-15.
+- **Asistencia de IA (T19):** Sebastian usó OpenAI Codex para implementar y verificar los chats siguiendo la skill `implementar-historia`.

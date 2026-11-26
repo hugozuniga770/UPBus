@@ -12,6 +12,7 @@ Mueve un bus por el recorrido **grabado** de una ruta (la Ruta Sur, de [REG-01](
 - Los viajes simulados **no enseñan horas**: pasar por las paradas no cambia la hora aproximada, que sale solo de viajes reales (C-28).
 - El bus va a unos 25 km/h, manda una posición cada 25 m y se detiene 30 s en cada parada.
 - Si el recorrido grabado empieza después de la primera parada, el bus va en línea recta hasta él. Pasa en la Ruta Sur: REG-01 tiene puntos desde Parque Urbano, no desde Makro Parque.
+- Si en tu base la ruta todavía no tiene recorrido, pero hay uno grabado en `rutas/datos/registros/` (la Ruta Sur tiene REG-01), el panel Demo lo carga la primera vez, a nombre de quien inicia la simulación, y lo anota en la lista (C-37). Desde la terminal hay que cargarlo antes con `importar_registro`.
 - Usa dos cuentas de demo que se crean solas y no pueden iniciar sesión: «Chofer de la simulación» y «Estudiante de la simulación».
 
 ## 1. Escenarios

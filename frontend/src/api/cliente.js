@@ -94,6 +94,16 @@ export const api = {
   avisosDelViaje: (viajeId) => pedir("GET", `/viajes/${viajeId}/avisos`),
   cancelarAviso: (avisoId) => pedir("POST", `/avisos/${avisoId}/cancelar`),
   compartirUbicacion: (avisoId, ubicacion) => pedir("POST", `/avisos/${avisoId}/ubicacion`, ubicacion),
+  // HU-14 y HU-15
+  mensajesDirectos: (viajeId, estudianteId) => pedir(
+    "GET",
+    `/viajes/${viajeId}/mensajes${estudianteId ? `?estudiante=${estudianteId}` : ""}`,
+  ),
+  enviarMensajeDirecto: (viajeId, datos) => pedir("POST", `/viajes/${viajeId}/mensajes`, datos),
+  membresiaDeRuta: (rutaId) => pedir("GET", `/rutas/${rutaId}/miembro`),
+  elegirRuta: (rutaId) => pedir("POST", `/rutas/${rutaId}/miembro`),
+  mensajesDeRuta: (rutaId) => pedir("GET", `/rutas/${rutaId}/mensajes`),
+  enviarMensajeDeRuta: (rutaId, datos) => pedir("POST", `/rutas/${rutaId}/mensajes`, datos),
   // T23: panel de demo
   simulaciones: () => pedir("GET", "/simulaciones"),
   iniciarSimulacion: (datos) => pedir("POST", "/simulaciones", datos),

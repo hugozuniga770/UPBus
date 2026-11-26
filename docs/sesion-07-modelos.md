@@ -356,29 +356,29 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 
 ### HU-14 — Chatear directo con el chofer
 
-**CA1 — El confirmado le escribe al chofer** ⏳ `test_HU14_CA1_el_confirmado_le_escribe_al_chofer`
+**CA1 — El confirmado le escribe al chofer** ✅ `test_HU14_CA1_el_confirmado_le_escribe_al_chofer`
 - Dado: Ismael está Confirmado en el viaje de Marco.
 - Cuando: le escribe «Ya estoy en la parada».
 - Entonces: Marco lo recibe con el nombre de Ismael y la hora.
 
-**CA2 — Rechaza escribir sin estar en el viaje** ⏳ `test_HU14_CA2_rechaza_escribir_sin_estar_en_el_viaje`
+**CA2 — Rechaza escribir sin estar en el viaje** ✅ `test_HU14_CA2_rechaza_escribir_sin_estar_en_el_viaje`
 - Dado: Ismael no está Confirmado en el viaje.
 - Cuando: intenta escribirle al chofer.
 - Entonces: se rechaza por «no estás en este viaje».
 
-**CA3 — El chofer responde con una respuesta rápida** ⏳ `test_HU14_CA3_el_chofer_responde_con_una_respuesta_rapida`
+**CA3 — El chofer responde con una respuesta rápida** ✅ `test_HU14_CA3_el_chofer_responde_con_una_respuesta_rapida`
 - Dado: Ismael le escribió a Marco.
 - Cuando: Marco toca una respuesta rápida, por ejemplo «Ya llego».
 - Entonces: Ismael la recibe sin que Marco tenga que escribir. Las respuestas rápidas son **[PROVISIONAL]**.
 
 ### HU-15 — Usar el chat de la ruta
 
-**CA1 — El miembro escribe en el chat de su ruta** ⏳ `test_HU15_CA1_el_miembro_escribe_en_el_chat_de_su_ruta`
+**CA1 — El miembro escribe en el chat de su ruta** ✅ `test_HU15_CA1_el_miembro_escribe_en_el_chat_de_su_ruta`
 - Dado: Ismael eligió la Ruta Norte.
 - Cuando: escribe en su chat.
 - Entonces: lo ven los demás miembros, con su nombre y la hora.
 
-**CA2 — Rechaza escribir en una ruta ajena** ⏳ `test_HU15_CA2_rechaza_escribir_en_una_ruta_ajena`
+**CA2 — Rechaza escribir en una ruta ajena** ✅ `test_HU15_CA2_rechaza_escribir_en_una_ruta_ajena`
 - Dado: Ismael no eligió la Ruta Sur.
 - Cuando: intenta escribir en su chat.
 - Entonces: se rechaza por «no eres parte de esta ruta».
@@ -633,14 +633,14 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-11 | 5 | 0 | 5 |
 | HU-12 | 6 | 0 | 6 |
 | HU-13 | 2 | 0 | 2 |
-| HU-14 | 3 | 0 | 3 |
-| HU-15 | 2 | 0 | 2 |
+| HU-14 | 3 | 3 | 0 |
+| HU-15 | 2 | 2 | 0 |
 | HU-16 | 4 | 0 | 4 |
 | HU-17 | 4 | 0 | 4 |
 | HU-18 | 5 | 5 | 0 |
-| **Total** | **75** | **34** | **41** |
+| **Total** | **75** | **39** | **36** |
 
-Además de los 34 tests de criterios, hay 18 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur, conectar el WebSocket del viaje, programar viajes desde el panel, cerrar los avisos al terminar el viaje, calibrar la distancia de llegada y 11 del simulador de T23) y 18 pruebas de interfaz en Vitest: 6 de criterios (HU01-CA3, HU02-CA3, HU05-CA1, HU07-CA1, HU07-CA2 y HU18-CA5) y 12 de soporte (el cliente de la API, la cola y el respaldo del modo registro, la pantalla del chofer, la consulta del viaje en curso y el panel de demo). Las pruebas de soporte no cuentan como criterios.
+Además de los 39 tests de criterios, hay 25 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur, los WebSockets del viaje y de los chats, programar viajes desde el panel, cerrar los avisos al terminar el viaje, calibrar la distancia de llegada, 12 del simulador de T23 y 4 del despliegue de T22) y 23 pruebas de interfaz en Vitest: 11 de criterios (HU01-CA3, HU02-CA3, HU05-CA1, HU07-CA1, HU07-CA2, HU14-CA1 a CA3, HU15-CA1, HU15-CA2 y HU18-CA5) y 12 de soporte (el cliente de la API, la cola y el respaldo del modo registro, la pantalla del chofer, la consulta del viaje en curso y el panel de demo). Las pruebas de soporte no cuentan como criterios.
 
 ## 8. Participación y asistencia utilizada
 
@@ -648,5 +648,6 @@ Además de los 34 tests de criterios, hay 18 tests de soporte en pytest (importa
 - **Hugo Zuñiga (25/11/2026, noche):** revisó las 18 historias (T02) y decidió los cambios de PO25: pago iniciado por el estudiante, abordaje automático, ajustes de créditos del administrador y todo cambio de ruta con aprobación (C-29 a C-32).
 - **Andrés Laura Vargas (Scrum Master):** dirigió el reparto del 18/11, en el que cada uno tomó sus historias con sus tests (C-26).
 - **Sebastian Cruz:** implementó y verificó HU-05 y HU-06 (T11, issue #6), además de revisar las historias que tocan rutas y viajes.
-- **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base; el 25/11/2026, para ajustar HU18-CA2 con lo que mostró el primer viaje real (C-23) y, esa noche, para pasar las decisiones del Product Owner a HU-07, HU-10, HU-11, HU-12 y HU-16. Sebastian usó OpenAI Codex para implementar y probar HU-05 y HU-06 siguiendo la skill `implementar-historia` del repositorio.
+- **Sebastian Cruz:** implementó y verificó HU-14 y HU-15 (T19, issue #14), incluidos sus canales privados y pantallas para celular.
+- **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base; el 25/11/2026, para ajustar HU18-CA2 con lo que mostró el primer viaje real (C-23) y, esa noche, para pasar las decisiones del Product Owner a HU-07, HU-10, HU-11, HU-12 y HU-16. Sebastian usó OpenAI Codex para implementar y probar HU-05, HU-06, HU-14 y HU-15 siguiendo la skill `implementar-historia` del repositorio.
 - **Hugo Zuñiga (25/11/2026):** implementó T14 (HU-07, salvo CA6, que se escribe con T16) con asistencia de Claude (Anthropic).

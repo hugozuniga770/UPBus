@@ -3,7 +3,7 @@
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Responsable: Sebastian Cruz
 - Fecha: 25/11/2026 · Tarea T22 · Issue [#17](https://github.com/hugozuniga770/UPBus/issues/17)
-- Estado: configuración preparada; falta publicar cuando este cambio entre a `develop`
+- Estado: configuración en `develop` (PR #26); falta publicar en Render
 
 ## 1. Decisión
 
@@ -41,7 +41,11 @@ daphne -b 0.0.0.0 -p $PORT config.asgi:application
 
 ## 4. Cargar las paradas de la Ruta Sur
 
-La base nueva empieza con las rutas y los horarios, pero no con las paradas de REG-01. El plan gratuito no ofrece Shell ni trabajos sueltos, así que, después del primer despliegue:
+La base nueva empieza con las rutas y los horarios, pero no con las paradas de REG-01.
+
+**Lo más simple:** entra a la app publicada con una cuenta de administrador, abre **Demo** e inicia una simulación de la Ruta Sur. Como la ruta todavía no tiene recorrido, el panel carga el respaldo de REG-01 que viene en la imagen, a nombre de esa cuenta (C-37).
+
+**Sin pasar por la demo:** el plan gratuito no ofrece Shell ni trabajos sueltos, así que, después del primer despliegue:
 
 1. Registra en la app publicada una cuenta que tenga rol `administrador` en el padrón secreto.
 2. En Render, abre `upbus-db`, copia **External Database URL** y no la compartas ni la guardes en Git.

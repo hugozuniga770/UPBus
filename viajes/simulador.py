@@ -24,6 +24,7 @@ from comun.rechazos import NoExiste, Rechazo
 from comun.tiempo import a_hora_local, ahora as ahora_local
 from cuentas import reglas as reglas_de_cuentas
 from cuentas.models import Usuario
+from rutas import servicios as servicios_de_rutas
 from rutas.models import Parada, Ruta
 from rutas.reglas import radio_de_llegada
 
@@ -383,15 +384,28 @@ def panel(usuario):
     return list(ESCENARIOS.items()), sorted(SIMULACIONES.values(), key=lambda s: s.id, reverse=True)
 
 
+def _cargar_el_recorrido_grabado(usuario, ruta):
+    """Si la ruta no tiene recorrido, carga el que esté grabado en el repositorio (C-37)."""
+    if ruta.recorrido:
+        return []
+    return [
+        f"Se cargó el recorrido grabado {cargado['archivo']}: {cargado['paradas_nuevas']} paradas nuevas"
+        for cargado in servicios_de_rutas.cargar_registros_guardados(usuario, ruta)
+    ]
+
+
 def iniciar_simulacion(usuario, escenario, ruta, velocidad=10, parada=None):
     reglas_de_cuentas.verificar_es_administrador(usuario)
     reglas.verificar_velocidad(velocidad)
-    ruta, _, _, _ = preparar(escenario, ruta, parada=parada)
+    reglas.verificar_escenario(escenario, ESCENARIOS)
+    elegida = _buscar_ruta(ruta)
+    notas = _cargar_el_recorrido_grabado(usuario, elegida)
+    ruta, _, _, _ = preparar(escenario, elegida.pk, parada=parada)
     with _candado:
         reglas.verificar_sin_simulacion_en_curso(
             any(s.estado == "en_curso" and not s.detener.is_set() for s in SIMULACIONES.values())
         )
-        simulacion = Simulacion(next(_numeros), escenario, ruta.nombre, velocidad, ahora_local())
+        simulacion = Simulacion(next(_numeros), escenario, ruta.nombre, velocidad, ahora_local(), notas=notas)
         SIMULACIONES[simulacion.id] = simulacion
     _en_un_hilo(lambda: _correr_en_el_panel(simulacion, ruta.pk, parada))
     return simulacion

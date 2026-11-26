@@ -4,6 +4,8 @@ import { CircleMarker, Polyline, Tooltip } from "react-leaflet";
 import { api } from "../api/cliente.js";
 import Aviso from "../componentes/Aviso.jsx";
 import Boton from "../componentes/Boton.jsx";
+import ChatDeRuta from "../componentes/ChatDeRuta.jsx";
+import ChatDirecto from "../componentes/ChatDirecto.jsx";
 import Mapa from "../componentes/Mapa.jsx";
 import VoyASubir from "../componentes/VoyASubir.jsx";
 import { useSesion } from "../sesion/SesionContexto.jsx";
@@ -305,6 +307,8 @@ export default function Rutas() {
               )}
             </div>
             <VoyASubir rutaId={rutaId} horarioId={horarioId} paradas={paradas} />
+            {viajeActivo && <ChatDirecto viajeId={viajeActivo.id} />}
+            <ChatDeRuta rutaId={rutaId} nombreRuta={ruta.nombre} />
             <div className="mt-3 flex flex-wrap gap-2">
               {ruta.horarios.map((h) => (
                 <button
