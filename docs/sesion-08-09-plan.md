@@ -5,7 +5,7 @@
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz. Los tres son Developers.
 - Docente: Ing. Alejandro Rodríguez (Certificación I)
 - Fecha del plan: 13/11/2026 · Avance: jueves 19/11/2026 · Entrega final: martes 15/12/2026
-- Actualizado: 25/11/2026 · reparto del 18/11 en la tabla de tareas (C-26), primera ruta grabada con el modo registro (T26, C-24) y Gantt al 25/11; esa noche, evidencias de T14, T16, T17, T20 y T23 ajustadas a la revisión de las historias del Product Owner (C-28 a C-32). El 18/11/2026: base del código, tareas T25 y T26, Andrés como Scrum Master de la implementación y sesiones de sábado y domingo (C-18 a C-20). Antes, 16/11/2026: entrevistas, T23 y T24, Gantt detallado y costos (C-07, C-08, C-12, C-13)
+- Actualizado: 26/11/2026 · T02 aprobada, T14 hecha y T23 en curso. El 25/11/2026: reparto del 18/11 en la tabla de tareas (C-26), primera ruta grabada con el modo registro (T26, C-24) y Gantt al 25/11; esa noche, evidencias de T14, T16, T17, T20 y T23 ajustadas a la revisión de las historias del Product Owner (C-28 a C-32). El 18/11/2026: base del código, tareas T25 y T26, Andrés como Scrum Master de la implementación y sesiones de sábado y domingo (C-18 a C-20). Antes, 16/11/2026: entrevistas, T23 y T24, Gantt detallado y costos (C-07, C-08, C-12, C-13)
 - Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Historias: [Sesión 7](sesion-07-modelos.md) · Cambios: [cambios.md](cambios.md)
 
@@ -49,7 +49,7 @@ Las estimaciones son en horas-persona (h-p) y son **[PROPUESTA]**: no hay horas 
 |---|---|---|---:|---|---|---|
 | T00 | Perfil de proyecto: informe y presentación | Presentado el 07/11/2026 | 6 | Los tres | Perfil | Hecho |
 | T01 | Plan y requisitos | `sesion-08-09-plan.md` y `sesion-06-requisitos.md` aprobados | 4 | Hugo | 1 | En revisión: el 18/11 se sumó RF-23 |
-| T02 | Historias, criterios y casos de uso | `sesion-07-modelos.md` aprobado | 5 | Hugo | 1 | En revisión: escrito el 18/11; el Product Owner lo revisó el 25/11 (PO25) |
+| T02 | Historias, criterios y casos de uso | `sesion-07-modelos.md` aprobado | 5 | Hugo | 1 | Hecho: aprobado por el Product Owner el 26/11, con su revisión del 25/11 (PO25) |
 | T03 | Diseño y arquitectura | `sesion-13-14-diseno.md`, `sesion-12-arquitectura.md` y `diagramas-secuencia.md` aprobados | 5 | Andrés; Hugo hizo las secuencias y el diseño de la base | 1 | En curso: falta `sesion-12-arquitectura.md` |
 | T04 | Entrevistas a un chofer y a una estudiante (ENT-01, ENT-02) | Registros en `entrevistas.md` y cambios derivados | 2 | Hugo | 1 | Hecho (16/11) |
 | T05 | Entorno del servidor | Django, DRF y Channels arrancan; SQLite creada | 3 | Hugo (antes Andrés, C-19) | 1 | Hecho en la base |
@@ -200,7 +200,7 @@ Al cerrar cada sprint se anota aquí lo que de verdad pasó, comparado con el Ga
 | T00 | 05/11 | 07/11 | — | 07/11 | Se presentó a tiempo |
 | T01 | 13/11 | 14/11 | 13/11 | En revisión | Se ajustó el 16/11 con las entrevistas |
 | T04 | 13/11 | 13/11 | 16/11 | 16/11 | 3 días después: no se encontró a Don Iván |
-| T02 | 16/11 | 17/11 | 16/11 | 18/11 (en revisión) | 1 día después; se sumó HU-18 |
+| T02 | 16/11 | 17/11 | 16/11 | 26/11 (aprobado) | Escrito el 18/11, con HU-18 sumada; aprobado el 26/11 con la revisión del Product Owner (PO25) |
 | T05 a T08 | 17/11 | 20/11 | 18/11 | 18/11 | 2 días antes, en la base (C-19) |
 | T09, T10 y T12 | 20/11 | 26/11 | 18/11 | 18/11 | Se adelantaron al Sprint 1, en la base |
 | T25 | — | — | 18/11 | 18/11 | Tarea nueva (C-18) |
