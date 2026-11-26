@@ -630,7 +630,7 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-18 | 5 | 5 | 0 |
 | **Total** | **73** | **34** | **39** |
 
-Además de los 34 tests de criterios, hay 6 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur, conectar el WebSocket del viaje, programar viajes desde el panel y cerrar los avisos al terminar el viaje) y 16 pruebas de interfaz en Vitest: 6 de criterios (HU01-CA3, HU02-CA3, HU05-CA1, HU07-CA1, HU07-CA2 y HU18-CA5) y 10 de soporte (el cliente de la API, la cola y el respaldo del modo registro, la pantalla del chofer y la consulta del viaje en curso). Las pruebas de soporte no cuentan como criterios.
+Además de los 34 tests de criterios, hay 17 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur, conectar el WebSocket del viaje, programar viajes desde el panel, cerrar los avisos al terminar el viaje y 11 del simulador de T23) y 18 pruebas de interfaz en Vitest: 6 de criterios (HU01-CA3, HU02-CA3, HU05-CA1, HU07-CA1, HU07-CA2 y HU18-CA5) y 12 de soporte (el cliente de la API, la cola y el respaldo del modo registro, la pantalla del chofer, la consulta del viaje en curso y el panel de demo). Las pruebas de soporte no cuentan como criterios.
 
 ## 8. Participación y asistencia utilizada
 

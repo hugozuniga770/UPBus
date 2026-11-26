@@ -205,10 +205,10 @@ erDiagram
 | `comun` | `Rechazo` (400), `SinPermiso` (403), `NoExiste` (404); `distancia_en_metros`, `coordenadas_validas`; `ahora`, `a_hora_local` | `leer` (valida un serializador) | `manejar_excepcion` y `falla_csrf`: todo rechazo sale como `{"causa": ...}` |
 | `cuentas` | `verificar_persona_en_padron`, `verificar_correo_del_padron`, `verificar_persona_activa`, `verificar_sin_cuenta`, `verificar_contrasenas_iguales`, `verificar_contrasena`, `rol_desde_el_padron`, `verificar_credenciales`, `verificar_es_administrador`, `verificar_rol_valido`, `verificar_correo_libre`, `verificar_codigo_libre`, `verificar_no_es_uno_mismo` | `registrar`, `autenticar`, `listar_cuentas`, `crear_cuenta`, `buscar_cuenta`, `eliminar_cuenta` | `CsrfVista`, `RegistroVista`, `SesionVista`, `UsuariosVista`, `UsuarioVista` |
 | `rutas` | `verificar_puede_registrar`, `verificar_horario_de_la_ruta`, `verificar_sin_registro_en_curso`, `verificar_es_su_registro`, `verificar_registro_en_curso`, `verificar_coordenadas`, `verificar_lejos_de_las_otras_marcas`, `verificar_hay_marcas`, `estado_de_una_parada_nueva`, `llego_a_la_parada`, `parada_mas_cercana`, `minutos_entre`, `salida_programada`, `promedio_de_los_ultimos`, `hora_aproximada`, `llegada_limite` | `listar_rutas`, `ver_ruta`, `paradas_visibles`, `horas_aproximadas`, `registrar_paso`, `reordenar_paradas`, `iniciar_registro`, `marcar_parada`, `agregar_puntos`, `terminar_registro`, `cancelar_registro`, `importar_registro` | `RutasVista`, `RutaVista`, `RegistrosVista`, `RegistroEnCursoVista`, `MarcasVista`, `PuntosVista`, `TerminarRegistroVista`, `CancelarRegistroVista` |
-| `viajes` | `verificar_es_su_viaje`, `verificar_programado`, `verificar_sin_viaje_en_curso`, `verificar_en_curso`, `verificar_coordenadas`, `verificar_puede_avisar`, `verificar_viaje_abierto`, `verificar_parada_de_la_ruta`, `verificar_bus_no_paso`, `verificar_sin_aviso_activo`, `verificar_es_su_aviso`, `verificar_aviso_confirmado`, `verificar_puede_ver_avisos` | `listar_viajes`, `buscar_viaje`, `iniciar_viaje`, `terminar_viaje`, `registrar_posicion`, `avisar_que_va_a_subir`, `cancelar_aviso`, `compartir_ubicacion`, `avisos_del_viaje`, `aviso_activo_de`, `dejar_de_compartir`, `cerrar_no_presentados`, `cerrar_avisos_del_viaje` | Vistas de viajes y posiciones; `ViajeConsumer` entrega posiciones al grupo `viaje_<id>`; `ChoferDelViajeConsumer`, canal privado del chofer |
+| `viajes` | `verificar_es_su_viaje`, `verificar_programado`, `verificar_sin_viaje_en_curso`, `verificar_en_curso`, `verificar_coordenadas`, `verificar_puede_avisar`, `verificar_viaje_abierto`, `verificar_parada_de_la_ruta`, `verificar_bus_no_paso`, `verificar_sin_aviso_activo`, `verificar_es_su_aviso`, `verificar_aviso_confirmado`, `verificar_puede_ver_avisos`; del simulador: `verificar_escenario`, `verificar_velocidad`, `verificar_recorrido`, `verificar_hay_paradas`, `verificar_sin_simulacion_en_curso` | `listar_viajes`, `buscar_viaje`, `iniciar_viaje`, `terminar_viaje`, `registrar_posicion`, `avisar_que_va_a_subir`, `cancelar_aviso`, `compartir_ubicacion`, `avisos_del_viaje`, `aviso_activo_de`, `dejar_de_compartir`, `cerrar_no_presentados`, `cerrar_avisos_del_viaje`. En `simulador.py` (T23): `trayecto`, `correr`, `panel`, `iniciar_simulacion`, `detener_simulacion` | Vistas de viajes y posiciones; `ViajeConsumer` entrega posiciones al grupo `viaje_<id>`; `ChoferDelViajeConsumer`, canal privado del chofer; `SimulacionesVista` y `DetenerSimulacionVista`, panel de demo |
 | `mensajes` | Por hacer (T19) | Por hacer | Por hacer |
 
-Comandos: `importar_padron` (cuentas), `cargar_rutas` e `importar_registro` (rutas).
+Comandos: `importar_padron` (cuentas), `cargar_rutas` e `importar_registro` (rutas), `simular` (viajes, T23).
 
 ## 5. API
 
@@ -240,6 +240,8 @@ Todas las rutas empiezan con `/api/` y responden JSON. Toda escritura lleva el t
 | `POST registros/<id>/cancelar` | Quien graba | Cancela sin crear nada | HU-18 |
 | `ws/viajes/<id>/` (WebSocket) | Con sesión | Canal que confirma la conexión y entrega la posición del bus | HU-06 |
 | `ws/viajes/<id>/chofer/` (WebSocket) | Chofer del viaje o administrador | Canal privado: «Ismael va a subir en Sevilla», avisos cerrados y ubicaciones | HU-07 |
+| `GET simulaciones` · `POST simulaciones` | Administrador | Escenarios y simulaciones corridas · inicia una (202); una a la vez | T23 |
+| `POST simulaciones/<id>/detener` | Administrador | Detiene la simulación y termina su viaje | T23 |
 
 ## 6. Interfaz
 
@@ -252,6 +254,7 @@ Todas las rutas empiezan con `/api/` y responden JSON. Toda escritura lleva el t
 | `/viajes` | Iniciar o terminar el viaje asignado, compartir el GPS del bus y ver quién va a subir | Chofer | HU-05, HU-06, HU-07 |
 | `/modo-registro` | Grabar paradas y horas con el GPS | Chofer o administrador | HU-18 |
 | `/usuarios` | Crear choferes y personas, y desactivar cuentas | Administrador | HU-03 |
+| `/demo` | Panel de demo: correr y detener escenarios del simulador | Administrador | T23 |
 
 Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `ErrorApi` con la causa), `sesion/` (quién está dentro y las rutas protegidas por rol), `componentes/` (Boton, Campo, Aviso, Mapa, Plantilla, PantallaDeAcceso, Logo) y `registro/` (la cola sin señal, el almacenamiento en el celular y el respaldo).
 

@@ -56,6 +56,7 @@ Abre <http://localhost:5173>. Vite le pasa a Django (puerto 8000) todo lo que em
 | `python manage.py cargar_rutas` | Carga o actualiza las 5 rutas y sus horarios desde `rutas/datos/rutas.json`; se puede correr varias veces |
 | `python manage.py importar_padron <archivo> --administradores a,b,c` | Arma `padron/padron.local.json` desde la lista de la clase (.xlsx o .csv) |
 | `python manage.py importar_registro <respaldo.json> --usuario <código o correo>` | Carga un respaldo del modo registro |
+| `python manage.py simular recorrido --ruta sur` | Mueve un bus simulado por la ruta grabada ([guía del simulador](guia-simulador.md)); `--lista` muestra los escenarios |
 
 Para cambiar algo de la configuración (otra base, otro padrón, otro dominio), copia `.env.ejemplo` como `.env` y edítalo. `.env` no se sube.
 
