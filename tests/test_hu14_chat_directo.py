@@ -1,4 +1,5 @@
 """HU-14 · Chat directo entre un confirmado y el chofer de su viaje."""
+import asyncio
 from datetime import date
 
 import pytest
@@ -47,10 +48,18 @@ def aviso_confirmado(viaje, ismael):
 
 
 def escuchar_chat(viaje, estudiante):
+    return escuchar_grupo(f"chat_viaje_{viaje.pk}_{estudiante.pk}")
+
+
+def escuchar_grupo(grupo):
     capa = get_channel_layer()
     canal = async_to_sync(capa.new_channel)()
-    async_to_sync(capa.group_add)(f"chat_viaje_{viaje.pk}_{estudiante.pk}", canal)
-    return lambda: async_to_sync(capa.receive)(canal)["datos"]
+    async_to_sync(capa.group_add)(grupo, canal)
+
+    async def recibir():
+        return await asyncio.wait_for(capa.receive(canal), timeout=0.2)
+
+    return lambda: async_to_sync(recibir)()["datos"]
 
 
 def test_HU14_CA1_el_confirmado_le_escribe_al_chofer(
@@ -125,6 +134,37 @@ def test_HU14_CA3_el_chofer_responde_con_una_respuesta_rapida(
     assert mensaje["autor"] == {"id": marco.pk, "nombre": "Marco"}
     assert mensaje["texto"] == "Ya llego"
     assert siguiente_evento() == {"tipo": "mensaje_directo", "mensaje": mensaje}
+
+
+def test_el_mensaje_del_estudiante_avisa_al_chofer_aunque_el_chat_este_cerrado(
+    cliente_de, ismael, viaje, aviso_confirmado
+):
+    siguiente_evento = escuchar_grupo(f"viaje_{viaje.pk}_chofer")
+
+    respuesta = cliente_de(ismael).post(
+        f"/api/viajes/{viaje.pk}/mensajes",
+        {"id_cliente": "directo-notificacion", "texto": "Ya estoy en la parada"},
+        format="json",
+    )
+
+    assert respuesta.status_code == 201
+    assert siguiente_evento() == {
+        "tipo": "mensaje_directo_nuevo",
+        "estudiante": ismael.pk,
+    }
+
+
+def test_el_get_rechaza_un_estudiante_que_no_es_un_id(
+    cliente_de, marco, viaje, aviso_confirmado
+):
+    respuesta = cliente_de(marco).get(
+        f"/api/viajes/{viaje.pk}/mensajes?estudiante=abc"
+    )
+
+    assert respuesta.status_code == 400
+    assert respuesta.json()["causa"] == (
+        "faltan datos o tienen un formato no válido: estudiante"
+    )
 
 
 def test_el_websocket_directo_solo_acepta_a_los_participantes(

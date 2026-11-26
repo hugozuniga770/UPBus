@@ -11,6 +11,10 @@ class MensajeDirectoEntrada(serializers.Serializer):
     respuesta_rapida = serializers.CharField(max_length=80, required=False, allow_blank=True)
 
 
+class MensajesDirectosConsulta(serializers.Serializer):
+    estudiante = serializers.IntegerField(required=False, allow_null=True)
+
+
 class MensajeDeRutaEntrada(serializers.Serializer):
     id_cliente = serializers.CharField(max_length=64)
     texto = serializers.CharField(max_length=1000, allow_blank=True)

@@ -7,6 +7,7 @@ from comun.rechazos import NoExiste, Rechazo
 from comun.tiempo import ahora as ahora_local
 from cuentas.models import Usuario
 from rutas.models import Ruta
+from viajes.consumers import grupo_del_chofer
 from viajes.models import AvisoDeSubida, Viaje
 
 from . import reglas
@@ -72,6 +73,29 @@ def _publicar(grupo, tipo, mensaje):
     )
 
 
+def _publicar_mensaje_directo(viaje_id, estudiante_id, mensaje):
+    """Entrega la conversación y avisa al chofer aunque no tenga abierto ese chat."""
+    from .serializadores import mensaje_a_dict
+
+    datos = {"tipo": "mensaje_directo", "mensaje": mensaje_a_dict(mensaje)}
+    capa = get_channel_layer()
+    async_to_sync(capa.group_send)(
+        grupo_del_chat_directo(viaje_id, estudiante_id),
+        {"type": "mensaje.del.chat", "datos": datos},
+    )
+    if mensaje.autor_id == estudiante_id:
+        async_to_sync(capa.group_send)(
+            grupo_del_chofer(viaje_id),
+            {
+                "type": "evento.del.viaje",
+                "datos": {
+                    "tipo": "mensaje_directo_nuevo",
+                    "estudiante": estudiante_id,
+                },
+            },
+        )
+
+
 @transaction.atomic
 def enviar_mensaje_directo(
     usuario,
@@ -106,8 +130,9 @@ def enviar_mensaje_directo(
         texto=contenido.strip(),
         enviado_en=ahora_local(),
     )
-    grupo = grupo_del_chat_directo(viaje.pk, estudiante.pk)
-    transaction.on_commit(lambda: _publicar(grupo, "mensaje_directo", mensaje))
+    transaction.on_commit(
+        lambda: _publicar_mensaje_directo(viaje.pk, estudiante.pk, mensaje)
+    )
     return mensaje, True
 
 

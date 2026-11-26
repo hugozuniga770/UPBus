@@ -6,13 +6,19 @@ from rest_framework.views import APIView
 from comun.vistas import leer
 
 from . import reglas, servicios
-from .serializadores import MensajeDeRutaEntrada, MensajeDirectoEntrada, mensaje_a_dict
+from .serializadores import (
+    MensajeDeRutaEntrada,
+    MensajeDirectoEntrada,
+    MensajesDirectosConsulta,
+    mensaje_a_dict,
+)
 
 
 class MensajesDirectosVista(APIView):
     def get(self, request, viaje_id):
+        datos = leer(MensajesDirectosConsulta, request.query_params)
         mensajes = servicios.mensajes_directos(
-            request.user, viaje_id, request.query_params.get("estudiante")
+            request.user, viaje_id, datos.get("estudiante")
         )
         return Response({
             "mensajes": [mensaje_a_dict(mensaje) for mensaje in mensajes],
