@@ -8,7 +8,7 @@
 
 - Cada criterio de la sesión 7 es un test con el mismo nombre. Cuando una historia se termina, quien la hizo agrega aquí sus filas, en el mismo Pull Request.
 - «Código» nombra el servicio, la regla o la vista que cumple el criterio, para encontrarlo rápido.
-- Al 26/11/2026 hay **34 de 75** criterios con su test en verde.
+- Al 26/11/2026 hay **39 de 75** criterios con su test en verde.
 
 ## 1. Criterios con su test (base del código)
 
@@ -43,6 +43,11 @@
 | HU07-CA4 | RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA4_puede_cancelar_antes_de_que_pase_el_bus` | `viajes.servicios.cancelar_aviso` | — |
 | HU07-CA5 | RF-08 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA5_el_chofer_ve_la_ubicacion_compartida` | `viajes.servicios.compartir_ubicacion`, `viajes.reglas.verificar_puede_ver_avisos`, `frontend/src/componentes/AvisosDelViaje.jsx` | — |
 | HU07-CA7 | RF-03, RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA7_un_administrador_tambien_puede_avisar` | `viajes.reglas.verificar_puede_avisar` | — |
+| HU14-CA1 | RF-19 | `tests/test_hu14_chat_directo.py::test_HU14_CA1_el_confirmado_le_escribe_al_chofer` | `mensajes.servicios.enviar_mensaje_directo`, `mensajes.consumers.ChatDirectoConsumer` | `frontend/src/componentes/ChatDirecto.test.jsx` |
+| HU14-CA2 | RF-19 | `tests/test_hu14_chat_directo.py::test_HU14_CA2_rechaza_escribir_sin_estar_en_el_viaje` | `mensajes.reglas.verificar_confirmado` | `frontend/src/componentes/ChatDirecto.test.jsx` |
+| HU14-CA3 | RF-19 | `tests/test_hu14_chat_directo.py::test_HU14_CA3_el_chofer_responde_con_una_respuesta_rapida` | `mensajes.reglas.verificar_respuesta_rapida`, `mensajes.servicios.enviar_mensaje_directo` | `frontend/src/componentes/ChatDirecto.test.jsx` |
+| HU15-CA1 | RF-20 | `tests/test_hu15_chat_de_ruta.py::test_HU15_CA1_el_miembro_escribe_en_el_chat_de_su_ruta` | `mensajes.servicios.elegir_ruta`, `mensajes.servicios.enviar_mensaje_de_ruta`, `mensajes.consumers.ChatDeRutaConsumer` | `frontend/src/componentes/ChatDeRuta.test.jsx` |
+| HU15-CA2 | RF-20 | `tests/test_hu15_chat_de_ruta.py::test_HU15_CA2_rechaza_escribir_en_una_ruta_ajena` | `mensajes.reglas.verificar_es_miembro_de_la_ruta` | `frontend/src/componentes/ChatDeRuta.test.jsx` |
 | HU18-CA1 | RF-23, RF-11 | `tests/test_hu18_modo_registro.py::test_HU18_CA1_el_primer_registro_crea_las_paradas_y_sus_horas` | `rutas.servicios.terminar_registro`, `rutas.reglas.hora_aproximada` | — |
 | HU18-CA2 | RF-23, RF-11 | `tests/test_hu18_modo_registro.py::test_HU18_CA2_un_segundo_registro_ajusta_la_hora_sin_duplicar_la_parada` | `rutas.reglas.parada_mas_cercana`, `rutas.reglas.salida_programada`, `rutas.servicios.minutos_aprendidos` | — |
 | HU18-CA3 | RF-23 | `tests/test_hu18_modo_registro.py::test_HU18_CA3_un_estudiante_no_puede_usar_el_modo_registro` | `rutas.reglas.verificar_puede_registrar` | — |
@@ -60,6 +65,8 @@ No son criterios: prueban herramientas que usan las historias.
 | `tests/test_soporte.py::test_el_registro_real_de_la_ruta_sur_da_las_horas_observadas` | Con el respaldo real de la Ruta Sur (REG-01), la app muestra las horas que se vieron en el bus (C-23) |
 | `tests/test_soporte.py::test_la_distancia_de_llegada_se_calibra_sin_cambiar_el_codigo` | La distancia de llegada empieza en 50 m y se calibra con `UPBUS_RADIO_DE_LLEGADA_M`, también para las marcas del modo registro (C-34) |
 | `tests/test_soporte.py::test_el_websocket_del_viaje_confirma_la_conexion` | El canal `ws/viajes/<id>/` conecta (base de HU-06) |
+| `tests/test_hu14_chat_directo.py::test_el_websocket_directo_solo_acepta_a_los_participantes` | El canal directo acepta al estudiante confirmado y rechaza a otra persona |
+| `tests/test_hu15_chat_de_ruta.py::test_el_websocket_de_ruta_solo_acepta_a_sus_miembros` | El canal de ruta acepta a sus miembros y rechaza a quien eligió otra ruta |
 | `tests/test_hu07_voy_a_subir.py::test_al_terminar_el_viaje_nadie_sigue_esperando_ni_compartiendo` | Completa HU05-CA3: al terminar el viaje, los avisos confirmados quedan «no se presentó» y se borran las ubicaciones |
 | `tests/test_soporte.py::test_el_administrador_puede_programar_viajes_desde_el_panel` | El panel de Django permite listar y filtrar los viajes que programa el administrador |
 | `tests/test_simulador.py` (12 pruebas) | El simulador de T23 recorre la ruta con los mismos servicios de la app y se detiene en cada parada; con la Ruta Sur grabada, «no se presenta» funciona y las horas aproximadas no cambian (C-28); el panel solo lo usa el administrador, corre una simulación a la vez y la puede detener; si la ruta no tiene recorrido, el panel carga el grabado en el repositorio (C-37) |
@@ -75,13 +82,14 @@ No son criterios: prueban herramientas que usan las historias.
 
 ## 3. Criterios por hacer
 
-Los 41 criterios restantes (HU07-CA6, que se escribe con T16, y HU-08 a HU-17) están en la [sesión 7](sesion-07-modelos.md), cada uno con el nombre de su test, y en el issue de su tarea. Cuando se terminan, sus filas pasan a la sección 1.
+Los 36 criterios restantes (HU07-CA6, que se escribe con T16; HU-08 a HU-13; HU-16 y HU-17) están en la [sesión 7](sesion-07-modelos.md), cada uno con el nombre de su test, y en el issue de su tarea. Cuando se terminan, sus filas pasan a la sección 1.
 
 ## 4. Participación y asistencia utilizada
 
 - **Hugo Zuñiga:** dejó la base con estos tests.
 - **Sebastian Cruz:** agregó la trazabilidad de HU-05 y HU-06 al implementar T11.
 - **Sebastian Cruz:** agregó las pruebas de soporte del despliegue T22.
+- **Sebastian Cruz:** agregó la trazabilidad y las pruebas de privacidad de los canales de HU-14 y HU-15 al implementar T19.
 - **Hugo Zuñiga (26/11/2026):** agregó las pruebas de soporte del simulador (T23).
 - **Hugo Zuñiga (25/11/2026):** agregó la trazabilidad de HU-07 al implementar T14, con asistencia de Claude (Anthropic).
-- **Asistencia de IA:** se usó Claude (Anthropic) para escribir los tests de la base y esta tabla; Sebastian usó OpenAI Codex para implementar y documentar HU-05, HU-06 y T22 siguiendo la skill del repositorio.
+- **Asistencia de IA:** se usó Claude (Anthropic) para escribir los tests de la base y esta tabla; Sebastian usó OpenAI Codex para implementar y documentar HU-05, HU-06, HU-14, HU-15 y T22 siguiendo la skill del repositorio.
