@@ -5,8 +5,16 @@ from rest_framework.views import APIView
 
 from comun.vistas import leer
 
-from . import servicios
-from .serializadores import AvisoEntrada, PosicionEntrada, UbicacionEntrada, aviso_a_dict, viaje_a_dict
+from . import servicios, simulador
+from .serializadores import (
+    AvisoEntrada,
+    PosicionEntrada,
+    SimulacionEntrada,
+    UbicacionEntrada,
+    aviso_a_dict,
+    simulacion_a_dict,
+    viaje_a_dict,
+)
 
 
 class ViajesVista(APIView):
@@ -72,3 +80,25 @@ class UbicacionDelAvisoVista(APIView):
         datos = leer(UbicacionEntrada, request.data)
         aviso = servicios.compartir_ubicacion(request.user, aviso_id, **datos)
         return Response({"aviso": aviso_a_dict(aviso)})
+
+
+class SimulacionesVista(APIView):
+    """T23: panel de demo del administrador."""
+
+    def get(self, request):
+        escenarios, simulaciones = simulador.panel(request.user)
+        return Response({
+            "escenarios": [{"clave": clave, "descripcion": descripcion} for clave, descripcion in escenarios],
+            "simulaciones": [simulacion_a_dict(s) for s in simulaciones],
+        })
+
+    def post(self, request):
+        datos = leer(SimulacionEntrada, request.data)
+        simulacion = simulador.iniciar_simulacion(request.user, **datos)
+        return Response({"simulacion": simulacion_a_dict(simulacion)}, status=status.HTTP_202_ACCEPTED)
+
+
+class DetenerSimulacionVista(APIView):
+    def post(self, request, simulacion_id):
+        simulacion = simulador.detener_simulacion(request.user, simulacion_id)
+        return Response({"simulacion": simulacion_a_dict(simulacion)})
