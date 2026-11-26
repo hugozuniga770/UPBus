@@ -7,7 +7,10 @@ import { defineConfig } from "vite";
 // interfaz y el servidor comparten el mismo origen (cookie de sesión y CSRF).
 const SERVIDOR = process.env.UPBUS_SERVIDOR ?? "http://127.0.0.1:8000";
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  // En producción Django/WhiteNoise publica el resultado de Vite aquí.
+  // En desarrollo se conserva `/` para que el proxy de `/static` no intercepte Vite.
+  base: command === "build" ? "/static/frontend/" : "/",
   plugins: [react(), tailwindcss()],
   server: {
     port: 5173,
@@ -27,4 +30,4 @@ export default defineConfig({
     restoreMocks: true,
     unstubGlobals: true,
   },
-});
+}));

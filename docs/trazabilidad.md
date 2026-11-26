@@ -58,6 +58,9 @@ No son criterios: prueban herramientas que usan las historias.
 | `frontend/src/paginas/Viajes.test.jsx` (2 pruebas de soporte) | Mientras el chofer viaja, mantiene la pantalla encendida y limita los envíos del GPS por tiempo y distancia |
 | `frontend/src/registro/respaldo.test.js` (2 pruebas) | El respaldo no lleva datos de quien graba (C-25), deja fuera las marcas rechazadas y se nombra por ruta, horario y fecha |
 | `frontend/src/registro/cola.test.js` (2 pruebas más) | Sin señal la cola conserva todo y lo envía en orden; lo que el servidor rechaza sale de la cola con su causa |
+| `tests/test_despliegue.py::test_T22_database_url_configura_postgresql` | El hosting toma PostgreSQL desde `DATABASE_URL` sin cambiar el uso local de SQLite |
+| `tests/test_despliegue.py::test_T22_django_entrega_la_interfaz_compilada` | Django entrega la aplicación React en rutas del navegador como `/rutas` |
+| `tests/test_despliegue.py::test_T22_render_no_incluye_secretos_y_arranca_con_asgi` | El plan gratuito no contiene secretos y el contenedor arranca la aplicación ASGI con Daphne |
 
 ## 3. Criterios por hacer
 
@@ -67,4 +70,5 @@ Los 45 criterios restantes (HU-07 a HU-17) están en la [sesión 7](sesion-07-mo
 
 - **Hugo Zuñiga:** dejó la base con estos tests.
 - **Sebastian Cruz:** agregó la trazabilidad de HU-05 y HU-06 al implementar T11.
-- **Asistencia de IA:** se usó Claude (Anthropic) para escribir los tests de la base y esta tabla; Sebastian usó OpenAI Codex para implementar y documentar HU-05 y HU-06 siguiendo la skill del repositorio.
+- **Sebastian Cruz:** agregó las pruebas de soporte del despliegue T22.
+- **Asistencia de IA:** se usó Claude (Anthropic) para escribir los tests de la base y esta tabla; Sebastian usó OpenAI Codex para implementar y documentar HU-05, HU-06 y T22 siguiendo la skill del repositorio.

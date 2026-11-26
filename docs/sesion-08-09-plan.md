@@ -69,7 +69,7 @@ Las estimaciones son en horas-persona (h-p) y son **[PROPUESTA]**: no hay horas 
 | T19 | Chats (HU-14, HU-15) | Chat directo y chat de ruta por WebSocket | 8 | Sebastian | 4 | Por hacer |
 | T20 | Modificación de rutas y aviso de mínimo (HU-16, HU-17) | Cambio grande pendiente de aprobación; aviso con menos de 15 | 6 | Andrés | 4 | Por hacer |
 | T21 | Trazabilidad y pruebas completas | `trazabilidad.md` completa; todos los tests en verde | 5 | Hugo | Cierre | Empezada: `trazabilidad.md` llega con la base |
-| T22 | Despliegue en hosting gratuito | App publicada con HTTPS | 5 | Sebastian | Cierre | Por hacer |
+| T22 | Despliegue en hosting gratuito | App publicada con HTTPS | 5 | Sebastian | Cierre | En curso en #17: configuración y guía listas; falta publicar después de integrar |
 | T23 | Simulador de escenarios y panel de demo | Los escenarios corren desde la terminal y desde el panel, usando los mismos servicios que la app | 10 | Hugo | 2 a 4 | Por hacer |
 | T24 | Guion y ensayo de la demo | Recorrido ensayado y cronometrado; video de respaldo | 3 | Hugo | Cierre | Por hacer |
 | T25 | Modo registro de paradas y horas (HU-18) | 5 criterios en verde; una ruta grabada desde el celular por el túnel HTTPS | 8 | Hugo | 1 | Hecho en la base (C-18) |

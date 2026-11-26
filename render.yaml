@@ -1,0 +1,25 @@
+databases:
+  - name: upbus-db
+    plan: free
+    databaseName: upbus
+    user: upbus
+
+services:
+  - type: web
+    name: upbus-santa-cruz
+    runtime: docker
+    plan: free
+    branch: develop
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: upbus-db
+          property: connectionString
+      - key: UPBUS_SECRET_KEY
+        generateValue: true
+      - key: UPBUS_DEBUG
+        value: "0"
+      - key: UPBUS_PADRON
+        value: /etc/secrets/padron.local.json

@@ -2,7 +2,7 @@
 
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master, dirige la implementación) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I)
-- Tecnología: Python con Django, Django REST Framework y Django Channels; SQLite; React con Tailwind CSS
+- Tecnología: Python con Django, Django REST Framework y Django Channels; SQLite en local y PostgreSQL en el despliegue; React con Tailwind CSS
 - Método: Scrum, con sprints de una semana ([plan](docs/sesion-08-09-plan.md))
 - Estado: Sprint 2. La **base del código** (registro, inicio de sesión, usuarios, rutas en el mapa y modo registro, con sus pruebas) está en `develop` y en `main`. Las tareas se repartieron el 18/11 y cada una tiene su issue asignado. La primera ruta real, la Ruta Sur, se grabó el 25/11 ([REG-01](docs/viajes-grabados.md)).
 
@@ -52,6 +52,7 @@ En el MVP la ubicación del bus y de los estudiantes, la recarga de créditos, e
 | [guia-desarrollo.md](docs/guia-desarrollo.md) | Ponerlo a andar, comandos y cómo implementar una historia paso a paso | Al día |
 | [guia-github.md](docs/guia-github.md) | Ramas, Pull Requests, commits y cómo actualizar la copia | Al día |
 | [guia-modo-registro.md](docs/guia-modo-registro.md) | Grabar una ruta desde el celular con el túnel HTTPS | Al día |
+| [guia-despliegue.md](docs/guia-despliegue.md) | Publicar en Render con HTTPS, WebSocket, PostgreSQL y el padrón como secreto | En preparación (T22) |
 | [AGENTS.md](AGENTS.md) | Reglas cortas para quien programa, persona o asistente de IA | Al día |
 
 ## 3. Cómo está organizado el código
@@ -94,7 +95,7 @@ npm install
 npm run dev
 ```
 
-Abre <http://localhost:5173> y regístrate con un código del padrón (de ejemplo: `70004` e `ismael@upb.example`). Pruebas: `pytest` y, en `frontend`, `npm test`. Todo lo demás está en la [guía de desarrollo](docs/guia-desarrollo.md); para el celular, en la [guía del modo registro](docs/guia-modo-registro.md).
+Abre <http://localhost:5173> y regístrate con un código del padrón (de ejemplo: `70004` e `ismael@upb.example`). Pruebas: `pytest` y, en `frontend`, `npm test`. Todo lo demás está en la [guía de desarrollo](docs/guia-desarrollo.md); para el celular, en la [guía del modo registro](docs/guia-modo-registro.md), y para publicar, en la [guía de despliegue](docs/guia-despliegue.md).
 
 ## 5. Cómo trabajamos
 
