@@ -113,8 +113,9 @@ def _base_de_datos():
         return {
             "default": dj_database_url.parse(
                 url,
-                conn_max_age=600,
-                conn_health_checks=True,
+                # Django recomienda desactivar conexiones persistentes con
+                # ASGI. Daphne atiende en hilos y no las reutilizaría.
+                conn_max_age=0,
             )
         }
     return {
@@ -158,7 +159,28 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
+# En desarrollo, WhiteNoise busca directamente en cada app. Así pytest no
+# requiere que exista `staticfiles/`; en producción sirve lo de collectstatic.
+WHITENOISE_AUTOREFRESH = DEBUG
+WHITENOISE_USE_FINDERS = DEBUG
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {"class": "logging.StreamHandler"},
+    },
+    "loggers": {
+        # Con DEBUG desactivado, conserva el detalle de errores 500 en los
+        # logs de Render y también muestra las advertencias de Django.
+        "django": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+    },
+}
 
 # BUS-RT-05: sesión con la cookie de Django y protección CSRF.
 SESSION_COOKIE_SAMESITE = "Lax"

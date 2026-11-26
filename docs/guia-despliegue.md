@@ -39,7 +39,31 @@ python manage.py cargar_rutas
 daphne -b 0.0.0.0 -p $PORT config.asgi:application
 ```
 
-## 4. Comprobación
+## 4. Cargar las paradas de la Ruta Sur
+
+La base nueva empieza con las rutas y los horarios, pero no con las paradas de REG-01. El plan gratuito no ofrece Shell ni trabajos sueltos, así que, después del primer despliegue:
+
+1. Registra en la app publicada una cuenta que tenga rol `administrador` en el padrón secreto.
+2. En Render, abre `upbus-db`, copia **External Database URL** y no la compartas ni la guardes en Git.
+3. Desde una computadora con este repositorio, conecta temporalmente `manage.py` a esa URL e importa el respaldo con el código de la cuenta anterior.
+
+En PowerShell:
+
+```powershell
+$env:DATABASE_URL = "<External Database URL de upbus-db>"
+python manage.py importar_registro rutas/datos/registros/registro-sur-0640-2026-11-25.json --usuario <código de esa cuenta>
+Remove-Item Env:DATABASE_URL
+```
+
+En Bash:
+
+```bash
+DATABASE_URL="<External Database URL de upbus-db>" python manage.py importar_registro rutas/datos/registros/registro-sur-0640-2026-11-25.json --usuario <código de esa cuenta>
+```
+
+El comando es idempotente: si ese respaldo ya se importó, lo rechaza en vez de duplicar las paradas. Cuando termine, la Ruta Sur debe mostrar el recorrido y sus paradas en la app y en el simulador.
+
+## 5. Comprobación
 
 Cuando Render indique **Live**:
 
@@ -51,13 +75,13 @@ Cuando Render indique **Live**:
 
 Si la primera visita devuelve temporalmente 502, espera a que el evento de despliegue indique **Live** y revisa sus logs. Un error permanente antes de Daphne suele indicar una migración, una variable o el archivo secreto faltante.
 
-## 5. Actualizar
+## 6. Actualizar
 
 Los cambios futuros entran a `develop` por Pull Request. Al actualizar esa rama, Render reconstruye el contenedor y ejecuta las migraciones. El padrón permanece como secreto del servicio y la base permanece separada del contenedor.
 
-Antes de la demostración, revisa la fecha de vencimiento de PostgreSQL y ejecuta las comprobaciones de la sección 4.
+Antes de la demostración, revisa la fecha de vencimiento de PostgreSQL y ejecuta las comprobaciones de la sección 5.
 
-## 6. Participación y asistencia utilizada
+## 7. Participación y asistencia utilizada
 
 - **Sebastian Cruz:** responsable de T22, de la elección del hosting y de la publicación.
 - **Asistencia de IA:** Sebastian usó OpenAI Codex para consultar la documentación oficial de Render, preparar la configuración, las pruebas y esta guía.

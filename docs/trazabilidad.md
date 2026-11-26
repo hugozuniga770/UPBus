@@ -70,6 +70,7 @@ No son criterios: prueban herramientas que usan las historias.
 | `tests/test_despliegue.py::test_T22_database_url_configura_postgresql` | El hosting toma PostgreSQL desde `DATABASE_URL` sin cambiar el uso local de SQLite |
 | `tests/test_despliegue.py::test_T22_django_entrega_la_interfaz_compilada` | Django entrega la aplicación React en rutas del navegador como `/rutas` |
 | `tests/test_despliegue.py::test_T22_render_no_incluye_secretos_y_arranca_con_asgi` | El plan gratuito no contiene secretos y el contenedor arranca la aplicación ASGI con Daphne |
+| `tests/test_despliegue.py::test_T22_produccion_registra_errores_y_desarrollo_usa_finders` | Los errores de Django llegan a la consola de Render y WhiteNoise usa los buscadores locales solo en desarrollo |
 | `frontend/src/paginas/Demo.test.jsx` (2 pruebas) | El panel de demo manda el escenario, la ruta, la parada y la velocidad elegidos, y muestra la causa de un rechazo |
 
 ## 3. Criterios por hacer
