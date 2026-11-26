@@ -25,7 +25,7 @@ from comun.tiempo import a_hora_local, ahora as ahora_local
 from cuentas import reglas as reglas_de_cuentas
 from cuentas.models import Usuario
 from rutas.models import Parada, Ruta
-from rutas.reglas import RADIO_DE_LLEGADA_M
+from rutas.reglas import radio_de_llegada
 
 from . import reglas, servicios
 from .models import AvisoDeSubida, Viaje
@@ -113,13 +113,14 @@ def _densificar(recorrido, paso_m):
 def _donde_para(puntos, parada, desde):
     """El punto del recorrido donde el bus para, buscando hacia adelante desde `desde`.
 
-    Es el primer acercamiento a menos de 50 m; si nunca pasa tan cerca, el punto más
+    Es el primer acercamiento a menos del radio de llegada; si nunca pasa tan cerca, el punto más
     cercano, siempre que esté a menos de 200 m. Si no, `None`.
     """
     distancias = [distancia_en_metros(p, parada.punto) for p in puntos[desde:]]
     if not distancias:
         return None
-    cerca = next((i for i, d in enumerate(distancias) if d < RADIO_DE_LLEGADA_M), None)
+    radio = radio_de_llegada()
+    cerca = next((i for i, d in enumerate(distancias) if d < radio), None)
     if cerca is None:
         cerca = min(range(len(distancias)), key=distancias.__getitem__)
         if distancias[cerca] > LEJOS_DE_LA_RUTA_M:

@@ -145,3 +145,7 @@ REST_FRAMEWORK = {
 # Padrón simulado (BUS-RF-01). Si existe `padron/padron.local.json`, se usa
 # ese; si no, el de ejemplo. Ver `padron/LEEME.md`.
 UPBUS_PADRON = os.environ.get("UPBUS_PADRON") or None
+
+# BUS-RF-11: metros a los que el bus «llega» a una parada. Se calibra con los
+# viajes de prueba sin cambiar el código (C-34).
+UPBUS_RADIO_DE_LLEGADA_M = float(os.environ.get("UPBUS_RADIO_DE_LLEGADA_M", "50"))
