@@ -116,7 +116,8 @@ flowchart LR
     T08 --> T09[T09 Usuarios] --> T10[T10 Rutas] --> T11[T11 Viajes y bus en vivo]
     T10 --> T25[T25 Modo registro] --> T26[T26 Grabar la Ruta Norte] --> T14
     T11 --> T14[T14 Voy a subir] --> T15[T15 Paradas propuestas]
-    T14 --> T16[T16 Aviso y abordaje] --> T17[T17 Créditos] --> T18[T18 Retiro]
+    T14 --> T16[T16 Aviso y abordaje] --> T21
+    T11 --> T17[T17 Créditos] --> T18[T18 Retiro]
     T11 --> T19[T19 Chats]
     T10 --> T20[T20 Rutas y mínimo]
     T11 --> T23[T23 Simulador]
@@ -126,7 +127,7 @@ flowchart LR
     class T05,T06,T08,T09,T10,T12,T25 hecho
 ```
 
-Con la base hecha, la cadena más larga es T11 → T14 → T16 → T17 → T18 → T21 → T22 → T24. Un atraso en ella atrasa la entrega. T26 tiene que estar antes de T14: sin paradas reales no hay dónde marcar «Voy a subir».
+Con la base hecha, la cadena más larga es T11 → T14 → T16 → T21 → T22 → T24. Un atraso en ella atrasa la entrega. Desde el 25/11, T17 ya no espera a T16, porque subir no cobra (C-30): corre en paralelo, T11 → T17 → T18 → T21. El Gantt base (6.1) queda como se planificó. T26 tiene que estar antes de T14: sin paradas reales no hay dónde marcar «Voy a subir».
 
 ## 6. Calendario
 
@@ -318,10 +319,11 @@ Al cerrar cada sprint se anota aquí la fecha real y el SHA del commit de cierre
 | 18/11/2026 | Hugo deja la base: T05 a T10, T12 y T25 quedan hechas; T05 a T07, T10 y T12 cambian de responsable (C-19) | Decisión del equipo: base primero, después se reparte |
 | 18/11/2026 | Andrés reparte las tareas desde el 21/11; sesiones de sábado y domingo; Gantt actualizado (sección 6.3) | Scrum Master de la implementación (C-19) |
 | 25/11/2026 | Responsables según el reparto del 18/11 (C-26); T26 hecha con la Ruta Sur (C-24); Gantt actualizado al 25/11 | Reparto del equipo y primer viaje grabado |
+| 25/11/2026 | Evidencias de T14, T16, T17, T20 y T23 según la revisión de las historias; T17 ya no depende de T16 (C-27 a C-31). Sin cambio de horas | Revisión del Product Owner (PO25) |
 
 ## 12. Dudas abiertas
 
-Las preguntas P-01 a P-31 están en la [sección 6 de los requisitos](sesion-06-requisitos.md). Para este plan pesan sobre todo P-06 (horas de llegada), P-16 (hosting), P-18 (paradas reales, que responde T26), P-19 (espera), P-20 (pantalla del bus) y P-29 (plan B del viaje de grabación).
+Las preguntas P-01 a P-33 están en la [sección 6 de los requisitos](sesion-06-requisitos.md). Para este plan pesan sobre todo P-06 (horas de llegada), P-16 (hosting), P-18 (paradas reales, que responde T26), P-19 (espera), P-20 (pantalla del bus) y P-29 (plan B del viaje de grabación).
 
 ## 13. Participación y asistencia utilizada
 
