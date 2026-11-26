@@ -2,7 +2,7 @@
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Fecha: 16/11/2026 · Sprint 1 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3) · Milestone: Sprint 1
-- Actualizado: 25/11/2026 · revisión del Product Owner (PO25): abordaje automático, pago iniciado por el estudiante, ajustes de créditos y todo cambio de ruta con aprobación (C-28 a C-31). El 18/11/2026: se agrega CU-18, el modo registro (C-18)
+- Actualizado: 25/11/2026 · revisión del Product Owner (PO25): abordaje automático, pago iniciado por el estudiante, ajustes de créditos y todo cambio de ruta con aprobación (C-29 a C-32). El 18/11/2026: se agrega CU-18, el modo registro (C-18)
 - Estado: **[PROPUESTA]**. Muestran cómo pensamos construir cada caso de uso; los nombres de las funciones se confirman en la [sesión 13–14](sesion-13-14-diseno.md).
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
@@ -275,7 +275,7 @@ sequenceDiagram
 
 ## 10. CU-10 y CU-12 — Registrar quién subió y pagar el viaje (HU-10, HU-12)
 
-Subir y pagar son dos pasos distintos (C-30): registrar que subió no cobra.
+Subir y pagar son dos pasos distintos (C-31): registrar que subió no cobra.
 
 ```mermaid
 sequenceDiagram
@@ -363,7 +363,7 @@ sequenceDiagram
     S->>R: verificar_es_administrador, verificar_pendiente
     S->>B: recarga Aprobada y movimiento de +20 créditos
     V-->>FE: 200
-    Note over A,B: Ajuste del administrador (C-28)
+    Note over A,B: Ajuste del administrador (C-29)
     A->>FE: Dar 50 créditos a Ismael, motivo demo
     FE->>V: POST /api/ajustes
     V->>S: ajustar_creditos(administrador, estudiante, monto, motivo)
@@ -573,7 +573,7 @@ sequenceDiagram
         W-->>FE: el bus se mueve
     end
     Note over Sim,S: Ismael nunca sube. Cuando el bus llega a Petrol, cerrar_avisos_pasados lo marca No se presentó
-    Note over S,B: Los pasos de un viaje simulado no cambian las horas aproximadas (C-27)
+    Note over S,B: Los pasos de un viaje simulado no cambian las horas aproximadas (C-28)
     Sim->>S: terminar_viaje(Marco)
 ```
 

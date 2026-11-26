@@ -1,7 +1,7 @@
 # Trazabilidad: requisito → criterio → test → código
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
-- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25; 75 criterios desde C-28 y C-29) · Tarea T21 (empezada con la base) · Issue: [#16](https://github.com/hugozuniga770/UPBus/issues/16)
+- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25; 75 criterios desde C-29 y C-30) · Tarea T21 (empezada con la base) · Issue: [#16](https://github.com/hugozuniga770/UPBus/issues/16)
 - Criterios completos: [Sesión 7](sesion-07-modelos.md) · Requisitos: [Sesión 6](sesion-06-requisitos.md)
 
 ## 0. Cómo se mantiene

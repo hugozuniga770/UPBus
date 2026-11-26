@@ -2,7 +2,7 @@
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
-- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25; en la sección 3, C-27 a C-31) · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
+- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25; en la sección 3, C-28 a C-32) · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
 - Estado: la sección 2 y las secciones 4 a 6 describen el **código ya construido**. En la sección 3, `Viaje` y `PosicionDeViaje` ya están implementados; los demás modelos son **[PROPUESTA]** para las historias que faltan.
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Historias: [Sesión 7](sesion-07-modelos.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Trazabilidad: [trazabilidad.md](trazabilidad.md)
 
@@ -197,12 +197,12 @@ erDiagram
 | Modelo | App | Historia | Notas |
 |---|---|---|---|
 | `Viaje` y `PosicionDeViaje` | viajes | HU-05, HU-06 | Implementados. `Viaje` guarda la última posición; `PosicionDeViaje.id_cliente` evita duplicar reenvíos. Un chofer tiene un solo viaje en curso |
-| `AvisoDeSubida` | viajes | HU-07, HU-09, HU-10 | Uno activo por estudiante y viaje (HU07-CA2). Cuando el bus llega a la parada siguiente, los confirmados que no subieron pasan a «no se presentó» (P-33). El abordaje es su estado A bordo, con quién lo marcó: el estudiante, el chofer o la app (C-29); subir no cobra (C-30) |
+| `AvisoDeSubida` | viajes | HU-07, HU-09, HU-10 | Uno activo por estudiante y viaje (HU07-CA2). Cuando el bus llega a la parada siguiente, los confirmados que no subieron pasan a «no se presentó» (P-33). El abordaje es su estado A bordo, con quién lo marcó: el estudiante, el chofer o la app (C-30); subir no cobra (C-31) |
 | `UbicacionDelEstudiante` | viajes | HU-07, HU-10 | Solo se guarda la última. Con ella la app detecta que subió: el bus a más de 100 m de su parada y dos ubicaciones seguidas a menos de 50 m del bus (P-33). Se borra al subir o al terminar el viaje |
 | `PagoDeViaje` | `creditos` (app nueva) o viajes | HU-12 | Uno por estudiante y viaje. Con créditos genera el cobro, el abono al chofer y el comprobante; en efectivo lo marca el chofer, sin movimiento. `id_cliente` único para que un reenvío no cobre dos veces (HU12-CA3) |
-| `Recarga` y `Movimiento` | `creditos` (app nueva) o viajes | HU-11 a HU-13 | El saldo es la suma de los movimientos; nunca se guarda aparte. Cada cobro, devolución, retiro o ajuste es un movimiento completo o ninguno (RC-03). El ajuste del administrador lleva su motivo y quién lo hizo, y no deja el saldo en negativo (C-28) |
+| `Recarga` y `Movimiento` | `creditos` (app nueva) o viajes | HU-11 a HU-13 | El saldo es la suma de los movimientos; nunca se guarda aparte. Cada cobro, devolución, retiro o ajuste es un movimiento completo o ninguno (RC-03). El ajuste del administrador lleva su motivo y quién lo hizo, y no deja el saldo en negativo (C-29) |
 | `Mensaje` y `MiembroDeRuta` | mensajes | HU-14, HU-15 | Solo texto (P-10) |
-| `CambioDeRuta` | rutas | HU-16 | Todo cambio del chofer queda pendiente hasta que un administrador lo aprueba; los del administrador se aplican directamente (C-31) |
+| `CambioDeRuta` | rutas | HU-16 | Todo cambio del chofer queda pendiente hasta que un administrador lo aprueba; los del administrador se aplican directamente (C-32) |
 
 ## 4. Clases y funciones por capa (lo que hay)
 
@@ -269,8 +269,8 @@ Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `Error
 | Todo lo que manda el celular lleva un `id_cliente` | Sin señal, el celular reintenta; el servidor reconoce el reenvío y no duplica (HU18-CA5) |
 | Canal de Channels en memoria | Basta con un solo proceso en el MVP. Si el hosting usa más de uno, se cambia a Redis **[PROPUESTA]** (T22) |
 | SQLite (RT-02) | Gratis y sin servidor aparte; suficiente para el MVP |
-| Subir y pagar son dos pasos distintos (C-30) | Así se paga hoy: el chofer revisa los comprobantes al final. Además, el abordaje automático no podría cobrar sin que el estudiante lo pida |
-| Los viajes del simulador no guardan pasos (C-27) | Las horas que ve el estudiante salen solo de viajes reales |
+| Subir y pagar son dos pasos distintos (C-31) | Así se paga hoy: el chofer revisa los comprobantes al final. Además, el abordaje automático no podría cobrar sin que el estudiante lo pida |
+| Los viajes del simulador no guardan pasos (C-28) | Las horas que ve el estudiante salen solo de viajes reales |
 
 ## 8. Participación y asistencia utilizada
 

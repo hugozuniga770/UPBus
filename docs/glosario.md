@@ -82,9 +82,9 @@ Busca la sigla, lee su significado y sigue.
 |---|---|
 | Viaje | Una salida concreta: ruta, horario, fecha y chofer |
 | «Voy a subir» | Aviso del estudiante para un viaje y una parada |
-| Abordaje | Que el estudiante subió al bus. Lo marca él («He subido»), el chofer («subió») o la app, si su ubicación va con el bus. No cobra (C-29, C-30) |
+| Abordaje | Que el estudiante subió al bus. Lo marca él («He subido»), el chofer («subió») o la app, si su ubicación va con el bus. No cobra (C-30, C-31) |
 | No se presentó | Estado del aviso cuando el bus llega a la parada siguiente sin que el estudiante haya subido ni cancelado |
-| Ajuste | Movimiento con el que el administrador da o quita créditos a una cuenta, con un motivo (C-28) |
+| Ajuste | Movimiento con el que el administrador da o quita créditos a una cuenta, con un motivo (C-29) |
 | Parada activa | Parada que en ese viaje tiene al menos un estudiante esperando y compartiendo su ubicación |
 | Hora aproximada | Hora en que el bus suele pasar por una parada, calculada con los viajes anteriores |
 | Crédito | Saldo dentro de la app; 1 crédito = 1 Bs |

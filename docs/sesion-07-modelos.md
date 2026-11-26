@@ -3,7 +3,7 @@
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I) · Aprueba: Hugo Zuñiga, como Product Owner
-- Actualizado: 25/11/2026 · revisión del Product Owner (PO25): HU-07 CA3, HU-10, HU-11, HU-12 y HU-16, con dos criterios nuevos (HU10-CA5 y HU11-CA5), 75 en total (C-27 a C-31). Antes, ese día: HU18-CA2 con las horas medidas desde la salida programada (C-23)
+- Actualizado: 25/11/2026 · revisión del Product Owner (PO25): HU-07 CA3, HU-10, HU-11, HU-12 y HU-16, con dos criterios nuevos (HU10-CA5 y HU11-CA5), 75 en total (C-28 a C-32). Antes, ese día: HU18-CA2 con las horas medidas desde la salida programada (C-23)
 - Fecha: 18/11/2026 · Sprint 1 · Tarea T02 del [plan](sesion-08-09-plan.md) · Issue: [#2](https://github.com/hugozuniga770/UPBus/issues/2) · Milestone: Sprint 1
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
@@ -39,7 +39,7 @@
 | HU-17 | chofer o administrador | ver cuántos confirmaron y recibir el aviso de mínimo | saber si la ruta tiene estudiantes suficientes | RF-22, RF-03 | 4 | Baja |
 | HU-18 | chofer o administrador | marcar cada parada mientras hago el recorrido | que la app aprenda las paradas y sus horas sin cargarlas a mano | RF-23, RF-11 | 1 · en la base | Alta |
 
-HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF-12, la sugerencia de saltar una parada, va con HU-09 porque sale del mismo cálculo: la posición del bus comparada con las paradas (C-21). HU10-CA5 y HU11-CA5 salen de la revisión del Product Owner del 25/11/2026 (C-28, C-29).
+HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF-12, la sugerencia de saltar una parada, va con HU-09 porque sale del mismo cálculo: la posición del bus comparada con las paradas (C-21). HU10-CA5 y HU11-CA5 salen de la revisión del Product Owner del 25/11/2026 (C-29, C-30).
 
 ## 2. Criterios de aceptación
 
@@ -261,7 +261,7 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 **CA1 — El estudiante registra que subió** ⏳ `test_HU10_CA1_el_estudiante_registra_que_subio`
 - Dado: Ismael está Confirmado, tiene 10 créditos y el viaje está En curso.
 - Cuando: toca «He subido».
-- Entonces: queda A bordo, sigue con 10 créditos porque subir no cobra (C-30) y a Marco le aparece «Ismael: ha subido».
+- Entonces: queda A bordo, sigue con 10 créditos porque subir no cobra (C-31) y a Marco le aparece «Ismael: ha subido».
 
 **CA2 — El chofer registra que subió** ⏳ `test_HU10_CA2_el_chofer_registra_que_subio`
 - Dado: Ismael está Confirmado y el viaje está En curso.
@@ -308,7 +308,7 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 **CA5 — El administrador da y quita créditos** ⏳ `test_HU11_CA5_el_administrador_da_y_quita_creditos`
 - Dado: Ismael tiene 0 créditos.
 - Cuando: Hugo le da 50 créditos con el motivo «demo» y después le quita 10 con el motivo «recarga de más».
-- Entonces: Ismael queda con 40 y quedan los dos ajustes como movimientos, con su motivo y quién los hizo. Si Hugo intenta quitarle 50, se rechaza por «saldo insuficiente» y nada cambia (C-28).
+- Entonces: Ismael queda con 40 y quedan los dos ajustes como movimientos, con su motivo y quién los hizo. Si Hugo intenta quitarle 50, se rechaza por «saldo insuficiente» y nada cambia (C-29).
 
 ### HU-12 — Pagar el viaje y ver el comprobante
 
@@ -388,7 +388,7 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 **CA1 — Todo cambio queda pendiente** ⏳ `test_HU16_CA1_todo_cambio_queda_pendiente`
 - Dado: Marco es el chofer de la Ruta Norte.
 - Cuando: mueve un punto del recorrido 80 m.
-- Entonces: el cambio queda Pendiente y la ruta sigue igual (C-31).
+- Entonces: el cambio queda Pendiente y la ruta sigue igual (C-32).
 
 **CA2 — El administrador aprueba el cambio** ⏳ `test_HU16_CA2_el_administrador_aprueba_el_cambio`
 - Dado: el cambio de 80 m de Marco está Pendiente.
@@ -645,7 +645,7 @@ Además de los 28 tests de criterios, hay 4 tests de soporte en pytest (importar
 ## 8. Participación y asistencia utilizada
 
 - **Hugo Zuñiga (Product Owner):** definió las historias a partir de los requisitos, decidió el modo registro (HU-18) y aprueba este documento.
-- **Hugo Zuñiga (25/11/2026, noche):** revisó las 18 historias (T02) y decidió los cambios de PO25: pago iniciado por el estudiante, abordaje automático, ajustes de créditos del administrador y todo cambio de ruta con aprobación (C-28 a C-31).
+- **Hugo Zuñiga (25/11/2026, noche):** revisó las 18 historias (T02) y decidió los cambios de PO25: pago iniciado por el estudiante, abordaje automático, ajustes de créditos del administrador y todo cambio de ruta con aprobación (C-29 a C-32).
 - **Andrés Laura Vargas (Scrum Master):** dirigió el reparto del 18/11, en el que cada uno tomó sus historias con sus tests (C-26).
 - **Sebastian Cruz:** implementó y verificó HU-05 y HU-06 (T11, issue #6), además de revisar las historias que tocan rutas y viajes.
 - **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base; el 25/11/2026, para ajustar HU18-CA2 con lo que mostró el primer viaje real (C-23) y, esa noche, para pasar las decisiones del Product Owner a HU-07, HU-10, HU-11, HU-12 y HU-16. Sebastian usó OpenAI Codex para implementar y probar HU-05 y HU-06 siguiendo la skill `implementar-historia` del repositorio.

@@ -5,7 +5,7 @@
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz. Los tres son Developers.
 - Docente: Ing. Alejandro Rodríguez (Certificación I)
 - Fecha del plan: 13/11/2026 · Avance: jueves 19/11/2026 · Entrega final: martes 15/12/2026
-- Actualizado: 25/11/2026 · reparto del 18/11 en la tabla de tareas (C-26), primera ruta grabada con el modo registro (T26, C-24) y Gantt al 25/11; esa noche, evidencias de T14, T16, T17, T20 y T23 ajustadas a la revisión de las historias del Product Owner (C-27 a C-31). El 18/11/2026: base del código, tareas T25 y T26, Andrés como Scrum Master de la implementación y sesiones de sábado y domingo (C-18 a C-20). Antes, 16/11/2026: entrevistas, T23 y T24, Gantt detallado y costos (C-07, C-08, C-12, C-13)
+- Actualizado: 25/11/2026 · reparto del 18/11 en la tabla de tareas (C-26), primera ruta grabada con el modo registro (T26, C-24) y Gantt al 25/11; esa noche, evidencias de T14, T16, T17, T20 y T23 ajustadas a la revisión de las historias del Product Owner (C-28 a C-32). El 18/11/2026: base del código, tareas T25 y T26, Andrés como Scrum Master de la implementación y sesiones de sábado y domingo (C-18 a C-20). Antes, 16/11/2026: entrevistas, T23 y T24, Gantt detallado y costos (C-07, C-08, C-12, C-13)
 - Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Historias: [Sesión 7](sesion-07-modelos.md) · Cambios: [cambios.md](cambios.md)
 
@@ -127,7 +127,7 @@ flowchart LR
     class T05,T06,T08,T09,T10,T12,T25 hecho
 ```
 
-Con la base hecha, la cadena más larga es T11 → T14 → T16 → T21 → T22 → T24. Un atraso en ella atrasa la entrega. Desde el 25/11, T17 ya no espera a T16, porque subir no cobra (C-30): corre en paralelo, T11 → T17 → T18 → T21. El Gantt base (6.1) queda como se planificó. T26 tiene que estar antes de T14: sin paradas reales no hay dónde marcar «Voy a subir».
+Con la base hecha, la cadena más larga es T11 → T14 → T16 → T21 → T22 → T24. Un atraso en ella atrasa la entrega. Desde el 25/11, T17 ya no espera a T16, porque subir no cobra (C-31): corre en paralelo, T11 → T17 → T18 → T21. El Gantt base (6.1) queda como se planificó. T26 tiene que estar antes de T14: sin paradas reales no hay dónde marcar «Voy a subir».
 
 ## 6. Calendario
 
@@ -319,7 +319,7 @@ Al cerrar cada sprint se anota aquí la fecha real y el SHA del commit de cierre
 | 18/11/2026 | Hugo deja la base: T05 a T10, T12 y T25 quedan hechas; T05 a T07, T10 y T12 cambian de responsable (C-19) | Decisión del equipo: base primero, después se reparte |
 | 18/11/2026 | Andrés reparte las tareas desde el 21/11; sesiones de sábado y domingo; Gantt actualizado (sección 6.3) | Scrum Master de la implementación (C-19) |
 | 25/11/2026 | Responsables según el reparto del 18/11 (C-26); T26 hecha con la Ruta Sur (C-24); Gantt actualizado al 25/11 | Reparto del equipo y primer viaje grabado |
-| 25/11/2026 | Evidencias de T14, T16, T17, T20 y T23 según la revisión de las historias; T17 ya no depende de T16 (C-27 a C-31). Sin cambio de horas | Revisión del Product Owner (PO25) |
+| 25/11/2026 | Evidencias de T14, T16, T17, T20 y T23 según la revisión de las historias; T17 ya no depende de T16 (C-28 a C-32). Sin cambio de horas | Revisión del Product Owner (PO25) |
 
 ## 12. Dudas abiertas
 

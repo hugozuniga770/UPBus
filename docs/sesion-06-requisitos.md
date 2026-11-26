@@ -4,7 +4,7 @@
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I) · Aprueba los requisitos: Hugo Zuñiga, como Product Owner
 - Fecha: 13/11/2026 · Sprint 1 · Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
-- Actualizado: 25/11/2026 · revisión del Product Owner (PO25): el estudiante paga y el chofer revisa los comprobantes, abordaje automático, el administrador da y quita créditos, todo cambio de ruta con aprobación y los viajes simulados no enseñan horas (C-27 a C-31); P-07, P-13, P-22 y P-25 respondidas y P-33 nueva. Antes, ese día: las horas se miden desde la salida programada (C-23), primer viaje grabado (REG-01, Ruta Sur) y P-32. El 18/11/2026: modo registro de paradas y horas, BUS-RF-23 (C-18); padrón con la lista de la clase fuera del repositorio (C-20); criterios nuevos en RF-01, RF-02 y RF-04 (C-21); preguntas P-28 a P-31. Antes, ese mismo día: entrevista ENT-03 a Don Iván (C-16, C-17) y P-25 a P-27. El 16/11/2026: ENT-01 y ENT-02 (C-08 a C-11) y P-19 a P-24
+- Actualizado: 25/11/2026 · revisión del Product Owner (PO25): el estudiante paga y el chofer revisa los comprobantes, abordaje automático, el administrador da y quita créditos, todo cambio de ruta con aprobación y los viajes simulados no enseñan horas (C-28 a C-32); P-07, P-13, P-22 y P-25 respondidas y P-33 nueva. Antes, ese día: las horas se miden desde la salida programada (C-23), primer viaje grabado (REG-01, Ruta Sur) y P-32. El 18/11/2026: modo registro de paradas y horas, BUS-RF-23 (C-18); padrón con la lista de la clase fuera del repositorio (C-20); criterios nuevos en RF-01, RF-02 y RF-04 (C-21); preguntas P-28 a P-31. Antes, ese mismo día: entrevista ENT-03 a Don Iván (C-16, C-17) y P-25 a P-27. El 16/11/2026: ENT-01 y ENT-02 (C-08 a C-11) y P-19 a P-24
 - Historias y criterios: [Sesión 7](sesion-07-modelos.md) · Plan: [Sesiones 8–9](sesion-08-09-plan.md) · Entrevistas: [entrevistas.md](entrevistas.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
 ## 0. Cómo leer este documento
@@ -97,7 +97,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - El chat es solo de texto **[PROVISIONAL]** (P-10).
 - El navegador solo entrega el GPS a una página segura (HTTPS) o abierta en la misma computadora. Mientras no haya hosting (P-16), el modo registro se abre en el celular con un túnel HTTPS gratuito. Si la página no abre en el viaje, el plan B son capturas de Maps con la hora de cada parada (P-29).
 
-**Fuera del MVP:** aplicación móvil nativa, pasarela de pagos real, transferencias de créditos entre estudiantes y retiro de créditos de los estudiantes (C-30), facturación e impuestos (P-08), faltas de comportamiento del reglamento y conexión con el sistema real de la UPB.
+**Fuera del MVP:** aplicación móvil nativa, pasarela de pagos real, transferencias de créditos entre estudiantes y retiro de créditos de los estudiantes (C-31), facturación e impuestos (P-08), faltas de comportamiento del reglamento y conexión con el sistema real de la UPB.
 
 ## 3. Requisitos funcionales
 
@@ -194,7 +194,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Origen: PERFIL; PO13; DOC. Prioridad: alta.
 - Estado: **[ACUERDO]** (PO13, DOC).
 - Entrevistas: ENT-02 está de acuerdo con que el bus no espere («porque después no llegamos [a la U]»). ENT-01 cuenta que hoy espera «hasta dos minutos», y como máximo uno más, y ENT-03 dice que «mayormente son 2 minutos» (P-19).
-- Requisito: el estudiante marca «Voy a subir» para un viaje concreto y una parada. Al chofer le llega la alerta con su nombre y su parada. Puede cancelarlo mientras el bus no haya pasado su parada. El bus no espera: si el bus pasa la parada y llega a la siguiente sin que el estudiante haya subido ni cancelado, el aviso se cierra solo como «no se presentó» **[PROVISIONAL]** (P-33). Se espera a la parada siguiente para que alcance a marcar «He subido» o la app detecte que subió (C-29). Un estudiante tiene un solo «Voy a subir» por viaje.
+- Requisito: el estudiante marca «Voy a subir» para un viaje concreto y una parada. Al chofer le llega la alerta con su nombre y su parada. Puede cancelarlo mientras el bus no haya pasado su parada. El bus no espera: si el bus pasa la parada y llega a la siguiente sin que el estudiante haya subido ni cancelado, el aviso se cierra solo como «no se presentó» **[PROVISIONAL]** (P-33). Se espera a la parada siguiente para que alcance a marcar «He subido» o la app detecte que subió (C-30). Un estudiante tiene un solo «Voy a subir» por viaje.
 - Criterio de aceptación:
   - Aceptación: Ismael marca «Voy a subir» en Sevilla para el viaje de las 06:40. Queda Confirmado y a Marco le llega «Ismael va a subir en Sevilla».
   - Rechazo: Ismael lo marca de nuevo para el mismo viaje. Se rechaza por «ya avisaste que vas a subir en este viaje».
@@ -216,7 +216,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Origen: PO13; DOC. Prioridad: media.
 - Estado: **[ACUERDO]** (PO13, DOC). Cantidad de viajes del promedio **[PROVISIONAL]** (P-11).
 - Requisito: el bus «llega» a una parada cuando pasa a menos de 50 m. El sistema guarda la hora real de cada paso. La hora aproximada de una parada es la del primer viaje registrado y luego se ajusta con el promedio de los últimos viajes. A cada estudiante se le muestra a qué hora aproximada pasará el bus por su parada.
-- Cómo se calcula: cada paso guarda cuántos minutos después de la **salida programada** del horario llegó el bus a la parada, aunque haya salido antes o después (C-23). La hora aproximada es esa salida más el promedio de esos minutos en los últimos 5 pasos (P-11), redondeada hacia abajo para que nadie llegue tarde: si el bus pasó a las 07:00:54, la parada muestra 07:00. Si ese horario todavía no tiene pasos, se usan los de otro horario del mismo sentido; si tampoco hay, la parada se muestra sin hora. Los pasos salen del modo registro (RF-23) y, cuando exista, del viaje en vivo (RF-07). Los viajes del simulador (T23) no cuentan: solo enseñan horas los viajes reales **[ACUERDO, PO25]** (C-27).
+- Cómo se calcula: cada paso guarda cuántos minutos después de la **salida programada** del horario llegó el bus a la parada, aunque haya salido antes o después (C-23). La hora aproximada es esa salida más el promedio de esos minutos en los últimos 5 pasos (P-11), redondeada hacia abajo para que nadie llegue tarde: si el bus pasó a las 07:00:54, la parada muestra 07:00. Si ese horario todavía no tiene pasos, se usan los de otro horario del mismo sentido; si tampoco hay, la parada se muestra sin hora. Los pasos salen del modo registro (RF-23) y, cuando exista, del viaje en vivo (RF-07). Los viajes del simulador (T23) no cuentan: solo enseñan horas los viajes reales **[ACUERDO, PO25]** (C-28).
 - Criterio de aceptación:
   - Aceptación: en el primer viaje, el bus pasa a 30 m de Sevilla a las 06:58. La hora aproximada de esa parada queda en 06:58.
   - Límite: en el segundo viaje pasa a las 07:02. La hora aproximada pasa a ser 07:00.
@@ -244,7 +244,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 
 - Origen: PO13. Prioridad: alta.
 - Estado: **[ACUERDO]** (PO13, PO25). Las distancias del abordaje automático son **[PROVISIONAL]** (P-33).
-- Requisito: el abordaje se registra cuando el estudiante toca «He subido», cuando el chofer marca «subió» o, si el estudiante comparte su ubicación, sin que nadie toque nada: cuando el bus ya se alejó más de 100 m de su parada y dos ubicaciones seguidas del estudiante están a menos de 50 m del bus **[ACUERDO, PO25]** (C-29, P-33). Registrar el abordaje no cobra el viaje: lo paga el estudiante (RF-16). Al chofer le aparece el nombre con «ha subido» y si ya pagó.
+- Requisito: el abordaje se registra cuando el estudiante toca «He subido», cuando el chofer marca «subió» o, si el estudiante comparte su ubicación, sin que nadie toque nada: cuando el bus ya se alejó más de 100 m de su parada y dos ubicaciones seguidas del estudiante están a menos de 50 m del bus **[ACUERDO, PO25]** (C-30, P-33). Registrar el abordaje no cobra el viaje: lo paga el estudiante (RF-16). Al chofer le aparece el nombre con «ha subido» y si ya pagó.
 - Criterio de aceptación:
   - Aceptación: Ismael toca «He subido». Queda como A bordo, sin cobro, y a Marco le aparece «Ismael: ha subido».
   - Aceptación: Ismael comparte su ubicación; el bus sale de Sevilla y la ubicación de Ismael avanza con el bus. Queda A bordo sin que nadie toque nada.
@@ -254,7 +254,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 
 - Origen: DOC; PO13. Prioridad: media.
 - Estado: **[ACUERDO]** (PO13). La aprobación del pago es **[SIMULADO]**.
-- Requisito: el estudiante pide una recarga eligiendo un monto. El monto mínimo es 5 Bs y solo se aceptan múltiplos de 5, sin tope **[PROVISIONAL]** (P-15). La recarga queda Pendiente hasta que se aprueba; al aprobarse, se suman los créditos. En el MVP la aprueba un administrador; en el servicio real la aprobaría la pasarela de pagos. El administrador también puede dar y quitar créditos a cualquier cuenta, con un motivo, y cada ajuste queda como movimiento; un ajuste no puede dejar el saldo en negativo **[ACUERDO, PO25]** (C-28): sirve para la demo y para corregir errores, como una recarga de más. En el MVP los estudiantes no se transfieren créditos ni los retiran (C-30).
+- Requisito: el estudiante pide una recarga eligiendo un monto. El monto mínimo es 5 Bs y solo se aceptan múltiplos de 5, sin tope **[PROVISIONAL]** (P-15). La recarga queda Pendiente hasta que se aprueba; al aprobarse, se suman los créditos. En el MVP la aprueba un administrador; en el servicio real la aprobaría la pasarela de pagos. El administrador también puede dar y quitar créditos a cualquier cuenta, con un motivo, y cada ajuste queda como movimiento; un ajuste no puede dejar el saldo en negativo **[ACUERDO, PO25]** (C-29): sirve para la demo y para corregir errores, como una recarga de más. En el MVP los estudiantes no se transfieren créditos ni los retiran (C-31).
 - Criterio de aceptación:
   - Aceptación: Ismael pide recargar 20 Bs y Hugo la aprueba. El saldo de Ismael sube 20 créditos y queda el movimiento.
   - Rechazo: Ismael pide recargar 12 Bs. Se rechaza por «el monto debe ser múltiplo de 5» y no se registra nada.
@@ -266,7 +266,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 - Origen: GUIA (5 Bs); DOC; PO13. Prioridad: media.
 - Estado: **[ACUERDO]** (PO13).
 - Entrevistas: hoy el chofer cobra por QR y en efectivo; en la salida le pagan al subir y en el ingreso de la mañana, al final del viaje (ENT-01, P-22). El chofer recibe el dinero y la empresa entrega la factura (ENT-01, P-08). ENT-02 prefiere pagar desde la app.
-- Requisito: el pago no es automático **[ACUERDO, PO25]** (C-30). El estudiante paga su viaje con 5 créditos desde la app, mientras el viaje está En curso **[PROPUESTA]**, y pasan al saldo del chofer. Paga una sola vez por viaje. Cada pago genera un comprobante con ID de pago, código, correo y nombre del estudiante, ruta, viaje, fecha, hora y monto. Al final de la ruta, como hoy, el chofer revisa los pagos: tiene la lista de comprobantes de su viaje con el total, busca por código, nombre o ID y ve quién dice «pagado»; a quien pagó en efectivo lo marca «pagó en efectivo» (P-13).
+- Requisito: el pago no es automático **[ACUERDO, PO25]** (C-31). El estudiante paga su viaje con 5 créditos desde la app, mientras el viaje está En curso **[PROPUESTA]**, y pasan al saldo del chofer. Paga una sola vez por viaje. Cada pago genera un comprobante con ID de pago, código, correo y nombre del estudiante, ruta, viaje, fecha, hora y monto. Al final de la ruta, como hoy, el chofer revisa los pagos: tiene la lista de comprobantes de su viaje con el total, busca por código, nombre o ID y ve quién dice «pagado»; a quien pagó en efectivo lo marca «pagó en efectivo» (P-13).
 - Criterio de aceptación:
   - Aceptación: Ismael, con 10 créditos, paga el viaje. Queda con 5, el saldo de Marco sube 5 y existe un comprobante con su ID.
   - Límite: Ismael, con 3 créditos, intenta pagar. Se rechaza por «saldo insuficiente: paga en efectivo» y no se cobra nada.
@@ -311,9 +311,9 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 ### BUS-RF-21 — Modificación de una ruta
 
 - Origen: PO13. Prioridad: baja.
-- Estado: **[ACUERDO]** quién puede y que la hora de llegada a la U no se toca (PO13). Todo cambio requiere aprobación **[ACUERDO, PO25]** (C-31).
+- Estado: **[ACUERDO]** quién puede y que la hora de llegada a la U no se toca (PO13). Todo cambio requiere aprobación **[ACUERDO, PO25]** (C-32).
 - Entrevistas: ENT-01 cambia de ruta «casi nunca: la misma ruta nomás, siempre», porque en esa zona no hay espacio para maniobrar. Por eso es el recorte 1 propuesto en el plan (C-12). ENT-03: los cambios de ruta los decide la UPB. Se propone que el chofer solo proponga cambios y que todos los apruebe el administrador (C-17, P-25).
-- Requisito: los estudiantes no modifican rutas. El chofer propone cambios a las paradas, sus horas y el recorrido de su ruta, y todo cambio queda Pendiente hasta que un administrador lo aprueba o lo rechaza **[ACUERDO, PO25]** (C-31, P-25). Los cambios que hace un administrador se aplican directamente. Nadie más que el administrador puede cambiar la hora de llegada a la U.
+- Requisito: los estudiantes no modifican rutas. El chofer propone cambios a las paradas, sus horas y el recorrido de su ruta, y todo cambio queda Pendiente hasta que un administrador lo aprueba o lo rechaza **[ACUERDO, PO25]** (C-32, P-25). Los cambios que hace un administrador se aplican directamente. Nadie más que el administrador puede cambiar la hora de llegada a la U.
 - Criterio de aceptación:
   - Aceptación: Marco mueve un punto del recorrido 80 m. El cambio queda Pendiente y la ruta sigue igual.
   - Aceptación: Hugo aprueba el cambio pendiente de Marco. El cambio se aplica a la ruta.
@@ -405,7 +405,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 | RF-15 | Recarga de 5 Bs | Se acepta (4 o 12 se rechazan) |
 | RF-16 | Paga con 5 créditos exactos | Se acepta y queda en 0 (con 4 se rechaza: paga en efectivo) |
 | RF-18 | Retira exactamente todo su saldo | Se acepta; queda en 0 |
-| RF-21 | Mueve el recorrido 1 m | También queda Pendiente: todo cambio pide aprobación (C-31) |
+| RF-21 | Mueve el recorrido 1 m | También queda Pendiente: todo cambio pide aprobación (C-32) |
 | RF-22 | 15 confirmados exactos | No hay aviso (con 14 sí) |
 | RF-23 | Una marca a 50 m exactos de una parada que ya existe | Se crea una parada nueva: para contar como la misma debe estar a menos de 50 m **[PROVISIONAL]** |
 | RF-23 | La misma marca llega dos veces (se reenvió sin señal) | Se guarda una sola vez |
@@ -423,13 +423,13 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 | P-04 | Si el administrador crea y elimina estudiantes, ¿el padrón sigue siendo de solo lectura? | Sí: el padrón no se toca; el administrador crea y elimina cuentas en la BD | RF-01, RF-04 |
 | P-05 | «Solo para el primer día se guardan o no»: ¿quién decide que una parada propuesta queda guardada? | Queda guardada cuando el chofer o un administrador la aprueba; mientras tanto vale solo para ese viaje. En el modo registro, la parada nueva del administrador queda aprobada y la del chofer, propuesta (P-28) | RF-10, RF-23 |
 | P-06 | ¿A qué hora debe llegar a la U cada horario de ingreso? ¿Y las salidas a su punto final? Respondida en parte (ENT-03): en la mañana, antes de las 7:40. Los demás se preguntan en ENT-07 | 06:40 → 07:40; los demás, 60 minutos después de salir | RF-11, RF-12 |
-| P-07 | ¿Cuántos metros son «2 cuadras»? ¿Quién decide qué es «cambio de avenida»? Respondida (PO25, lo decide el equipo): 200 m para que una parada propuesta esté sobre la ruta (RF-10). En RF-21 ya no hace falta un umbral, porque todo cambio pide aprobación (C-31) | 200 m | RF-10, RF-21 |
+| P-07 | ¿Cuántos metros son «2 cuadras»? ¿Quién decide qué es «cambio de avenida»? Respondida (PO25, lo decide el equipo): 200 m para que una parada propuesta esté sobre la ruta (RF-10). En RF-21 ya no hace falta un umbral, porque todo cambio pide aprobación (C-32) | 200 m | RF-10, RF-21 |
 | P-08 | «Hablar de impuestos»: ¿se refiere a facturar los pagos o a una sanción por no presentarse? Respondida en parte (ENT-01): el chofer recibe el dinero y la empresa entrega la factura. Falta saber si habrá una sanción por no presentarse | «No se presentó» solo se registra; la app no factura | RF-09, RF-16 |
 | P-09 | ¿El estudiante elige las rutas que usa? Eso define su chat de ruta | Sí: elige una o más y puede cambiarlas | RF-20 |
 | P-10 | ¿El chat es solo de texto? ¿El administrador puede borrar mensajes? | Solo texto; el administrador puede borrar | RF-19, RF-20 |
 | P-11 | ¿Con cuántos viajes se promedia la hora aproximada? | Los últimos 5 | RF-11 |
 | P-12 | ¿El retiro del chofer tiene monto mínimo? | No | RF-18 |
-| P-13 | ¿El chofer marca «pagó en efectivo» al final de la ruta? Respondida (PO25): sí; al final revisa la lista de comprobantes de su viaje, por código o nombre, y marca a quien pagó en efectivo (C-30) | Sí | RF-16 |
+| P-13 | ¿El chofer marca «pagó en efectivo» al final de la ruta? Respondida (PO25): sí; al final revisa la lista de comprobantes de su viaje, por código o nombre, y marca a quien pagó en efectivo (C-31) | Sí | RF-16 |
 | P-14 | ¿Un administrador puede actuar también como chofer? | No: el chofer es una cuenta aparte | RF-03 |
 | P-15 | ¿La recarga tiene monto máximo? | No | RF-15 |
 | P-16 | ¿Qué hosting gratuito se usa? | Se decide en el Sprint 2 | RT-08 |
@@ -438,10 +438,10 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 | P-19 | El chofer de ENT-01 espera «hasta dos minutos», y como máximo uno más; Don Iván dice «mayormente son 2 minutos» (ENT-03); el docente indicó que el bus no espera. ¿Se da una tolerancia de espera? | Sin espera, como indicó el docente (DOC) | RF-09 |
 | P-20 | ¿Qué pantalla tiene el bus (sistema y navegador) y le da su ubicación a una página web? ENT-01 dice que la pantalla tiene GPS; Don Iván dice que usan «el GPS del WhatsApp» (ENT-03) | Se asume el celular del chofer; se confirma con una prueba en el bus | RF-07 |
 | P-21 | El chofer mencionó una aplicación que «salió para los transportistas». ¿Cuál es y qué hace? Don Iván no la conoce, pero dijo que el próximo año habría una aplicación y «varios cambios sobre el transporte» (ENT-03); se pregunta en ENT-07 | Se investiga como referencia; no cambia el alcance | Alcance |
-| P-22 | ¿Cuándo se cobra? Hoy, en la salida se paga al subir y en el ingreso de la mañana, al final del viaje (ENT-01). Respondida (PO25): registrar que subió no cobra; el estudiante paga desde la app durante el viaje y el chofer revisa los comprobantes al final, como hoy (C-30) | El estudiante paga con créditos durante el viaje; el efectivo se paga como hoy | RF-14, RF-16 |
+| P-22 | ¿Cuándo se cobra? Hoy, en la salida se paga al subir y en el ingreso de la mañana, al final del viaje (ENT-01). Respondida (PO25): registrar que subió no cobra; el estudiante paga desde la app durante el viaje y el chofer revisa los comprobantes al final, como hoy (C-31) | El estudiante paga con créditos durante el viaje; el efectivo se paga como hoy | RF-14, RF-16 |
 | P-23 | Al eliminar una cuenta que tiene viajes o movimientos de créditos, ¿se borra o se desactiva? | Se desactiva, para no perder comprobantes | RF-04 |
 | P-24 | Si el chofer ya retiró su saldo y se cancela un viaje, la devolución dejaría su saldo en negativo. ¿Quién la cubre? | Se permite el saldo negativo solo por una devolución, y se compensa con sus próximos cobros | RF-17, RF-18 |
-| P-25 | Don Iván dijo que los cambios de ruta los decide la UPB (ENT-03). ¿El chofer deja de aplicar cambios pequeños por su cuenta? Respondida (PO25): sí, todo cambio requiere aprobación (C-31) | Todo cambio queda pendiente | RF-21 |
+| P-25 | Don Iván dijo que los cambios de ruta los decide la UPB (ENT-03). ¿El chofer deja de aplicar cambios pequeños por su cuenta? Respondida (PO25): sí, todo cambio requiere aprobación (C-32) | Todo cambio queda pendiente | RF-21 |
 | P-26 | La empresa factura y la UPB paga «el íntegro de todo el mes» (ENT-03), pero los estudiantes pagan 5 Bs al chofer (GUIA, ENT-01). ¿Cómo se combinan? | Se mantiene el cobro de 5 Bs por viaje; se pregunta en ENT-07 | RF-15 a RF-18 |
 | P-27 | Don Iván nombró 4 rutas habilitadas: Norte, Externa, Sur y 4to Anillo–Urubó (ENT-03). ¿La Ruta Híbrida de la guía sigue activa? | Se cargan las 5 rutas de la guía y la Híbrida se marca para confirmar | RF-05 |
 | P-28 | En el modo registro, ¿la parada nueva que graba un chofer queda propuesta hasta que la apruebe un administrador? | Sí: la del chofer queda propuesta y la del administrador, aprobada | RF-10, RF-23 |
