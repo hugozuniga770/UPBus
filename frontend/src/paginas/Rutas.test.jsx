@@ -9,14 +9,14 @@ vi.mock("../componentes/Mapa.jsx", () => ({
 }));
 vi.mock("react-leaflet", () => ({
   CircleMarker: ({ children }) => <div>{children}</div>,
-  Polyline: ({ eventHandlers }) => (
+  Polyline: ({ eventHandlers }) => (eventHandlers ? (
     <button
       type="button"
-      onClick={() => eventHandlers?.click?.({ latlng: { lat: -17.75, lng: -63.17 } })}
+      onClick={() => eventHandlers.click({ latlng: { lat: -17.75, lng: -63.17 } })}
     >
       Recorrido simulado
     </button>
-  ),
+  ) : null),
   Tooltip: ({ children }) => <span>{children}</span>,
 }));
 
@@ -74,7 +74,7 @@ describe("Bus en vivo de una ruta (HU-06)", () => {
 describe("Paradas propuestas y aprobación (HU-08)", () => {
   afterEach(() => vi.restoreAllMocks());
 
-  it("permite proponer una parada al tocar el recorrido y aprobarla como administrador", async () => {
+  it("HU08-CA1 y HU08-CA4 propone una parada tocando el recorrido y el administrador la aprueba", async () => {
     document.cookie = "csrftoken=token-prueba";
     let estadoParada = "propuesta";
     const fetchMock = vi.fn(async (url, opciones) => {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CircleMarker, Polyline, Tooltip } from "react-leaflet";
 
 import { api } from "../api/cliente.js";
@@ -42,15 +42,22 @@ export default function Rutas() {
       .catch((falla) => setError(falla.causa));
   }, []);
 
+  // Solo cuenta la última consulta: si se cambia de ruta antes de que llegue la
+  // anterior, su respuesta se descarta (si no, pedía otra ruta con un horario ajeno).
+  const ultimaConsulta = useRef(0);
   const cargarRuta = useCallback((idActual, horarioActual) => {
     if (!idActual) return;
+    const consulta = ++ultimaConsulta.current;
     api
       .ruta(idActual, horarioActual)
       .then(({ ruta: detalle }) => {
+        if (consulta !== ultimaConsulta.current) return;
         setRuta(detalle);
         setHorarioId(detalle.horario_elegido);
       })
-      .catch((falla) => setError(falla.causa));
+      .catch((falla) => {
+        if (consulta === ultimaConsulta.current) setError(falla.causa);
+      });
   }, []);
 
   useEffect(() => {
@@ -99,11 +106,15 @@ export default function Rutas() {
   const paradas = ruta?.paradas ?? [];
   const paradasPropuestas = paradas.filter((p) => p.estado === "propuesta");
   const paradasActivasIds = new Set(viajeActivo?.paradas_activas ?? []);
-  const centro = paradas.length
+  // El mapa se centra al elegir otra ruta, no en cada actualización: así se puede
+  // mover el mapa para buscar el recorrido aunque el bus mande su posición.
+  const [latitudCentro, longitudCentro] = paradas.length
     ? [paradas[0].latitud, paradas[0].longitud]
-    : ruta?.recorrido?.length
-      ? ruta.recorrido[0]
-      : undefined;
+    : ruta?.recorrido?.[0] ?? [];
+  const centro = useMemo(
+    () => (latitudCentro === undefined ? undefined : [latitudCentro, longitudCentro]),
+    [latitudCentro, longitudCentro],
+  );
 
   function tocarRecorrido(evento) {
     if (!evento?.latlng) return;
@@ -159,11 +170,19 @@ export default function Rutas() {
     <div className="absolute inset-0">
       <Mapa centro={centro} seguir={centro}>
         {ruta?.recorrido?.length > 1 && (
-          <Polyline
-            positions={ruta.recorrido}
-            pathOptions={{ color: "#3c8dbc", weight: 7, opacity: 0.85 }}
-            eventHandlers={{ click: tocarRecorrido }}
-          />
+          <>
+            <Polyline
+              positions={ruta.recorrido}
+              pathOptions={{ color: "#3c8dbc", weight: 7, opacity: 0.85 }}
+              interactive={false}
+            />
+            {/* Una franja invisible más ancha, para tocar la línea con el dedo en el celular. */}
+            <Polyline
+              positions={ruta.recorrido}
+              pathOptions={{ color: "#3c8dbc", weight: 28, opacity: 0 }}
+              eventHandlers={{ click: tocarRecorrido }}
+            />
+          </>
         )}
         {paradas.map((parada) => {
           const esPropuesta = parada.estado === "propuesta";
