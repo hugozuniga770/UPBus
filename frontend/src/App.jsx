@@ -8,6 +8,7 @@ import NoEncontrada from "./paginas/NoEncontrada.jsx";
 import Registrarse from "./paginas/Registrarse.jsx";
 import Rutas from "./paginas/Rutas.jsx";
 import Usuarios from "./paginas/Usuarios.jsx";
+import Viajes from "./paginas/Viajes.jsx";
 import RutaProtegida from "./sesion/RutaProtegida.jsx";
 import { SesionProveedor } from "./sesion/SesionContexto.jsx";
 
@@ -21,6 +22,10 @@ export default function App() {
           <Route element={<RutaProtegida><Plantilla /></RutaProtegida>}>
             <Route index element={<Inicio />} />
             <Route path="rutas" element={<Rutas />} />
+            <Route
+              path="viajes"
+              element={<RutaProtegida roles={["chofer"]}><Viajes /></RutaProtegida>}
+            />
             <Route
               path="modo-registro"
               element={<RutaProtegida roles={["chofer", "administrador"]}><ModoRegistro /></RutaProtegida>}
