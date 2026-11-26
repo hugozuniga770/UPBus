@@ -1,5 +1,7 @@
 """Servicios de rutas y del modo registro: leen, preguntan a las reglas y guardan."""
+import json
 from collections import defaultdict
+from pathlib import Path
 
 from django.db import transaction
 from django.utils.dateparse import parse_datetime
@@ -313,3 +315,26 @@ def importar_registro(usuario, datos):
     resumen = terminar_registro(usuario, registro.pk)
     resumen["marcas_omitidas"] = omitidas
     return resumen
+
+
+REGISTROS_GUARDADOS = Path(__file__).resolve().parent / "datos" / "registros"
+
+
+def cargar_registros_guardados(usuario, ruta):
+    """Importa los respaldos del repositorio que son de esta ruta y todavía no están en la base.
+
+    Así una base nueva (otra laptop, el hosting) tiene el recorrido grabado sin correr
+    `importar_registro` a mano. Quien los carga queda como quien importa (C-25, C-37).
+    """
+    cargados = []
+    for archivo in sorted(REGISTROS_GUARDADOS.glob("*.json")):
+        with open(archivo, encoding="utf-8") as contenido:
+            datos = json.load(contenido)
+        if datos.get("formato") != "upbus-registro" or datos.get("ruta", {}).get("clave") != ruta.clave:
+            continue
+        ya_importado = RegistroDeRecorrido.objects.filter(
+            id_cliente=datos["id_cliente"], estado=RegistroDeRecorrido.Estado.TERMINADO
+        ).exists()
+        if not ya_importado:
+            cargados.append({"archivo": archivo.name, **importar_registro(usuario, datos)})
+    return cargados

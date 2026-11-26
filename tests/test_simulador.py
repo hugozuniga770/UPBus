@@ -15,7 +15,7 @@ from django.core.management import call_command
 from comun.geo import distancia_en_metros
 from comun.rechazos import Rechazo
 from comun.tiempo import ZONA_HORARIA
-from rutas.models import Parada, PasoPorParada, Ruta
+from rutas.models import Parada, PasoPorParada, RegistroDeRecorrido, Ruta
 from viajes import simulador
 from viajes.models import AvisoDeSubida, Viaje
 
@@ -161,6 +161,28 @@ def test_el_panel_rechaza_una_ruta_sin_recorrido(cliente_de, hugo, ruta_norte, e
     assert respuesta.status_code == 400
     assert respuesta.json() == {"causa": "la ruta no tiene recorrido: grábala con el modo registro"}
     assert not Viaje.objects.exists()
+
+
+def test_el_panel_carga_el_recorrido_grabado_si_la_ruta_no_lo_tiene(cliente_de, hugo, monkeypatch):
+    """C-37: en una base nueva la demo funciona sin correr importar_registro a mano."""
+    monkeypatch.setattr(simulador, "_en_un_hilo", lambda tarea: None)  # basta con ver cómo arranca
+    call_command("cargar_rutas", stdout=StringIO())
+    ruta_sur = Ruta.objects.get(clave="sur")
+    datos = {"escenario": "recorrido", "ruta": ruta_sur.pk}
+
+    primera = cliente_de(hugo).post("/api/simulaciones", datos, format="json")
+    simulador.SIMULACIONES[primera.json()["simulacion"]["id"]].detener.set()
+    segunda = cliente_de(hugo).post("/api/simulaciones", datos, format="json")
+
+    assert primera.status_code == segunda.status_code == 202
+    assert primera.json()["simulacion"]["notas"] == [
+        "Se cargó el recorrido grabado registro-sur-0640-2026-11-25.json: 9 paradas nuevas"
+    ]
+    assert segunda.json()["simulacion"]["notas"] == []  # la segunda vez ya lo tiene
+    ruta_sur.refresh_from_db()
+    assert len(ruta_sur.recorrido) == 96
+    assert ruta_sur.paradas.filter(estado=Parada.Estado.APROBADA).count() == 9
+    assert RegistroDeRecorrido.objects.get(ruta=ruta_sur).usuario == hugo
 
 
 def test_el_panel_detiene_la_simulacion_y_no_deja_correr_dos(cliente_de, hugo, ruta, monkeypatch):
