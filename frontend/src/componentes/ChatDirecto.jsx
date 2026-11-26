@@ -22,7 +22,13 @@ function agregarSinDuplicar(lista, mensaje) {
 }
 
 /** HU-14: conversación privada del estudiante confirmado con el chofer. */
-export default function ChatDirecto({ viajeId, estudiante = null, esChofer = false }) {
+export default function ChatDirecto({
+  viajeId,
+  estudiante = null,
+  esChofer = false,
+  nuevos = 0,
+  alCambiarAbierto = null,
+}) {
   const usuario = useSesion()?.usuario;
   const participante = estudiante ?? usuario;
   const [abierto, setAbierto] = useState(false);
@@ -39,6 +45,14 @@ export default function ChatDirecto({ viajeId, estudiante = null, esChofer = fal
     () => (esChofer ? `Chat con ${participante?.nombre ?? "estudiante"}` : "Chat con el chofer"),
     [esChofer, participante?.nombre],
   );
+  const etiquetaDelBoton = nuevos > 0
+    ? `${etiqueta} · ${nuevos} ${nuevos === 1 ? "nuevo" : "nuevos"}`
+    : etiqueta;
+
+  function cambiarAbierto(siguiente) {
+    setAbierto(siguiente);
+    alCambiarAbierto?.(siguiente);
+  }
 
   const cargar = useCallback(async () => {
     setError("");
@@ -106,9 +120,9 @@ export default function ChatDirecto({ viajeId, estudiante = null, esChofer = fal
       <button
         type="button"
         className="mt-2 rounded-lg border border-boton px-3 py-1.5 text-sm font-semibold text-boton"
-        onClick={() => setAbierto(true)}
+        onClick={() => cambiarAbierto(true)}
       >
-        {etiqueta}
+        {etiquetaDelBoton}
       </button>
     );
   }
@@ -117,7 +131,7 @@ export default function ChatDirecto({ viajeId, estudiante = null, esChofer = fal
     <section className="mt-3 w-full rounded-xl border border-celeste/60 bg-white p-3" aria-label={etiqueta}>
       <div className="flex items-center justify-between gap-2">
         <h4 className="font-titulo text-sm font-bold text-upb">{etiqueta}</h4>
-        <button type="button" className="text-xs text-suave underline" onClick={() => setAbierto(false)}>
+        <button type="button" className="text-xs text-suave underline" onClick={() => cambiarAbierto(false)}>
           Cerrar
         </button>
       </div>

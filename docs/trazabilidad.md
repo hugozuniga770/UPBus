@@ -66,6 +66,8 @@ No son criterios: prueban herramientas que usan las historias.
 | `tests/test_soporte.py::test_la_distancia_de_llegada_se_calibra_sin_cambiar_el_codigo` | La distancia de llegada empieza en 50 m y se calibra con `UPBUS_RADIO_DE_LLEGADA_M`, también para las marcas del modo registro (C-34) |
 | `tests/test_soporte.py::test_el_websocket_del_viaje_confirma_la_conexion` | El canal `ws/viajes/<id>/` conecta (base de HU-06) |
 | `tests/test_hu14_chat_directo.py::test_el_websocket_directo_solo_acepta_a_los_participantes` | El canal directo acepta al estudiante confirmado y rechaza a otra persona |
+| `tests/test_hu14_chat_directo.py::test_el_mensaje_del_estudiante_avisa_al_chofer_aunque_el_chat_este_cerrado` | El canal privado del viaje avisa al chofer de un mensaje directo aunque no tenga abierta esa conversación |
+| `tests/test_hu14_chat_directo.py::test_el_get_rechaza_un_estudiante_que_no_es_un_id` | La consulta del historial valida `estudiante` antes de buscarlo y responde 400 con su causa |
 | `tests/test_hu15_chat_de_ruta.py::test_el_websocket_de_ruta_solo_acepta_a_sus_miembros` | El canal de ruta acepta a sus miembros y rechaza a quien eligió otra ruta |
 | `tests/test_hu07_voy_a_subir.py::test_al_terminar_el_viaje_nadie_sigue_esperando_ni_compartiendo` | Completa HU05-CA3: al terminar el viaje, los avisos confirmados quedan «no se presentó» y se borran las ubicaciones |
 | `tests/test_soporte.py::test_el_administrador_puede_programar_viajes_desde_el_panel` | El panel de Django permite listar y filtrar los viajes que programa el administrador |
@@ -79,6 +81,7 @@ No son criterios: prueban herramientas que usan las historias.
 | `tests/test_despliegue.py::test_T22_render_no_incluye_secretos_y_arranca_con_asgi` | El plan gratuito no contiene secretos y el contenedor arranca la aplicación ASGI con Daphne |
 | `tests/test_despliegue.py::test_T22_produccion_registra_errores_y_desarrollo_usa_finders` | Los errores de Django llegan a la consola de Render y WhiteNoise usa los buscadores locales solo en desarrollo |
 | `frontend/src/paginas/Demo.test.jsx` (2 pruebas) | El panel de demo manda el escenario, la ruta, la parada y la velocidad elegidos, y muestra la causa de un rechazo |
+| `frontend/src/componentes/AvisosDelViaje.test.jsx` | «Van a subir» marca los mensajes directos nuevos y limpia la marca al abrir la conversación |
 
 ## 3. Criterios por hacer
 
@@ -89,7 +92,7 @@ Los 36 criterios restantes (HU07-CA6, que se escribe con T16; HU-08 a HU-13; HU-
 - **Hugo Zuñiga:** dejó la base con estos tests.
 - **Sebastian Cruz:** agregó la trazabilidad de HU-05 y HU-06 al implementar T11.
 - **Sebastian Cruz:** agregó las pruebas de soporte del despliegue T22.
-- **Sebastian Cruz:** agregó la trazabilidad y las pruebas de privacidad de los canales de HU-14 y HU-15 al implementar T19.
+- **Sebastian Cruz:** agregó la trazabilidad, las pruebas de privacidad y las correcciones de revisión de los canales de HU-14 y HU-15 al implementar T19.
 - **Hugo Zuñiga (26/11/2026):** agregó las pruebas de soporte del simulador (T23).
 - **Hugo Zuñiga (25/11/2026):** agregó la trazabilidad de HU-07 al implementar T14, con asistencia de Claude (Anthropic).
 - **Asistencia de IA:** se usó Claude (Anthropic) para escribir los tests de la base y esta tabla; Sebastian usó OpenAI Codex para implementar y documentar HU-05, HU-06, HU-14, HU-15 y T22 siguiendo la skill del repositorio.

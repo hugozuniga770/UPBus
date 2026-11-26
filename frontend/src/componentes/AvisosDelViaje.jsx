@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { api } from "../api/cliente.js";
 import Aviso from "./Aviso.jsx";
@@ -16,6 +16,17 @@ export default function AvisosDelViaje({ viajeId }) {
   const [avisos, setAvisos] = useState([]);
   const [ultimaAlerta, setUltimaAlerta] = useState("");
   const [error, setError] = useState("");
+  const [nuevosPorEstudiante, setNuevosPorEstudiante] = useState({});
+  const chatsAbiertos = useRef(new Set());
+
+  function cambiarEstadoDelChat(estudianteId, abierto) {
+    if (abierto) {
+      chatsAbiertos.current.add(estudianteId);
+      setNuevosPorEstudiante((actuales) => ({ ...actuales, [estudianteId]: 0 }));
+    } else {
+      chatsAbiertos.current.delete(estudianteId);
+    }
+  }
 
   useEffect(() => {
     let vigente = true;
@@ -34,6 +45,15 @@ export default function AvisosDelViaje({ viajeId }) {
       socket.onmessage = ({ data }) => {
         const evento = JSON.parse(data);
         if (evento.tipo === "aviso") setUltimaAlerta(evento.mensaje);
+        if (evento.tipo === "mensaje_directo_nuevo") {
+          const estudianteId = evento.estudiante;
+          if (estudianteId && !chatsAbiertos.current.has(estudianteId)) {
+            setNuevosPorEstudiante((actuales) => ({
+              ...actuales,
+              [estudianteId]: (actuales[estudianteId] ?? 0) + 1,
+            }));
+          }
+        }
         if (["aviso", "aviso_cerrado", "ubicacion"].includes(evento.tipo)) consultar();
       };
     }
@@ -69,7 +89,13 @@ export default function AvisosDelViaje({ viajeId }) {
               </span>
             </div>
             {aviso.estado === "confirmado" && (
-              <ChatDirecto viajeId={viajeId} estudiante={aviso.estudiante} esChofer />
+              <ChatDirecto
+                viajeId={viajeId}
+                estudiante={aviso.estudiante}
+                esChofer
+                nuevos={nuevosPorEstudiante[aviso.estudiante.id] ?? 0}
+                alCambiarAbierto={(abierto) => cambiarEstadoDelChat(aviso.estudiante.id, abierto)}
+              />
             )}
           </li>
         ))}
