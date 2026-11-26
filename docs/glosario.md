@@ -5,7 +5,7 @@ Busca la sigla, lee su significado y sigue.
 ## Ficha del documento
 
 - Proyecto: UPBus — Buses UPB en tiempo real
-- Creado: 13/11/2026 · Actualizado: 18/11/2026 (modo registro, padrón local y términos del código) · Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
+- Creado: 13/11/2026 · Actualizado: 25/11/2026 (abordaje, ajustes y pago, PO25). El 18/11/2026: modo registro, padrón local y términos del código · Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
 - Elaboración: Hugo Zuñiga, con asistencia de Claude (Anthropic)
 
 ## 0. Cómo se arma un ID
@@ -35,6 +35,7 @@ Busca la sigla, lee su significado y sigue.
 | PERFIL | Perfil de proyecto presentado el 07/11/2026 |
 | PO13 | Decisiones del Product Owner del 13/11/2026 |
 | PO18 | Decisiones del Product Owner del 18/11/2026: modo registro, padrón de la clase y roles de la implementación |
+| PO25 | Decisiones del Product Owner del 25/11/2026, al revisar las historias: pago iniciado por el estudiante, abordaje automático, ajustes de créditos y todo cambio de ruta con aprobación |
 | DOC | Indicaciones del docente comunicadas por Hugo |
 | ENT | Entrevistas |
 
@@ -81,10 +82,13 @@ Busca la sigla, lee su significado y sigue.
 |---|---|
 | Viaje | Una salida concreta: ruta, horario, fecha y chofer |
 | «Voy a subir» | Aviso del estudiante para un viaje y una parada |
+| Abordaje | Que el estudiante subió al bus. Lo marca él («He subido»), el chofer («subió») o la app, si su ubicación va con el bus. No cobra (C-30, C-31) |
+| No se presentó | Estado del aviso cuando el bus llega a la parada siguiente sin que el estudiante haya subido ni cancelado |
+| Ajuste | Movimiento con el que el administrador da o quita créditos a una cuenta, con un motivo (C-29) |
 | Parada activa | Parada que en ese viaje tiene al menos un estudiante esperando y compartiendo su ubicación |
 | Hora aproximada | Hora en que el bus suele pasar por una parada, calculada con los viajes anteriores |
 | Crédito | Saldo dentro de la app; 1 crédito = 1 Bs |
-| Comprobante | Registro de un pago, con su ID, la persona, el viaje, la fecha, la hora y el monto |
+| Comprobante | Registro de un pago, con su ID, la persona, el viaje, la fecha, la hora y el monto. Al final de la ruta, el chofer revisa los de su viaje |
 | Rechazo | Respuesta del sistema cuando no permite una operación; siempre dice la causa |
 | Sprint | Ciclo de una semana que termina con algo que funciona |
 | Incremento | Lo terminado en un sprint que cumple la Definition of Done |

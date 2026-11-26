@@ -2,7 +2,7 @@
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Fecha: 16/11/2026 · Sprint 1 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3) · Milestone: Sprint 1
-- Actualizado: 18/11/2026 · se agrega CU-18, el modo registro (C-18)
+- Actualizado: 25/11/2026 · revisión del Product Owner (PO25): abordaje automático, pago iniciado por el estudiante, ajustes de créditos y todo cambio de ruta con aprobación (C-29 a C-32). El 18/11/2026: se agrega CU-18, el modo registro (C-18)
 - Estado: **[PROPUESTA]**. Muestran cómo pensamos construir cada caso de uso; los nombres de las funciones se confirman en la [sesión 13–14](sesion-13-14-diseno.md).
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
@@ -222,7 +222,7 @@ sequenceDiagram
     else Rechazo
         V-->>FE: 400 Ya avisaste que vas a subir en este viaje
     end
-    Note over S,B: Si el bus pasa Sevilla y Ismael no subió ni canceló, cerrar_avisos_pasados deja el aviso como No se presentó, sin cobro
+    Note over S,B: Si el bus llega a Petrol, la parada siguiente, y Ismael no subió ni canceló, cerrar_avisos_pasados deja el aviso como No se presentó (P-33)
 ```
 
 ## 8. CU-08 — Proponer una parada (HU-08)
@@ -273,7 +273,9 @@ sequenceDiagram
     S->>B: guardar la hora real de paso, para la hora aproximada (RF-11)
 ```
 
-## 10. CU-10 y CU-12 — Registrar quién subió y cobrar el viaje (HU-10, HU-12)
+## 10. CU-10 y CU-12 — Registrar quién subió y pagar el viaje (HU-10, HU-12)
+
+Subir y pagar son dos pasos distintos (C-31): registrar que subió no cobra.
 
 ```mermaid
 sequenceDiagram
@@ -285,27 +287,53 @@ sequenceDiagram
     participant B as BD
     participant W as Canal
     actor C as Marco (chofer)
-    E->>FE: He subido (o el chofer marca subió)
-    FE->>V: POST /api/viajes/id/abordajes
-    V->>S: registrar_abordaje(usuario, viaje, estudiante, ahora)
-    S->>B: viaje, aviso y saldo de Ismael
-    S->>R: verificar_viaje_en_curso, verificar_no_abordo_antes
-    alt Saldo de 5 o más
-        S->>B: en una sola transacción, abordaje, cobro de 5, abono al chofer y comprobante
-        S->>W: Ismael ha subido, ha pagado
-        W-->>C: aparece en su lista con el comprobante
-        V-->>FE: 201 con el ID del comprobante
-    else Saldo insuficiente
-        S->>B: abordaje como paga en efectivo
-        S->>W: Ismael ha subido, paga en efectivo
-        V-->>FE: 201
-    else Rechazo
-        V-->>FE: 400 El viaje ya terminó
+    alt Ismael toca He subido, o Marco marca subió
+        FE->>V: POST /api/avisos/id/subio
+        V->>S: registrar_abordaje(usuario, aviso, ahora)
+        S->>R: verificar_viaje_en_curso, verificar_aviso_confirmado
+    else Ismael comparte su ubicación y va en el bus
+        FE->>V: POST /api/avisos/id/ubicacion
+        V->>S: compartir_ubicacion(usuario, aviso, posición)
+        S->>R: va_en_el_bus (el bus a más de 100 m de Sevilla y dos ubicaciones seguidas a menos de 50 m del bus)
     end
-    Note over S,B: Al registrar el abordaje se deja de compartir la ubicación de Ismael
+    S->>B: aviso A bordo, sin cobro, con quién lo marcó
+    S->>W: Ismael ha subido
+    W-->>C: aparece en su lista
+    Note over S,B: Al quedar A bordo se deja de compartir la ubicación de Ismael
 ```
 
-Un segundo envío del mismo «He subido» se rechaza en `verificar_no_abordo_antes`: nunca se cobra dos veces (BUS-RC-03).
+```mermaid
+sequenceDiagram
+    actor E as Ismael
+    participant FE
+    participant V as Vista
+    participant S as Servicios
+    participant R as Reglas
+    participant B as BD
+    actor C as Marco (chofer)
+    E->>FE: Pagar el viaje con 5 créditos
+    FE->>V: POST /api/viajes/id/pagos con id_cliente
+    V->>S: pagar_viaje(estudiante, viaje, id_cliente, ahora)
+    S->>B: viaje, saldo de Ismael y si ya pagó
+    S->>R: verificar_viaje_en_curso, verificar_no_pago_antes, verificar_saldo (5 o más)
+    alt Sin rechazo
+        S->>B: en una sola transacción, cobro de 5, abono al chofer y comprobante
+        V-->>FE: 201 con el comprobante
+    else Saldo insuficiente
+        V-->>FE: 400 Saldo insuficiente, paga en efectivo
+    end
+    Note over C,B: Al final de la ruta, como hoy
+    C->>FE: Comprobantes de mi viaje, busca 70004 o Ismael
+    FE->>V: GET /api/viajes/id/pagos con la búsqueda
+    V->>S: pagos_del_viaje(chofer, viaje, busqueda)
+    V-->>FE: lista con pagado o pagó en efectivo, y el total
+    C->>FE: Ismael pagó en efectivo
+    FE->>V: POST /api/viajes/id/pagos/efectivo
+    V->>S: marcar_pago_en_efectivo(chofer, viaje, estudiante)
+    S->>B: pago en efectivo, sin movimiento de créditos
+```
+
+Un reenvío del mismo pago (mismo `id_cliente`) devuelve el mismo comprobante, y un segundo pago del mismo viaje se rechaza por «ya pagaste este viaje»: nunca se cobra dos veces (BUS-RC-03).
 
 ## 11. CU-11 — Recargar créditos (HU-11)
 
@@ -335,6 +363,13 @@ sequenceDiagram
     S->>R: verificar_es_administrador, verificar_pendiente
     S->>B: recarga Aprobada y movimiento de +20 créditos
     V-->>FE: 200
+    Note over A,B: Ajuste del administrador (C-29)
+    A->>FE: Dar 50 créditos a Ismael, motivo demo
+    FE->>V: POST /api/ajustes
+    V->>S: ajustar_creditos(administrador, estudiante, monto, motivo)
+    S->>R: verificar_es_administrador, verificar_saldo_no_negativo
+    S->>B: movimiento de ajuste con su motivo y quién lo hizo
+    V-->>FE: 201
 ```
 
 ## 12. CU-13 — Retirar el saldo del chofer (HU-13)
@@ -426,17 +461,16 @@ sequenceDiagram
     FE->>V: POST /api/rutas/norte/cambios
     V->>S: proponer_cambio_ruta(usuario, ruta, cambio)
     S->>R: verificar_puede_editar, verificar_no_cambia_llegada_a_la_U
-    S->>R: es_cambio_grande (200 m o más, o cambio de avenida)
-    alt Cambio pequeño
-        S->>B: aplicar el cambio
-        V-->>FE: 200 Cambio aplicado
-    else Cambio grande
+    alt Lo propone el chofer
         S->>B: cambio Pendiente, la ruta sigue igual
         V-->>FE: 202 Pendiente de aprobación
         A->>FE: Aprobar
         FE->>V: POST /api/cambios/id/aprobar
         V->>S: aprobar_cambio(administrador, cambio)
         S->>B: aplicar el cambio
+    else Lo hace un administrador
+        S->>B: aplicar el cambio
+        V-->>FE: 200 Cambio aplicado
     else Rechazo
         V-->>FE: 403 No puedes cambiar la hora de llegada a la U
     end
@@ -539,11 +573,12 @@ sequenceDiagram
         S->>W: nueva posición
         W-->>FE: el bus simulado se mueve
     end
-    Note over Sim,S: El estudiante nunca sube. Cuando el bus llega a Banco Ganadero, cerrar_no_presentados lo marca No se presentó
-    Sim->>S: terminar_viaje(chofer de la simulación)
+    Note over Sim,S: Ismael nunca sube. Cuando el bus llega a Petrol, cerrar_avisos_pasados lo marca No se presentó
+    Note over S,B: Los pasos de un viaje simulado no cambian las horas aproximadas (C-28)
+    Sim->>S: terminar_viaje(Marco)
 ```
 
 ## 19. Participación y asistencia utilizada
 
 - **Hugo Zuñiga (Product Owner):** pidió los diagramas y los aprueba.
-- **Asistencia de IA:** se usó Claude (Anthropic) para proponer las secuencias a partir de los requisitos y de la organización por capas del proyecto de referencia, y el 18/11/2026 para dibujar la de CU-18 desde el código de la base.
+- **Asistencia de IA:** se usó Claude (Anthropic) para proponer las secuencias a partir de los requisitos y de la organización por capas del proyecto de referencia, el 18/11/2026 para dibujar la de CU-18 desde el código de la base y el 25/11/2026 para rehacer las de CU-10, CU-11, CU-12 y CU-16 con las decisiones del Product Owner (PO25).
