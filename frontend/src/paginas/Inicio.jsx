@@ -9,12 +9,13 @@ const TARJETAS = {
   subir: { titulo: "Voy a subir", texto: "Elige tu ruta, avisa al chofer y comparte tu ubicación.", a: "/rutas", icono: "✋" },
   creditos: { titulo: "Mis créditos", texto: "Recarga y paga tus viajes desde la app.", pendiente: "HU-11", icono: "💳" },
   viajes: { titulo: "Mis viajes", texto: "Inicia tu ruta y comparte la ubicación del bus.", a: "/viajes", icono: "🚌" },
+  demo: { titulo: "Demo", texto: "Simula un viaje para mostrar UPBus en clase.", a: "/demo", icono: "🧪" },
 };
 
 const POR_ROL = {
   estudiante: ["rutas", "subir", "creditos"],
   chofer: ["viajes", "registro", "rutas"],
-  administrador: ["rutas", "registro", "usuarios", "subir", "creditos"],
+  administrador: ["rutas", "registro", "usuarios", "subir", "creditos", "demo"],
 };
 
 function Tarjeta({ titulo, texto, a, icono, pendiente }) {
