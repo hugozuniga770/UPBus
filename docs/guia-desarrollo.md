@@ -108,6 +108,20 @@ Ejemplos completos para copiar el molde: `cuentas/` (HU-03, gestión de usuarios
 10. **Documenta:** agrega las filas de tus criterios a [trazabilidad.md](trazabilidad.md). Si cambiaste algo acordado (un mensaje, una regla, un modelo propuesto), agrega una fila en [cambios.md](cambios.md).
 11. **Commit y Pull Request:** `HU-05: el chofer inicia su viaje (#6)` y un Pull Request a `develop` ([guía de GitHub](guia-github.md)).
 
+### Probar con varias cuentas en una sola laptop
+
+Para hacer una historia no hace falta juntarse: los tests de cada criterio crean sus propias cuentas en una base de prueba, y en pantalla una sola persona puede ser estudiante, chofer y administrador a la vez.
+
+1. **Usa el padrón de ejemplo**, para no registrar a compañeros de verdad. En `.env`, pon `UPBUS_PADRON=padron/padron.json`. Si no quieres tocar tu base, agrega `UPBUS_BD=prueba.sqlite3` y corre `python manage.py migrate` y `python manage.py cargar_rutas`.
+2. **Crea las cuentas.** Regístrate como Hugo (`70001`, `hugo.zuniga@upb.example`, administrador) y como Ismael (`70004`, `ismael@upb.example`, estudiante). Con Hugo, en **Usuarios**, crea un chofer, por ejemplo Marco.
+3. **Carga la Ruta Sur grabada:** `python manage.py importar_registro rutas/datos/registros/registro-sur-0640-2026-11-25.json --usuario 70001`.
+4. **Abre una ventana por cuenta.** Cada ventana guarda su propia sesión: Chrome normal con Hugo, una ventana de incógnito con Ismael y otro navegador (Edge o Firefox) con Marco, todas en `http://localhost:5173`.
+5. **Mueve un bus sin salir a la calle.** Con Hugo, abre **Demo** y corre «Recorrido» o «No se presenta» en la Ruta Sur ([guía del simulador](guia-simulador.md)). Con Ismael, en **Rutas › Sur**, el viaje simulado aparece en curso: puedes marcar «Voy a subir» en una parada y ver qué pasa cuando llega el bus. En «No se presenta», el estudiante de la simulación espera en la segunda parada y comparte su ubicación.
+
+Por ejemplo, para T15 (HU-08): Ismael propone una parada tocando el recorrido, Hugo la aprueba desde su ventana e Ismael la ve aprobada. Para la parada activa (HU08-CA3), corre «No se presenta»: la parada donde espera el estudiante de la simulación está activa y las demás no.
+
+**Entre varias personas a la vez**, por ejemplo en la Review: una sola laptop corre el servidor y abre el túnel de la [guía del modo registro](guia-modo-registro.md). Los demás abren la dirección `https://….trycloudflare.com` en su celular o su computadora y entran con su propia cuenta. Todos usan la base de esa laptop, y el panel Demo de esa laptop mueve el bus en vivo para todos. Cuando esté el hosting (T22), la dirección pública reemplaza al túnel.
+
 ## 5. Convenciones
 
 - **Nombres en español**, completos y sin abreviar: `verificar_sin_registro_en_curso`, `minutos_desde_salida`.
@@ -130,4 +144,4 @@ Ejemplos completos para copiar el molde: `cuentas/` (HU-03, gestión de usuarios
 ## 7. Participación y asistencia utilizada
 
 - **Hugo Zuñiga:** dejó la base del código y pidió esta guía para que el equipo pueda tomar las tareas.
-- **Asistencia de IA:** se usó Claude (Anthropic) para escribir la base y esta guía.
+- **Asistencia de IA:** se usó Claude (Anthropic) para escribir la base y esta guía; el 26/11/2026, para agregar cómo probar con varias cuentas.
