@@ -61,7 +61,7 @@ Las estimaciones son en horas-persona (h-p) y son **[PROPUESTA]**: no hay horas 
 | T11 | Viajes y bus en vivo (HU-05, HU-06) | El chofer inicia el viaje; el simulador mueve el bus en el mapa por WebSocket | 10 | Sebastian | 2 | Hecho: viajes, GPS, última posición, pasos a menos de 50 m y mapa por WebSocket (#6) |
 | T12 | Base visual | Estilo UPB, navegación por rol y componentes comunes | 6 | Hugo (antes Andrés, C-19) | 1 (estaba en el 2) | Hecho en la base; cada historia suma sus pantallas |
 | T13 | Entrevistas a Don Iván (ENT-03), a la encargada del servicio en la UPB (ENT-07) y a estudiantes de otras rutas | Registros en `entrevistas.md` y cambios derivados | 4 | Andrés (ENT-03, ENT-07) y Hugo (estudiantes) | 1 y 2 | En curso: ENT-03 hecha el 18/11 |
-| T14 | «Voy a subir» y ubicación del estudiante (HU-07) | Alerta al chofer; el aviso queda «no se presentó» si el bus llega a la parada siguiente sin que suba | 8 | Hugo | 3 | Por hacer |
+| T14 | «Voy a subir» y ubicación del estudiante (HU-07) | Alerta al chofer; el aviso queda «no se presentó» si el bus llega a la parada siguiente sin que suba | 8 | Hugo | 3 | Hecho: «Voy a subir», cancelar, ubicación compartida y cierre automático; HU07-CA6 llega con T16 |
 | T15 | Paradas propuestas y su aprobación (HU-08) | Proponer en el mapa; el administrador aprueba o rechaza, también las que graba un chofer; paradas activas | 8 | Andrés | 3 | Por hacer: las horas aproximadas ya están en la base |
 | T16 | Aviso de bus cerca y registro de quién subió (HU-09, HU-10) | Aviso a 500 m; sugerencia de seguir al chofer; «ha subido» en la lista del chofer, también cuando la app detecta que subió | 6 | Andrés | 3 | Por hacer |
 | T17 | Créditos: recarga y pago (HU-11, HU-12) | Recarga aprobada; ajustes del administrador; pago desde la app con comprobante; el chofer revisa los comprobantes y marca el efectivo | 10 | Sebastian | 3 y 4 | Por hacer |
@@ -70,7 +70,7 @@ Las estimaciones son en horas-persona (h-p) y son **[PROPUESTA]**: no hay horas 
 | T20 | Modificación de rutas y aviso de mínimo (HU-16, HU-17) | Todo cambio del chofer pendiente de aprobación; aviso con menos de 15 | 6 | Andrés | 4 | Por hacer |
 | T21 | Trazabilidad y pruebas completas | `trazabilidad.md` completa; todos los tests en verde | 5 | Hugo | Cierre | Empezada: `trazabilidad.md` llega con la base |
 | T22 | Despliegue en hosting gratuito | App publicada con HTTPS | 5 | Sebastian | Cierre | Por hacer |
-| T23 | Simulador de escenarios y panel de demo | Los escenarios corren desde la terminal y desde el panel, usando los mismos servicios que la app; los viajes simulados no cambian las horas aproximadas | 10 | Hugo | 2 a 4 | Por hacer |
+| T23 | Simulador de escenarios y panel de demo | Los escenarios corren desde la terminal y desde el panel, usando los mismos servicios que la app; los viajes simulados no cambian las horas aproximadas | 10 | Hugo | 2 a 4 | En curso: comando, panel Demo y escenarios «recorrido» y «no se presenta» unidos (PR #27); faltan los de T16 y T17 |
 | T24 | Guion y ensayo de la demo | Recorrido ensayado y cronometrado; video de respaldo | 3 | Hugo | Cierre | Por hacer |
 | T25 | Modo registro de paradas y horas (HU-18) | 5 criterios en verde; una ruta grabada desde el celular por el túnel HTTPS | 8 | Hugo | 1 | Hecho en la base (C-18) |
 | T26 | Grabar la primera ruta con el modo registro | Paradas y horas de una ruta en la app; respaldo en `rutas/datos/registros/` y viaje en `viajes-grabados.md` | 2 | Sebastian | 2 | Hecho el 25/11: Ruta Sur, ingreso de las 06:40 (REG-01) |

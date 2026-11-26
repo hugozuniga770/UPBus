@@ -3,7 +3,7 @@
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I) · Aprueba: Hugo Zuñiga, como Product Owner
-- Actualizado: 25/11/2026 · revisión del Product Owner (PO25): HU-07 CA3, HU-10, HU-11, HU-12 y HU-16, con dos criterios nuevos (HU10-CA5 y HU11-CA5), 75 en total (C-28 a C-32). Antes, ese día: HU18-CA2 con las horas medidas desde la salida programada (C-23)
+- Actualizado: 26/11/2026 · HU-07 en verde salvo CA6, que llega con T16 (T14). El 25/11/2026: revisión del Product Owner (PO25): HU-07 CA3, HU-10, HU-11, HU-12 y HU-16, con dos criterios nuevos (HU10-CA5 y HU11-CA5), 75 en total (C-28 a C-32). Antes, ese día: HU18-CA2 con las horas medidas desde la salida programada (C-23)
 - Fecha: 18/11/2026 · Sprint 1 · Tarea T02 del [plan](sesion-08-09-plan.md) · Issue: [#2](https://github.com/hugozuniga770/UPBus/issues/2) · Milestone: Sprint 1
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
@@ -638,7 +638,7 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-16 | 4 | 0 | 4 |
 | HU-17 | 4 | 0 | 4 |
 | HU-18 | 5 | 5 | 0 |
-| **Total** | **73** | **34** | **39** |
+| **Total** | **75** | **34** | **41** |
 
 Además de los 34 tests de criterios, hay 17 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur, conectar el WebSocket del viaje, programar viajes desde el panel, cerrar los avisos al terminar el viaje y 11 del simulador de T23) y 18 pruebas de interfaz en Vitest: 6 de criterios (HU01-CA3, HU02-CA3, HU05-CA1, HU07-CA1, HU07-CA2 y HU18-CA5) y 12 de soporte (el cliente de la API, la cola y el respaldo del modo registro, la pantalla del chofer, la consulta del viaje en curso y el panel de demo). Las pruebas de soporte no cuentan como criterios.
 
@@ -648,5 +648,5 @@ Además de los 34 tests de criterios, hay 17 tests de soporte en pytest (importa
 - **Hugo Zuñiga (25/11/2026, noche):** revisó las 18 historias (T02) y decidió los cambios de PO25: pago iniciado por el estudiante, abordaje automático, ajustes de créditos del administrador y todo cambio de ruta con aprobación (C-29 a C-32).
 - **Andrés Laura Vargas (Scrum Master):** dirigió el reparto del 18/11, en el que cada uno tomó sus historias con sus tests (C-26).
 - **Sebastian Cruz:** implementó y verificó HU-05 y HU-06 (T11, issue #6), además de revisar las historias que tocan rutas y viajes.
-- **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base; el 25/11/2026, para ajustar HU18-CA2 con lo que mostró el primer viaje real (C-23). Sebastian usó OpenAI Codex para implementar y probar HU-05 y HU-06 siguiendo la skill `implementar-historia` del repositorio.
+- **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base; el 25/11/2026, para ajustar HU18-CA2 con lo que mostró el primer viaje real (C-23) y, esa noche, para pasar las decisiones del Product Owner a HU-07, HU-10, HU-11, HU-12 y HU-16. Sebastian usó OpenAI Codex para implementar y probar HU-05 y HU-06 siguiendo la skill `implementar-historia` del repositorio.
 - **Hugo Zuñiga (25/11/2026):** implementó T14 (HU-07, salvo CA6, que se escribe con T16) con asistencia de Claude (Anthropic).

@@ -2,8 +2,8 @@
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
-- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25; en la sección 3, C-28 a C-32) · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
-- Estado: la sección 2 y las secciones 4 a 6 describen el **código ya construido**. En la sección 3, `Viaje` y `PosicionDeViaje` ya están implementados; los demás modelos son **[PROPUESTA]** para las historias que faltan.
+- Fecha: 18/11/2026 · Actualizado: 26/11/2026 (`AvisoDeSubida` de T14, `Viaje.simulado` de T23 y, en la sección 3, C-28 a C-32; antes, C-23 y C-25) · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
+- Estado: la sección 2 y las secciones 4 a 6 describen el **código ya construido**. En la sección 3, `Viaje`, `PosicionDeViaje` y `AvisoDeSubida` ya están implementados; los demás modelos y los campos marcados para T16 son **[PROPUESTA]** para las historias que faltan.
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Historias: [Sesión 7](sesion-07-modelos.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Trazabilidad: [trazabilidad.md](trazabilidad.md)
 
 ## 0. Cómo leer este documento
@@ -120,7 +120,6 @@ erDiagram
 erDiagram
     VIAJE ||--o{ AVISO_DE_SUBIDA : tiene
     VIAJE ||--o{ MENSAJE : "chat directo"
-    AVISO_DE_SUBIDA ||--o{ UBICACION_DEL_ESTUDIANTE : comparte
     VIAJE ||--o{ PAGO_DE_VIAJE : recibe
     PAGO_DE_VIAJE ||--o| MOVIMIENTO : "se cobra con"
     RECARGA ||--o| MOVIMIENTO : "suma con"
@@ -137,6 +136,7 @@ erDiagram
         float ultima_latitud
         float ultima_longitud
         datetime ultima_posicion_en
+        bool simulado "T23: no enseña horas (C-28)"
         bool aviso_de_minimo_enviado
     }
     AVISO_DE_SUBIDA {
@@ -144,14 +144,13 @@ erDiagram
         int estudiante_id
         int parada_id
         string estado "confirmado, a_bordo, cancelado o no_se_presento"
-        string subio_por "estudiante, chofer o app"
-        int ubicaciones_junto_al_bus "para el abordaje automático"
-        bool aviso_de_cercania_enviado
-    }
-    UBICACION_DEL_ESTUDIANTE {
-        float latitud
-        float longitud
-        datetime tomada_en
+        float ubicacion_latitud "la última que compartió"
+        float ubicacion_longitud
+        datetime ubicacion_en
+        datetime cerrado_en
+        string subio_por "T16: estudiante, chofer o app"
+        int ubicaciones_junto_al_bus "T16: abordaje automático"
+        bool aviso_de_cercania_enviado "T16"
     }
     PAGO_DE_VIAJE {
         int viaje_id
@@ -196,10 +195,10 @@ erDiagram
 
 | Modelo | App | Historia | Notas |
 |---|---|---|---|
-| `Viaje` y `PosicionDeViaje` | viajes | HU-05, HU-06 | Implementados. `Viaje` guarda la última posición; `PosicionDeViaje.id_cliente` evita duplicar reenvíos. Un chofer tiene un solo viaje en curso |
-| `AvisoDeSubida` | viajes | HU-07, HU-09 | Implementado. Un aviso activo por estudiante y viaje (HU07-CA2). Cuando el bus llega a otra parada, los confirmados en las que ya pasó quedan «no se presentó»; al terminar el viaje, todos los confirmados. La ubicación del estudiante va en el mismo aviso (`ubicacion_latitud`, `ubicacion_longitud`, `ubicacion_en`): solo la última, y se borra al cancelar, al cerrarse o al terminar el viaje; con T16, también al subir |
-| `Abordaje` | viajes | HU-10, HU-12 | `id_cliente` único para que un reenvío no cobre dos veces (HU12-CA3) |
-| `Recarga` y `Movimiento` | `creditos` (app nueva) o viajes | HU-11 a HU-13 | El saldo es la suma de los movimientos; nunca se guarda aparte. Cada cobro, devolución o retiro es un movimiento completo o ninguno (RC-03) |
+| `Viaje` y `PosicionDeViaje` | viajes | HU-05, HU-06 | Implementados. `Viaje` guarda la última posición; `PosicionDeViaje.id_cliente` evita duplicar reenvíos. Un chofer tiene un solo viaje en curso. `Viaje.simulado` marca los viajes del simulador (T23), que no enseñan horas (C-28) |
+| `AvisoDeSubida` | viajes | HU-07, HU-09, HU-10 | Implementado. Un aviso activo por estudiante y viaje (HU07-CA2). Cuando el bus llega a otra parada, los confirmados en las que ya pasó quedan «no se presentó»; al terminar el viaje, todos los confirmados (P-33). La ubicación del estudiante va en el mismo aviso (`ubicacion_latitud`, `ubicacion_longitud`, `ubicacion_en`): solo la última, y se borra al cancelar, al cerrarse o al terminar el viaje; con T16, también al subir. Con esa ubicación, T16 detecta que subió: el bus a más de 100 m de su parada y dos ubicaciones seguidas a menos de 50 m del bus (P-33). El abordaje es su estado A bordo, con quién lo marcó: el estudiante, el chofer o la app (C-30); subir no cobra (C-31) |
+| `PagoDeViaje` | `creditos` (app nueva) o viajes | HU-12 | Uno por estudiante y viaje. Con créditos genera el cobro, el abono al chofer y el comprobante; en efectivo lo marca el chofer, sin movimiento. `id_cliente` único para que un reenvío no cobre dos veces (HU12-CA3) |
+| `Recarga` y `Movimiento` | `creditos` (app nueva) o viajes | HU-11 a HU-13 | El saldo es la suma de los movimientos; nunca se guarda aparte. Cada cobro, devolución, retiro o ajuste es un movimiento completo o ninguno (RC-03). El ajuste del administrador lleva su motivo y quién lo hizo, y no deja el saldo en negativo (C-29) |
 | `Mensaje` y `MiembroDeRuta` | mensajes | HU-14, HU-15 | Solo texto (P-10) |
 | `CambioDeRuta` | rutas | HU-16 | Todo cambio del chofer queda pendiente hasta que un administrador lo aprueba; los del administrador se aplican directamente (C-32) |
 
@@ -282,5 +281,5 @@ Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `Error
 
 - **Hugo Zuñiga:** decidió la tecnología (PO13) y aprueba este diseño.
 - **Sebastian Cruz:** implementó el diseño de viajes y bus en vivo de T11 (HU-05 y HU-06); mantiene pendiente la revisión de T03.
-- **Asistencia de IA:** se usó Claude (Anthropic) para construir la base, describir su diseño y proponer los modelos de la sección 3. Sebastian usó OpenAI Codex para implementar y verificar T11 siguiendo la skill `implementar-historia`.
+- **Asistencia de IA:** se usó Claude (Anthropic) para construir la base, describir su diseño y proponer los modelos de la sección 3; el 25/11/2026, para ajustarlos a las decisiones del Product Owner (PO25). Sebastian usó OpenAI Codex para implementar y verificar T11 siguiendo la skill `implementar-historia`.
 - **Hugo Zuñiga (25/11/2026):** implementó `AvisoDeSubida`, el canal privado del chofer y las rutas de HU-07 (T14), con asistencia de Claude (Anthropic).
