@@ -114,7 +114,7 @@ Para hacer una historia no hace falta juntarse: los tests de cada criterio crean
 
 1. **Usa el padrón de ejemplo**, para no registrar a compañeros de verdad. En `.env`, pon `UPBUS_PADRON=padron/padron.json`. Si no quieres tocar tu base, agrega `UPBUS_BD=prueba.sqlite3` y corre `python manage.py migrate` y `python manage.py cargar_rutas`.
 2. **Crea las cuentas.** Regístrate como Hugo (`70001`, `hugo.zuniga@upb.example`, administrador) y como Ismael (`70004`, `ismael@upb.example`, estudiante). Con Hugo, en **Usuarios**, crea un chofer, por ejemplo Marco.
-3. **Carga la Ruta Sur grabada:** `python manage.py importar_registro rutas/datos/registros/registro-sur-0640-2026-11-25.json --usuario 70001`.
+3. **La Ruta Sur grabada** se carga sola la primera vez que la simulas en **Demo** (C-37). Para verla con sus paradas en **Rutas** antes de simular: `python manage.py importar_registro rutas/datos/registros/registro-sur-0640-2026-11-25.json --usuario 70001`.
 4. **Abre una ventana por cuenta.** Cada ventana guarda su propia sesión: Chrome normal con Hugo, una ventana de incógnito con Ismael y otro navegador (Edge o Firefox) con Marco, todas en `http://localhost:5173`.
 5. **Mueve un bus sin salir a la calle.** Con Hugo, abre **Demo** y corre «Recorrido» o «No se presenta» en la Ruta Sur ([guía del simulador](guia-simulador.md)). Con Ismael, en **Rutas › Sur**, el viaje simulado aparece en curso: puedes marcar «Voy a subir» en una parada y ver qué pasa cuando llega el bus. En «No se presenta», el estudiante de la simulación espera en la segunda parada y comparte su ubicación.
 
