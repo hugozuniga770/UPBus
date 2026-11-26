@@ -68,7 +68,7 @@ Las estimaciones son en horas-persona (h-p) y son **[PROPUESTA]**: no hay horas 
 | T18 | Retiro del chofer (HU-13) | El chofer retira y el saldo no queda negativo | 3 | Hugo | 4 | Por hacer |
 | T19 | Chats (HU-14, HU-15) | Chat directo y chat de ruta por WebSocket | 8 | Sebastian | 4 | Hecho: 5 criterios, canales privados e interfaz (#14) |
 | T20 | Modificación de rutas y aviso de mínimo (HU-16, HU-17) | Todo cambio del chofer pendiente de aprobación; aviso con menos de 15 | 6 | Andrés | 4 | Por hacer |
-| T21 | Trazabilidad y pruebas completas | `trazabilidad.md` completa; todos los tests en verde | 5 | Hugo | Cierre | Empezada: `trazabilidad.md` llega con la base |
+| T21 | Trazabilidad y pruebas completas | `trazabilidad.md` completa; todos los tests en verde | 5 | Hugo | Cierre | En curso: `trazabilidad.md` al día y pruebas de punta a punta en el navegador en cada Pull Request (C-38); se completan con T15 a T20 |
 | T22 | Despliegue en hosting gratuito | App publicada con HTTPS | 5 | Sebastian | Cierre | En curso en #17: configuración y guía listas; falta publicar después de integrar |
 | T23 | Simulador de escenarios y panel de demo | Los escenarios corren desde la terminal y desde el panel, usando los mismos servicios que la app; los viajes simulados no cambian las horas aproximadas | 10 | Hugo | 2 a 4 | En curso: comando, panel Demo y escenarios «recorrido» y «no se presenta» unidos (PR #27); el panel carga el recorrido grabado si la ruta no lo tiene (C-37); faltan los de T16 y T17 |
 | T24 | Guion y ensayo de la demo | Recorrido ensayado y cronometrado; video de respaldo | 3 | Hugo | Cierre | Por hacer |

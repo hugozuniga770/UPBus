@@ -183,7 +183,7 @@ sequenceDiagram
 
 Al terminar, la base tenía **una sola cuenta** (70004, estudiante), con la contraseña guardada como hash `pbkdf2_sha256`, y el archivo del padrón seguía **idéntico** (misma suma SHA-256 antes y después): el registro lee el padrón y nunca lo escribe (RF-01).
 
-**Lo mismo, en la integración continua:** cada Pull Request corre los criterios HU01-CA1 a CA4 y HU02-CA1 a CA4 en pytest, y HU01-CA3 y HU02-CA3 en Vitest ([trazabilidad](trazabilidad.md)).
+**Lo mismo, en la integración continua:** cada Pull Request corre los criterios HU01-CA1 a CA4 y HU02-CA1 a CA4 en pytest, y HU01-CA3 y HU02-CA3 en Vitest ([trazabilidad](trazabilidad.md)). Desde el 26/11/2026 corren además estos ocho pasos en el navegador, con `e2e/test_cuentas.py` (T21, C-38).
 
 **El tiempo real, también de punta a punta:** el 26/11/2026, con el servidor andando, una simulación del panel Demo sobre la Ruta Sur (T23) hizo llegar 42 posiciones del bus en 6 segundos a un navegador conectado a `ws/viajes/<id>/`. Recorrió el camino completo: servicios → BD → Channels → navegador ([guía del simulador](guia-simulador.md)).
 

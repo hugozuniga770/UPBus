@@ -31,6 +31,7 @@ UPBus conecta en tiempo real a los estudiantes y choferes de los buses de la UPB
 pytest                              # servidor
 cd frontend && npm test             # interfaz
 cd frontend && npm run build        # compila como en la integración continua
+pytest e2e                          # punta a punta en el navegador (T21): antes, npm run build
 python manage.py makemigrations     # después de cambiar un modelo
 python manage.py simular --lista    # escenarios del simulador (T23)
 ```
@@ -39,6 +40,6 @@ python manage.py simular --lista    # escenarios del simulador (T23)
 
 ```
 config/    comun/    cuentas/ (HU-01 a HU-03)    rutas/ (HU-04, HU-18)
-viajes/ (HU-05 a HU-13, por hacer)    mensajes/ (HU-14, HU-15, por hacer)
-padron/    tests/    frontend/src/{api,sesion,componentes,paginas,registro}    docs/
+viajes/ (HU-05 a HU-13, por hacer)    mensajes/ (HU-14, HU-15)
+padron/    tests/    e2e/    frontend/src/{api,sesion,componentes,paginas,registro}    docs/
 ```

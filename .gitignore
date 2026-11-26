@@ -9,6 +9,7 @@ __pycache__/
 .venv/
 venv/
 .pytest_cache/
+e2e/capturas/
 staticfiles/
 
 # Interfaz

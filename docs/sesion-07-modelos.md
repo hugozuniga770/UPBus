@@ -640,7 +640,7 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-18 | 5 | 5 | 0 |
 | **Total** | **75** | **39** | **36** |
 
-Además de los 39 tests de criterios, hay 25 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur, los WebSockets del viaje y de los chats, programar viajes desde el panel, cerrar los avisos al terminar el viaje, calibrar la distancia de llegada, 12 del simulador de T23 y 4 del despliegue de T22) y 23 pruebas de interfaz en Vitest: 11 de criterios (HU01-CA3, HU02-CA3, HU05-CA1, HU07-CA1, HU07-CA2, HU14-CA1 a CA3, HU15-CA1, HU15-CA2 y HU18-CA5) y 12 de soporte (el cliente de la API, la cola y el respaldo del modo registro, la pantalla del chofer, la consulta del viaje en curso y el panel de demo). Las pruebas de soporte no cuentan como criterios.
+Además de los 39 tests de criterios, hay 25 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur, los WebSockets del viaje y de los chats, programar viajes desde el panel, cerrar los avisos al terminar el viaje, calibrar la distancia de llegada, 12 del simulador de T23 y 4 del despliegue de T22) y 23 pruebas de interfaz en Vitest: 11 de criterios (HU01-CA3, HU02-CA3, HU05-CA1, HU07-CA1, HU07-CA2, HU14-CA1 a CA3, HU15-CA1, HU15-CA2 y HU18-CA5) y 12 de soporte (el cliente de la API, la cola y el respaldo del modo registro, la pantalla del chofer, la consulta del viaje en curso y el panel de demo). Las pruebas de soporte no cuentan como criterios. Tampoco las 22 de punta a punta (T21), que corren la app real en el navegador con varias cuentas a la vez ([trazabilidad](trazabilidad.md), sección 2).
 
 ## 8. Participación y asistencia utilizada
 
