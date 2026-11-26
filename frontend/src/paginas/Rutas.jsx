@@ -41,12 +41,19 @@ export default function Rutas() {
   useEffect(() => {
     if (!rutaId) return undefined;
     let vigente = true;
-    api.viajes({ ruta: rutaId, estado: "en_curso" })
-      .then(({ viajes }) => {
-        if (vigente) setViajeActivo(viajes[0] ?? null);
-      })
-      .catch((falla) => setError(falla.causa));
-    return () => { vigente = false; };
+    const consultarViaje = () => {
+      api.viajes({ ruta: rutaId, estado: "en_curso" })
+        .then(({ viajes }) => {
+          if (vigente) setViajeActivo(viajes[0] ?? null);
+        })
+        .catch((falla) => setError(falla.causa));
+    };
+    consultarViaje();
+    const intervalo = setInterval(consultarViaje, 30_000);
+    return () => {
+      vigente = false;
+      clearInterval(intervalo);
+    };
   }, [rutaId]);
 
   useEffect(() => {

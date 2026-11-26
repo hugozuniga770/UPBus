@@ -1,8 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { api } from "../api/cliente.js";
 import Aviso from "../componentes/Aviso.jsx";
 import Boton from "../componentes/Boton.jsx";
+import { distanciaEnMetros } from "../registro/geo.js";
+
+const SEGUNDOS_ENTRE_POSICIONES = 10;
+const METROS_ENTRE_POSICIONES = 20;
+const SEGUNDOS_MINIMOS_ENTRE_POSICIONES = 5;
 
 const NOMBRE_ESTADO = {
   programado: "Programado",
@@ -21,6 +26,7 @@ export default function Viajes() {
   const [ocupado, setOcupado] = useState(null);
   const [error, setError] = useState("");
   const [aviso, setAviso] = useState("");
+  const ultimaPosicionEnviada = useRef(null);
   const viajeEnCurso = useMemo(
     () => viajes.find((viaje) => viaje.estado === "en_curso"),
     [viajes],
@@ -32,18 +38,34 @@ export default function Viajes() {
 
   useEffect(() => {
     if (!viajeEnCurso) return undefined;
+    ultimaPosicionEnviada.current = null;
     if (!navigator.geolocation) {
       setAviso("Este dispositivo no permite compartir la ubicación del bus.");
       return undefined;
     }
     const seguimiento = navigator.geolocation.watchPosition(
       (posicion) => {
-        api.registrarPosicion(viajeEnCurso.id, {
+        const siguiente = {
           id_cliente: idDePosicion(),
           latitud: posicion.coords.latitude,
           longitud: posicion.coords.longitude,
           tomada_en: new Date(posicion.timestamp).toISOString(),
-        }).then(() => setAviso("Ubicación del bus compartida en tiempo real."))
+        };
+        const anterior = ultimaPosicionEnviada.current;
+        if (anterior) {
+          const segundos = (Date.parse(siguiente.tomada_en) - Date.parse(anterior.tomada_en)) / 1000;
+          const metros = distanciaEnMetros(
+            [anterior.latitud, anterior.longitud],
+            [siguiente.latitud, siguiente.longitud],
+          );
+          if (
+            segundos < SEGUNDOS_MINIMOS_ENTRE_POSICIONES
+            || (segundos < SEGUNDOS_ENTRE_POSICIONES && metros < METROS_ENTRE_POSICIONES)
+          ) return;
+        }
+        ultimaPosicionEnviada.current = siguiente;
+        api.registrarPosicion(viajeEnCurso.id, siguiente)
+          .then(() => setAviso("Ubicación del bus compartida en tiempo real."))
           .catch((falla) => setAviso(falla.esDeRed ? "Sin señal: se conserva la última posición enviada." : falla.causa));
       },
       () => setAviso("No se pudo leer la ubicación. Revisa el permiso del navegador."),
@@ -51,6 +73,28 @@ export default function Viajes() {
     );
     return () => navigator.geolocation.clearWatch(seguimiento);
   }, [viajeEnCurso]);
+
+  const viajeEnCursoId = viajeEnCurso?.id;
+  useEffect(() => {
+    if (!viajeEnCursoId || !("wakeLock" in navigator)) return undefined;
+    let candado = null;
+    let activo = true;
+    const pedir = async () => {
+      try {
+        candado = await navigator.wakeLock.request("screen");
+      } catch {
+        // Sin permiso: el chofer deja la pantalla encendida a mano.
+      }
+    };
+    const alVolver = () => activo && document.visibilityState === "visible" && pedir();
+    pedir();
+    document.addEventListener("visibilitychange", alVolver);
+    return () => {
+      activo = false;
+      document.removeEventListener("visibilitychange", alVolver);
+      candado?.release().catch(() => {});
+    };
+  }, [viajeEnCursoId]);
 
   async function cambiarEstado(viaje, accion) {
     setOcupado(viaje.id);

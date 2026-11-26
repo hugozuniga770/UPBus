@@ -12,13 +12,22 @@ from pathlib import Path
 import pytest
 from asgiref.sync import async_to_sync
 from channels.testing import WebsocketCommunicator
+from django.contrib import admin
 from django.core.management import CommandError, call_command
 
 from config.asgi import application
 from cuentas.management.commands.importar_padron import convertir_filas
 from rutas.models import Parada, Ruta
+from viajes.models import Viaje
 
 from .conftest import CAMPUS_UPB, LA_FONTANA, SEVILLA
+
+
+def test_el_administrador_puede_programar_viajes_desde_el_panel():
+    viaje_admin = admin.site._registry[Viaje]
+
+    assert viaje_admin.list_display == ("ruta", "horario", "fecha", "chofer", "estado")
+    assert viaje_admin.list_filter == ("estado", "fecha")
 
 
 def test_importar_padron_reemplaza_los_correos_que_no_son_de_la_upb():
