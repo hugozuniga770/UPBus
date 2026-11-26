@@ -4,8 +4,8 @@
 - Repositorio: [UPBus](https://github.com/hugozuniga770/UPBus)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz. Los tres son Developers.
 - Docente: Ing. Alejandro Rodríguez (Certificación I)
-- Fecha del plan: 13/11/2026 · Avance: jueves 19/11/2026 · Entrega final: martes 15/12/2026
-- Actualizado: 26/11/2026 · T02 aprobada, T14 hecha y T23 en curso. El 25/11/2026: reparto del 18/11 en la tabla de tareas (C-26), primera ruta grabada con el modo registro (T26, C-24) y Gantt al 25/11; esa noche, evidencias de T14, T16, T17, T20 y T23 ajustadas a la revisión de las historias del Product Owner (C-28 a C-32). El 18/11/2026: base del código, tareas T25 y T26, Andrés como Scrum Master de la implementación y sesiones de sábado y domingo (C-18 a C-20). Antes, 16/11/2026: entrevistas, T23 y T24, Gantt detallado y costos (C-07, C-08, C-12, C-13)
+- Fecha del plan: 13/11/2026 · Avance: jueves 19/11/2026 · Entrega final: martes 15/12/2026 · Aprobado por el Product Owner el 26/11/2026, con la revisión de Andrés (T01)
+- Actualizado: 26/11/2026 · T01, T02 y T13 cerradas, T14 hecha, T23 en curso y `sesion-12-arquitectura.md` en revisión (C-33 a C-36). El 25/11/2026: reparto del 18/11 en la tabla de tareas (C-26), primera ruta grabada con el modo registro (T26, C-24) y Gantt al 25/11; esa noche, evidencias de T14, T16, T17, T20 y T23 ajustadas a la revisión de las historias del Product Owner (C-28 a C-32). El 18/11/2026: base del código, tareas T25 y T26, Andrés como Scrum Master de la implementación y sesiones de sábado y domingo (C-18 a C-20). Antes, 16/11/2026: entrevistas, T23 y T24, Gantt detallado y costos (C-07, C-08, C-12, C-13)
 - Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Historias: [Sesión 7](sesion-07-modelos.md) · Cambios: [cambios.md](cambios.md)
 
@@ -48,9 +48,9 @@ Las estimaciones son en horas-persona (h-p) y son **[PROPUESTA]**: no hay horas 
 | ID | Trabajo | Evidencia de terminación | Esfuerzo (h-p) | Responsable | Sprint | Estado al 25/11 |
 |---|---|---|---:|---|---|---|
 | T00 | Perfil de proyecto: informe y presentación | Presentado el 07/11/2026 | 6 | Los tres | Perfil | Hecho |
-| T01 | Plan y requisitos | `sesion-08-09-plan.md` y `sesion-06-requisitos.md` aprobados | 4 | Hugo | 1 | En revisión: el 18/11 se sumó RF-23 |
+| T01 | Plan y requisitos | `sesion-08-09-plan.md` y `sesion-06-requisitos.md` aprobados | 4 | Hugo | 1 | Hecho: Andrés lo revisó el 25/11; RF-01 y RF-11 ajustados (C-33, C-34) y cerrado el 26/11 |
 | T02 | Historias, criterios y casos de uso | `sesion-07-modelos.md` aprobado | 5 | Hugo | 1 | Hecho: aprobado por el Product Owner el 26/11, con su revisión del 25/11 (PO25) |
-| T03 | Diseño y arquitectura | `sesion-13-14-diseno.md`, `sesion-12-arquitectura.md` y `diagramas-secuencia.md` aprobados | 5 | Andrés; Hugo hizo las secuencias y el diseño de la base | 1 | En curso: falta `sesion-12-arquitectura.md` |
+| T03 | Diseño y arquitectura | `sesion-13-14-diseno.md`, `sesion-12-arquitectura.md` y `diagramas-secuencia.md` aprobados | 5 | Andrés; Hugo hizo las secuencias, el diseño de la base y `sesion-12-arquitectura.md` (C-36) | 1 | En revisión: `sesion-12-arquitectura.md` redactada el 26/11; la revisa Andrés |
 | T04 | Entrevistas a un chofer y a una estudiante (ENT-01, ENT-02) | Registros en `entrevistas.md` y cambios derivados | 2 | Hugo | 1 | Hecho (16/11) |
 | T05 | Entorno del servidor | Django, DRF y Channels arrancan; SQLite creada | 3 | Hugo (antes Andrés, C-19) | 1 | Hecho en la base |
 | T06 | Entorno de la interfaz | React con Tailwind arranca y habla con la API | 3 | Hugo (antes Andrés, C-19) | 1 | Hecho en la base |
@@ -60,7 +60,7 @@ Las estimaciones son en horas-persona (h-p) y son **[PROPUESTA]**: no hay horas 
 | T10 | Rutas, paradas y horarios (HU-04) | Comando `cargar_rutas`; las rutas se ven en el mapa | 8 | Hugo (antes Sebastian, C-19) | 1 (estaba en el 2) | Hecho en la base: 2 criterios en verde |
 | T11 | Viajes y bus en vivo (HU-05, HU-06) | El chofer inicia el viaje; el simulador mueve el bus en el mapa por WebSocket | 10 | Sebastian | 2 | Hecho: viajes, GPS, última posición, pasos a menos de 50 m y mapa por WebSocket (#6) |
 | T12 | Base visual | Estilo UPB, navegación por rol y componentes comunes | 6 | Hugo (antes Andrés, C-19) | 1 (estaba en el 2) | Hecho en la base; cada historia suma sus pantallas |
-| T13 | Entrevistas a Don Iván (ENT-03), a la encargada del servicio en la UPB (ENT-07) y a estudiantes de otras rutas | Registros en `entrevistas.md` y cambios derivados | 4 | Andrés (ENT-03, ENT-07) y Hugo (estudiantes) | 1 y 2 | En curso: ENT-03 hecha el 18/11 |
+| T13 | Entrevistas a Don Iván (ENT-03), a la encargada del servicio en la UPB (ENT-07) y a estudiantes de otras rutas | Registros en `entrevistas.md` y cambios derivados | 4 | Andrés y Hugo (ENT-03); Hugo (ENT-07, por correo, C-36) | 1 y 2 | Hecho: ENT-03 el 18/11 y ENT-07 por escrito el 26/11; ENT-04 a ENT-06 no se hicieron (C-36) |
 | T14 | «Voy a subir» y ubicación del estudiante (HU-07) | Alerta al chofer; el aviso queda «no se presentó» si el bus llega a la parada siguiente sin que suba | 8 | Hugo | 3 | Hecho: «Voy a subir», cancelar, ubicación compartida y cierre automático; HU07-CA6 llega con T16 |
 | T15 | Paradas propuestas y su aprobación (HU-08) | Proponer en el mapa; el administrador aprueba o rechaza, también las que graba un chofer; paradas activas | 8 | Andrés | 3 | Por hacer: las horas aproximadas ya están en la base |
 | T16 | Aviso de bus cerca y registro de quién subió (HU-09, HU-10) | Aviso a 500 m; sugerencia de seguir al chofer; «ha subido» en la lista del chofer, también cuando la app detecta que subió | 6 | Andrés | 3 | Por hacer |
@@ -198,7 +198,7 @@ Al cerrar cada sprint se anota aquí lo que de verdad pasó, comparado con el Ga
 | Tarea | Inicio planificado | Fin planificado | Inicio real | Fin real | Diferencia |
 |---|---|---|---|---|---|
 | T00 | 05/11 | 07/11 | — | 07/11 | Se presentó a tiempo |
-| T01 | 13/11 | 14/11 | 13/11 | En revisión | Se ajustó el 16/11 con las entrevistas |
+| T01 | 13/11 | 14/11 | 13/11 | 26/11 (aprobado) | Se ajustó el 16/11 con las entrevistas; Andrés lo revisó el 25/11 y se cerró con C-33 y C-34 |
 | T04 | 13/11 | 13/11 | 16/11 | 16/11 | 3 días después: no se encontró a Don Iván |
 | T02 | 16/11 | 17/11 | 16/11 | 26/11 (aprobado) | Escrito el 18/11, con HU-18 sumada; aprobado el 26/11 con la revisión del Product Owner (PO25) |
 | T05 a T08 | 17/11 | 20/11 | 18/11 | 18/11 | 2 días antes, en la base (C-19) |
@@ -206,6 +206,7 @@ Al cerrar cada sprint se anota aquí lo que de verdad pasó, comparado con el Ga
 | T25 | — | — | 18/11 | 18/11 | Tarea nueva (C-18) |
 | T26 | 20/11 | 23/11 | 25/11 | 25/11 | Dentro del Sprint 2, con la Ruta Sur (C-24) |
 | T13 (ENT-03) | 20/11 | 23/11 | 18/11 | 18/11 | Se adelantó (C-14) |
+| T13 (ENT-07) | 20/11 | 23/11 | 26/11 | 26/11 | Por escrito, a pedido de la encargada; ENT-04 a ENT-06 no se hicieron (C-36) |
 
 ### 6.3 Gantt actualizado al 25/11/2026
 
@@ -269,7 +270,7 @@ gantt
 | 3 | El GPS real no funciona con la pantalla apagada | — | Queda [SIMULADO] en el bus en vivo del MVP. En el servicio real, la pantalla del bus con la página abierta (ENT-01, P-20). El modo registro mantiene la pantalla encendida mientras graba |
 | 4 | Las entrevistas cambian las reglas | Ya pasó: ENT-01 espera 2 minutos y el docente dijo que no se espera (P-19) | Registrar el cambio en `cambios.md` y ajustar el backlog en el siguiente Planning |
 | 5 | Los créditos tienen errores de saldo | Un test de pago falla o un saldo queda negativo | Todo movimiento se guarda completo o no se guarda; pruebas de doble envío |
-| 6 | Datos personales reales en un repositorio público | Códigos o correos reales en el padrón | P-01 respondida (C-20): la lista de la clase va en `padron/padron.local.json`, que `.gitignore` deja fuera; los tests usan el padrón de ejemplo. Antes de cada Pull Request se revisa que no entre |
+| 6 | Datos personales reales en un repositorio público | Códigos o correos reales en el padrón | P-01 respondida (C-20): la lista de la clase va en `padron/padron.local.json`, que `.gitignore` deja fuera; los tests usan el padrón de ejemplo. Antes de cada Pull Request se revisa que no entre. ENT-07: la UPB pide que su información sea de uso exclusivo de la universidad y considera sensible la ubicación de los estudiantes, que no se guarda como historial (C-35) |
 | 7 | No hay incremento que funcione para el avance del 19/11 | El Gantt base mostraba que T08 terminaba el 20/11 | Resuelto el 18/11: la base trae HU-01 a HU-04 y HU-18 funcionando |
 | 8 | Solo se entrevistó la Ruta Norte | Las otras rutas tienen problemas distintos | ENT-04 a ENT-06 con estudiantes de otras rutas, en el Sprint 2 |
 | 9 | La UPB pensaba hacer su propia aplicación de transporte el próximo año (ENT-03) | La encargada del servicio confirma un proyecto propio | Preguntarlo en ENT-07 y presentar UPBus como prueba piloto de esa idea |
@@ -320,14 +321,16 @@ Al cerrar cada sprint se anota aquí la fecha real y el SHA del commit de cierre
 | 18/11/2026 | Andrés reparte las tareas desde el 21/11; sesiones de sábado y domingo; Gantt actualizado (sección 6.3) | Scrum Master de la implementación (C-19) |
 | 25/11/2026 | Responsables según el reparto del 18/11 (C-26); T26 hecha con la Ruta Sur (C-24); Gantt actualizado al 25/11 | Reparto del equipo y primer viaje grabado |
 | 25/11/2026 | Evidencias de T14, T16, T17, T20 y T23 según la revisión de las historias; T17 ya no depende de T16 (C-28 a C-32). Sin cambio de horas | Revisión del Product Owner (PO25) |
+| 26/11/2026 | T01 cerrada con la revisión de Andrés (C-33, C-34); T13 cerrada con ENT-07, sin ENT-04 a ENT-06; `sesion-12-arquitectura.md` la redacta Hugo y la revisa Andrés (C-36) | Revisión de T01, respuestas de ENT-07 y decisión del Product Owner |
 
 ## 12. Dudas abiertas
 
-Las preguntas P-01 a P-33 están en la [sección 6 de los requisitos](sesion-06-requisitos.md). Para este plan pesan sobre todo P-06 (horas de llegada), P-16 (hosting), P-18 (paradas reales, que responde T26), P-19 (espera), P-20 (pantalla del bus) y P-29 (plan B del viaje de grabación).
+Las preguntas P-01 a P-34 están en la [sección 6 de los requisitos](sesion-06-requisitos.md). Para este plan pesan sobre todo P-06 (horas de llegada), P-16 (hosting), P-18 (paradas reales, que responde T26), P-19 (espera), P-20 (pantalla del bus) y P-29 (plan B del viaje de grabación).
 
 ## 13. Participación y asistencia utilizada
 
-- **Hugo Zuñiga:** definió los sprints, el reparto y las fechas, hizo las entrevistas del 16/11 y aprueba este plan.
+- **Hugo Zuñiga:** definió los sprints, el reparto y las fechas, hizo las entrevistas del 16/11 y aprobó este plan el 26/11/2026 (T01).
+- **Andrés Laura Vargas:** revisó el plan y los requisitos el 25/11/2026 (T01).
 - **Asistencia de IA:** se usó Claude (Anthropic) para proponer las tareas, las estimaciones, el orden y los riesgos a partir de las decisiones del Product Owner, y el 16/11 para ajustar el plan con las entrevistas y dibujar el Gantt.
 - **Hugo Zuñiga (18/11/2026):** decidió el modo registro, dejó la base del código y acordó con el equipo que Andrés dirija la implementación en sesiones de sábado y domingo.
 - **Andrés Laura Vargas (Scrum Master):** dirigió el reparto del 18/11 y supervisa que las tareas se cumplan.

@@ -3,7 +3,7 @@
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I)
-- Fecha: 16/11/2026 · Sprint 1 · Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
+- Fecha: 16/11/2026 · Sprint 1 · Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1 · Aprobado por el Product Owner el 26/11/2026 (T01)
 - Actualizado: 25/11/2026 · horas por persona según el reparto del 18/11 (C-26). El 18/11/2026: T25 y T26 suman 10 h-p (152 en total); la base del código cambia responsables y las tareas por asignar las reparte Andrés (C-18, C-19)
 - Hoja de cálculo con las cuentas al día: «UPBus · Costos y horas» (Claude Sheets, privada del equipo)
 - Plan: [Sesiones 8–9](sesion-08-09-plan.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)

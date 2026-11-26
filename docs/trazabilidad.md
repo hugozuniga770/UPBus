@@ -58,6 +58,7 @@ No son criterios: prueban herramientas que usan las historias.
 | `tests/test_soporte.py::test_importar_padron_reemplaza_los_correos_que_no_son_de_la_upb` | `importar_padron` lee la lista con el formato de la de la clase y cambia los correos que no son de la UPB por `<código>@upb.example` |
 | `tests/test_soporte.py::test_importar_un_respaldo_del_modo_registro` | `importar_registro` carga un respaldo y rechaza cargarlo dos veces |
 | `tests/test_soporte.py::test_el_registro_real_de_la_ruta_sur_da_las_horas_observadas` | Con el respaldo real de la Ruta Sur (REG-01), la app muestra las horas que se vieron en el bus (C-23) |
+| `tests/test_soporte.py::test_la_distancia_de_llegada_se_calibra_sin_cambiar_el_codigo` | La distancia de llegada empieza en 50 m y se calibra con `UPBUS_RADIO_DE_LLEGADA_M`, también para las marcas del modo registro (C-34) |
 | `tests/test_soporte.py::test_el_websocket_del_viaje_confirma_la_conexion` | El canal `ws/viajes/<id>/` conecta (base de HU-06) |
 | `tests/test_hu07_voy_a_subir.py::test_al_terminar_el_viaje_nadie_sigue_esperando_ni_compartiendo` | Completa HU05-CA3: al terminar el viaje, los avisos confirmados quedan «no se presentó» y se borran las ubicaciones |
 | `tests/test_soporte.py::test_el_administrador_puede_programar_viajes_desde_el_panel` | El panel de Django permite listar y filtrar los viajes que programa el administrador |
