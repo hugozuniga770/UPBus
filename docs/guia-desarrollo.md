@@ -58,7 +58,7 @@ Abre <http://localhost:5173>. Vite le pasa a Django (puerto 8000) todo lo que em
 | `python manage.py importar_registro <respaldo.json> --usuario <código o correo>` | Carga un respaldo del modo registro |
 | `python manage.py simular recorrido --ruta sur` | Mueve un bus simulado por la ruta grabada ([guía del simulador](guia-simulador.md)); `--lista` muestra los escenarios |
 
-Para cambiar algo de la configuración (otra base, otro padrón, otro dominio), copia `.env.ejemplo` como `.env` y edítalo. `.env` no se sube.
+Para cambiar algo de la configuración (otra base, otro padrón, otro dominio o la distancia de llegada a las paradas, C-34), copia `.env.ejemplo` como `.env` y edítalo. `.env` no se sube.
 
 ## 3. Cómo está organizado
 
