@@ -2,7 +2,7 @@
 
 El simulador llama a los mismos servicios que la app, así que estas pruebas también
 comprueban que las reglas aguantan un viaje entero. Los viajes simulados no enseñan
-horas (C-27).
+horas (C-28).
 """
 from datetime import datetime
 from io import StringIO

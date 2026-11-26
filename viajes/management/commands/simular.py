@@ -5,7 +5,7 @@ Uso:
     python manage.py simular recorrido --ruta sur --velocidad 10
     python manage.py simular no_se_presenta --ruta sur --parada "Banco Ganadero"
 
-Usa los mismos servicios que la app. Los viajes simulados no enseñan horas (C-27).
+Usa los mismos servicios que la app. Los viajes simulados no enseñan horas (C-28).
 """
 from django.core.management.base import BaseCommand, CommandError
 

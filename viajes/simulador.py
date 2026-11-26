@@ -6,7 +6,7 @@ escenario solo funciona si las reglas funcionan. Lo usan el comando `simular` y 
 panel de demo del administrador.
 
 Los viajes simulados quedan marcados (`Viaje.simulado`) y no enseñan horas: sus pasos
-por las paradas no cambian la hora aproximada (C-27).
+por las paradas no cambian la hora aproximada (C-28).
 """
 import logging
 import threading

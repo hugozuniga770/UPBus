@@ -28,7 +28,7 @@ class Viaje(models.Model):
     paradas_registradas = models.ManyToManyField(
         "rutas.Parada", related_name="viajes_registrados", blank=True
     )
-    # Lo creó el simulador (T23): se ve en vivo, pero no enseña horas (C-27).
+    # Lo creó el simulador (T23): se ve en vivo, pero no enseña horas (C-28).
     simulado = models.BooleanField(default=False)
 
     class Meta:

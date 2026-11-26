@@ -535,7 +535,7 @@ sequenceDiagram
     loop Cada 25 m del recorrido grabado, con el reloj acelerado
         Sim->>S: compartir_ubicacion(estudiante, junto a su parada), cada 15 s
         Sim->>S: registrar_posicion(chofer, posición, ahora)
-        S->>B: guarda la posición, sin pasos que enseñen horas (C-27)
+        S->>B: guarda la posición, sin pasos que enseñen horas (C-28)
         S->>W: nueva posición
         W-->>FE: el bus simulado se mueve
     end

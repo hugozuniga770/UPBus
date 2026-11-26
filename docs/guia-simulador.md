@@ -9,7 +9,7 @@
 Mueve un bus por el recorrido **grabado** de una ruta (la Ruta Sur, de [REG-01](viajes-grabados.md)) y llama a los **mismos servicios que la app**: inicia el viaje, manda las posiciones del bus, avisa «Voy a subir» y comparte la ubicación del estudiante. Un escenario solo funciona si las reglas funcionan.
 
 - El viaje queda marcado como **simulado**: en el mapa se ve «🧪 Bus simulado» en lugar de «🚌 Bus en vivo».
-- Los viajes simulados **no enseñan horas**: pasar por las paradas no cambia la hora aproximada, que sale solo de viajes reales (C-27).
+- Los viajes simulados **no enseñan horas**: pasar por las paradas no cambia la hora aproximada, que sale solo de viajes reales (C-28).
 - El bus va a unos 25 km/h, manda una posición cada 25 m y se detiene 30 s en cada parada.
 - Si el recorrido grabado empieza después de la primera parada, el bus va en línea recta hasta él. Pasa en la Ruta Sur: REG-01 tiene puntos desde Parque Urbano, no desde Makro Parque.
 - Usa dos cuentas de demo que se crean solas y no pueden iniciar sesión: «Chofer de la simulación» y «Estudiante de la simulación».
