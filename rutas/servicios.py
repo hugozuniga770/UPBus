@@ -41,12 +41,77 @@ def buscar_horario(horario_id):
     return horario
 
 
+# def paradas_visibles(ruta, usuario):
+#     """Las aprobadas para todos; las propuestas también para choferes y administradores."""
+#     paradas = ruta.paradas.exclude(estado=Parada.Estado.RECHAZADA)
+#     if getattr(usuario, "rol", None) not in ("chofer", "administrador"):
+#         paradas = paradas.filter(estado=Parada.Estado.APROBADA)
+#     return list(paradas.order_by("orden", "id"))
+
+def buscar_parada(parada_id):
+    parada = Parada.objects.select_related("ruta").filter(pk=parada_id).first()
+    if parada is None:
+        raise NoExiste("la parada no existe")
+    return parada
+
+
 def paradas_visibles(ruta, usuario):
-    """Las aprobadas para todos; las propuestas también para choferes y administradores."""
+    """Las aprobadas para todos; las propuestas para choferes, administradores y su autor."""
+    from django.db.models import Q
+
     paradas = ruta.paradas.exclude(estado=Parada.Estado.RECHAZADA)
     if getattr(usuario, "rol", None) not in ("chofer", "administrador"):
-        paradas = paradas.filter(estado=Parada.Estado.APROBADA)
+        if getattr(usuario, "is_authenticated", False):
+            paradas = paradas.filter(Q(estado=Parada.Estado.APROBADA) | Q(creada_por=usuario))
+        else:
+            paradas = paradas.filter(estado=Parada.Estado.APROBADA)
     return list(paradas.order_by("orden", "id"))
+
+
+# ---- HU-08: paradas propuestas y su aprobación ----
+
+@transaction.atomic
+def proponer_parada(usuario, ruta_id, nombre, latitud, longitud):
+    ruta = buscar_ruta(ruta_id)
+    reglas.verificar_coordenadas(latitud, longitud)
+    punto = (latitud, longitud)
+    reglas.verificar_cerca_del_recorrido(punto, ruta.recorrido)
+    existentes = list(ruta.paradas.exclude(estado=Parada.Estado.RECHAZADA))
+    reglas.verificar_lejos_de_paradas_existentes(punto, existentes)
+    nombre_limpio = (nombre or "").strip() or f"Parada propuesta {len(existentes) + 1}"
+    parada = Parada.objects.create(
+        ruta=ruta,
+        nombre=nombre_limpio,
+        latitud=latitud,
+        longitud=longitud,
+        orden=len(existentes) + 1,
+        estado=Parada.Estado.PROPUESTA,
+        creada_por=usuario if getattr(usuario, "is_authenticated", False) else None,
+    )
+    reordenar_paradas(ruta)
+    return parada
+
+
+@transaction.atomic
+def aprobar_parada(usuario, parada_id):
+    reglas.verificar_puede_aprobar_parada(usuario)
+    parada = buscar_parada(parada_id)
+    reglas.verificar_parada_propuesta(parada)
+    parada.estado = Parada.Estado.APROBADA
+    parada.save(update_fields=["estado"])
+    reordenar_paradas(parada.ruta)
+    return parada
+
+
+@transaction.atomic
+def rechazar_parada(usuario, parada_id):
+    reglas.verificar_puede_aprobar_parada(usuario)
+    parada = buscar_parada(parada_id)
+    reglas.verificar_parada_propuesta(parada)
+    parada.estado = Parada.Estado.RECHAZADA
+    parada.save(update_fields=["estado"])
+    reordenar_paradas(parada.ruta)
+    return parada
 
 
 def minutos_aprendidos(parada, horario):

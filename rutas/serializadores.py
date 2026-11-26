@@ -100,3 +100,23 @@ def registro_a_dict(registro):
             for marca in registro.marcas.all()
         ],
     }
+
+class PropuestaParadaEntrada(serializers.Serializer):
+    nombre = serializers.CharField(max_length=120, required=False, allow_blank=True)
+    latitud = serializers.FloatField()
+    longitud = serializers.FloatField()
+
+
+def parada_a_dict(parada, hora_aproximada=None):
+    return {
+        "id": parada.pk,
+        "ruta": parada.ruta_id,
+        "nombre": parada.nombre,
+        "latitud": parada.latitud,
+        "longitud": parada.longitud,
+        "orden": parada.orden,
+        "estado": parada.estado,
+        "creada_por": parada.creada_por.nombre if parada.creada_por else None,
+        "hora_aproximada": _hora(hora_aproximada),
+    }
+

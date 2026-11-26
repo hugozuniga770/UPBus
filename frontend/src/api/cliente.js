@@ -105,4 +105,9 @@ export const api = {
   enviarPuntos: (registroId, puntos) => pedir("POST", `/registros/${registroId}/puntos`, { puntos }),
   terminarRegistro: (registroId) => pedir("POST", `/registros/${registroId}/terminar`),
   cancelarRegistro: (registroId) => pedir("POST", `/registros/${registroId}/cancelar`),
+
+  // HU-08
+  proponerParada: (rutaId, datos) => pedir("POST", `/rutas/${rutaId}/paradas`, datos),
+  aprobarParada: (paradaId) => pedir("POST", `/paradas/${paradaId}/aprobar`),
+  rechazarParada: (paradaId) => pedir("POST", `/paradas/${paradaId}/rechazar`),
 };
