@@ -61,10 +61,12 @@ No son criterios: prueban herramientas que usan las historias.
 | `tests/test_soporte.py::test_el_websocket_del_viaje_confirma_la_conexion` | El canal `ws/viajes/<id>/` conecta (base de HU-06) |
 | `tests/test_hu07_voy_a_subir.py::test_al_terminar_el_viaje_nadie_sigue_esperando_ni_compartiendo` | Completa HU05-CA3: al terminar el viaje, los avisos confirmados quedan «no se presentó» y se borran las ubicaciones |
 | `tests/test_soporte.py::test_el_administrador_puede_programar_viajes_desde_el_panel` | El panel de Django permite listar y filtrar los viajes que programa el administrador |
+| `tests/test_simulador.py` (11 pruebas) | El simulador de T23 recorre la ruta con los mismos servicios de la app y se detiene en cada parada; con la Ruta Sur grabada, «no se presenta» funciona y las horas aproximadas no cambian (C-28); el panel solo lo usa el administrador, corre una simulación a la vez y la puede detener |
 | `frontend/src/api/cliente.test.js` (3 pruebas) | El cliente manda el token CSRF, entrega la causa del rechazo y marca la falta de señal como error de red |
 | `frontend/src/paginas/Viajes.test.jsx` (2 pruebas de soporte) | Mientras el chofer viaja, mantiene la pantalla encendida y limita los envíos del GPS por tiempo y distancia |
 | `frontend/src/registro/respaldo.test.js` (2 pruebas) | El respaldo no lleva datos de quien graba (C-25), deja fuera las marcas rechazadas y se nombra por ruta, horario y fecha |
 | `frontend/src/registro/cola.test.js` (2 pruebas más) | Sin señal la cola conserva todo y lo envía en orden; lo que el servidor rechaza sale de la cola con su causa |
+| `frontend/src/paginas/Demo.test.jsx` (2 pruebas) | El panel de demo manda el escenario, la ruta, la parada y la velocidad elegidos, y muestra la causa de un rechazo |
 
 ## 3. Criterios por hacer
 
@@ -74,5 +76,6 @@ Los 39 criterios restantes (HU07-CA6, que se escribe con T16, y HU-08 a HU-17) e
 
 - **Hugo Zuñiga:** dejó la base con estos tests.
 - **Sebastian Cruz:** agregó la trazabilidad de HU-05 y HU-06 al implementar T11.
+- **Hugo Zuñiga (26/11/2026):** agregó las pruebas de soporte del simulador (T23).
 - **Asistencia de IA:** se usó Claude (Anthropic) para escribir los tests de la base y esta tabla; Sebastian usó OpenAI Codex para implementar y documentar HU-05 y HU-06 siguiendo la skill del repositorio.
 - **Hugo Zuñiga (25/11/2026):** agregó la trazabilidad de HU-07 al implementar T14, con asistencia de Claude (Anthropic).

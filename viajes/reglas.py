@@ -68,3 +68,30 @@ def verificar_aviso_confirmado(aviso):
 def verificar_puede_ver_avisos(viaje, usuario):
     if viaje.chofer_id != usuario.pk and not usuario.es_administrador:
         raise SinPermiso("solo el chofer de este viaje puede ver quién va a subir")
+
+
+# Simulador de escenarios (T23)
+
+def verificar_escenario(escenario, escenarios):
+    if escenario not in escenarios:
+        raise Rechazo("ese escenario no existe")
+
+
+def verificar_velocidad(velocidad):
+    if not 1 <= velocidad <= 60:
+        raise Rechazo("la velocidad debe estar entre 1 y 60")
+
+
+def verificar_recorrido(recorrido):
+    if len(recorrido or []) < 2:
+        raise Rechazo("la ruta no tiene recorrido: grábala con el modo registro")
+
+
+def verificar_hay_paradas(paradas):
+    if not paradas:
+        raise Rechazo("la ruta no tiene paradas aprobadas")
+
+
+def verificar_sin_simulacion_en_curso(hay_otra):
+    if hay_otra:
+        raise Rechazo("ya hay una simulación en curso: detenla primero")

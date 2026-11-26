@@ -52,6 +52,7 @@ En el MVP la ubicación del bus y de los estudiantes, la recarga de créditos, e
 | [guia-desarrollo.md](docs/guia-desarrollo.md) | Ponerlo a andar, comandos y cómo implementar una historia paso a paso | Al día |
 | [guia-github.md](docs/guia-github.md) | Ramas, Pull Requests, commits y cómo actualizar la copia | Al día |
 | [guia-modo-registro.md](docs/guia-modo-registro.md) | Grabar una ruta desde el celular con el túnel HTTPS | Al día |
+| [guia-simulador.md](docs/guia-simulador.md) | Mover un bus simulado por una ruta grabada, desde el panel Demo o la terminal | Al día |
 | [AGENTS.md](AGENTS.md) | Reglas cortas para quien programa, persona o asistente de IA | Al día |
 
 ## 3. Cómo está organizado el código

@@ -14,6 +14,13 @@ class UbicacionEntrada(serializers.Serializer):
     tomada_en = serializers.DateTimeField()
 
 
+class SimulacionEntrada(serializers.Serializer):
+    escenario = serializers.CharField(max_length=30)
+    ruta = serializers.IntegerField()
+    velocidad = serializers.FloatField(default=10)
+    parada = serializers.IntegerField(required=False, allow_null=True)
+
+
 class PosicionEntrada(serializers.Serializer):
     id_cliente = serializers.CharField(max_length=64)
     latitud = serializers.FloatField()
@@ -51,6 +58,7 @@ def viaje_a_dict(viaje):
         "iniciado_en": _momento(viaje.iniciado_en),
         "terminado_en": _momento(viaje.terminado_en),
         "ultima_posicion": ultima_posicion,
+        "simulado": viaje.simulado,
     }
 
 
@@ -72,4 +80,18 @@ def aviso_a_dict(aviso, con_ubicacion=False):
         "creado_en": _momento(aviso.creado_en),
         "compartiendo_ubicacion": aviso.ubicacion_en is not None,
         "ubicacion": ubicacion,
+    }
+
+
+def simulacion_a_dict(simulacion):
+    return {
+        "id": simulacion.id,
+        "escenario": simulacion.escenario,
+        "ruta": simulacion.ruta,
+        "velocidad": simulacion.velocidad,
+        "estado": simulacion.estado,
+        "deteniendo": simulacion.estado == "en_curso" and simulacion.detener.is_set(),
+        "viaje": simulacion.viaje,
+        "iniciada_en": _momento(simulacion.iniciada_en),
+        "notas": list(simulacion.notas),
     }

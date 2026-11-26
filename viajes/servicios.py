@@ -122,13 +122,14 @@ def registrar_posicion(usuario, viaje_id, id_cliente, latitud, longitud, tomada_
     )
     parada = reglas_de_rutas.parada_mas_cercana((latitud, longitud), paradas)
     if parada is not None:
-        salida = reglas_de_rutas.salida_programada(viaje.horario.salida, tomada_en)
-        registrar_paso(
-            parada,
-            viaje.horario,
-            reglas_de_rutas.minutos_entre(salida, tomada_en),
-            tomada_en,
-        )
+        if not viaje.simulado:  # C-28: solo los viajes reales enseñan horas
+            salida = reglas_de_rutas.salida_programada(viaje.horario.salida, tomada_en)
+            registrar_paso(
+                parada,
+                viaje.horario,
+                reglas_de_rutas.minutos_entre(salida, tomada_en),
+                tomada_en,
+            )
         viaje.paradas_registradas.add(parada)
         cerrar_no_presentados(viaje, parada)
 

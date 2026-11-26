@@ -13,4 +13,6 @@ urlpatterns = [
     path("viajes/<int:viaje_id>/mi-aviso", views.MiAvisoVista.as_view(), name="mi-aviso"),
     path("avisos/<int:aviso_id>/cancelar", views.CancelarAvisoVista.as_view(), name="cancelar-aviso"),
     path("avisos/<int:aviso_id>/ubicacion", views.UbicacionDelAvisoVista.as_view(), name="ubicacion-aviso"),
+    path("simulaciones", views.SimulacionesVista.as_view(), name="simulaciones"),
+    path("simulaciones/<int:simulacion_id>/detener", views.DetenerSimulacionVista.as_view(), name="detener-simulacion"),
 ]

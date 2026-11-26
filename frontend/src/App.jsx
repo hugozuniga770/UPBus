@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 
 import Plantilla from "./componentes/Plantilla.jsx";
 import IniciarSesion from "./paginas/IniciarSesion.jsx";
+import Demo from "./paginas/Demo.jsx";
 import Inicio from "./paginas/Inicio.jsx";
 import ModoRegistro from "./paginas/ModoRegistro.jsx";
 import NoEncontrada from "./paginas/NoEncontrada.jsx";
@@ -33,6 +34,10 @@ export default function App() {
             <Route
               path="usuarios"
               element={<RutaProtegida roles={["administrador"]}><Usuarios /></RutaProtegida>}
+            />
+            <Route
+              path="demo"
+              element={<RutaProtegida roles={["administrador"]}><Demo /></RutaProtegida>}
             />
           </Route>
           <Route path="*" element={<NoEncontrada />} />
