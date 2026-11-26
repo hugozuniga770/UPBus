@@ -5,7 +5,7 @@
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz. Los tres son Developers.
 - Docente: Ing. Alejandro Rodríguez (Certificación I)
 - Fecha del plan: 13/11/2026 · Avance: jueves 19/11/2026 · Entrega final: martes 15/12/2026 · Aprobado por el Product Owner el 26/11/2026, con la revisión de Andrés (T01)
-- Actualizado: 26/11/2026 · T01, T02 y T13 cerradas, T14 hecha, T23 en curso y `sesion-12-arquitectura.md` en revisión (C-33 a C-36). El 25/11/2026: reparto del 18/11 en la tabla de tareas (C-26), primera ruta grabada con el modo registro (T26, C-24) y Gantt al 25/11; esa noche, evidencias de T14, T16, T17, T20 y T23 ajustadas a la revisión de las historias del Product Owner (C-28 a C-32). El 18/11/2026: base del código, tareas T25 y T26, Andrés como Scrum Master de la implementación y sesiones de sábado y domingo (C-18 a C-20). Antes, 16/11/2026: entrevistas, T23 y T24, Gantt detallado y costos (C-07, C-08, C-12, C-13)
+- Actualizado: 26/11/2026 · T01, T02, T03 y T13 cerradas, T14 hecha y T23 en curso (C-33 a C-36). El 25/11/2026: reparto del 18/11 en la tabla de tareas (C-26), primera ruta grabada con el modo registro (T26, C-24) y Gantt al 25/11; esa noche, evidencias de T14, T16, T17, T20 y T23 ajustadas a la revisión de las historias del Product Owner (C-28 a C-32). El 18/11/2026: base del código, tareas T25 y T26, Andrés como Scrum Master de la implementación y sesiones de sábado y domingo (C-18 a C-20). Antes, 16/11/2026: entrevistas, T23 y T24, Gantt detallado y costos (C-07, C-08, C-12, C-13)
 - Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Historias: [Sesión 7](sesion-07-modelos.md) · Cambios: [cambios.md](cambios.md)
 
@@ -50,7 +50,7 @@ Las estimaciones son en horas-persona (h-p) y son **[PROPUESTA]**: no hay horas 
 | T00 | Perfil de proyecto: informe y presentación | Presentado el 07/11/2026 | 6 | Los tres | Perfil | Hecho |
 | T01 | Plan y requisitos | `sesion-08-09-plan.md` y `sesion-06-requisitos.md` aprobados | 4 | Hugo | 1 | Hecho: Andrés lo revisó el 25/11; RF-01 y RF-11 ajustados (C-33, C-34) y cerrado el 26/11 |
 | T02 | Historias, criterios y casos de uso | `sesion-07-modelos.md` aprobado | 5 | Hugo | 1 | Hecho: aprobado por el Product Owner el 26/11, con su revisión del 25/11 (PO25) |
-| T03 | Diseño y arquitectura | `sesion-13-14-diseno.md`, `sesion-12-arquitectura.md` y `diagramas-secuencia.md` aprobados | 5 | Andrés; Hugo hizo las secuencias, el diseño de la base y `sesion-12-arquitectura.md` (C-36) | 1 | En revisión: `sesion-12-arquitectura.md` redactada el 26/11; la revisa Andrés |
+| T03 | Diseño y arquitectura | `sesion-13-14-diseno.md`, `sesion-12-arquitectura.md` y `diagramas-secuencia.md` aprobados | 5 | Andrés; Hugo hizo las secuencias, el diseño de la base y `sesion-12-arquitectura.md` (C-36) | 1 | Hecho: `sesion-12-arquitectura.md` redactada y aprobada el 26/11; la revisión de Andrés queda pendiente |
 | T04 | Entrevistas a un chofer y a una estudiante (ENT-01, ENT-02) | Registros en `entrevistas.md` y cambios derivados | 2 | Hugo | 1 | Hecho (16/11) |
 | T05 | Entorno del servidor | Django, DRF y Channels arrancan; SQLite creada | 3 | Hugo (antes Andrés, C-19) | 1 | Hecho en la base |
 | T06 | Entorno de la interfaz | React con Tailwind arranca y habla con la API | 3 | Hugo (antes Andrés, C-19) | 1 | Hecho en la base |
