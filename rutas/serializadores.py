@@ -101,6 +101,7 @@ def registro_a_dict(registro):
         ],
     }
 
+
 class PropuestaParadaEntrada(serializers.Serializer):
     nombre = serializers.CharField(max_length=120, required=False, allow_blank=True)
     latitud = serializers.FloatField()

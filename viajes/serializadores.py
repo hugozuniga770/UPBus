@@ -42,8 +42,9 @@ def viaje_a_dict(viaje):
             "longitud": viaje.ultima_longitud,
             "tomada_en": _momento(viaje.ultima_posicion_en),
         }
+    # RF-10: una parada está activa si alguien con «Voy a subir» en ella comparte su ubicación.
     paradas_activas = list(
-        viaje.avisos.filter(estado=AvisoDeSubida.Estado.CONFIRMADO)
+        viaje.avisos.filter(estado=AvisoDeSubida.Estado.CONFIRMADO, ubicacion_en__isnull=False)
         .values_list("parada_id", flat=True)
         .distinct()
     )

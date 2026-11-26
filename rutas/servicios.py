@@ -4,6 +4,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from django.db import transaction
+from django.db.models import Q
 from django.utils.dateparse import parse_datetime
 
 from comun.rechazos import NoExiste, Rechazo
@@ -43,13 +44,6 @@ def buscar_horario(horario_id):
     return horario
 
 
-# def paradas_visibles(ruta, usuario):
-#     """Las aprobadas para todos; las propuestas también para choferes y administradores."""
-#     paradas = ruta.paradas.exclude(estado=Parada.Estado.RECHAZADA)
-#     if getattr(usuario, "rol", None) not in ("chofer", "administrador"):
-#         paradas = paradas.filter(estado=Parada.Estado.APROBADA)
-#     return list(paradas.order_by("orden", "id"))
-
 def buscar_parada(parada_id):
     parada = Parada.objects.select_related("ruta").filter(pk=parada_id).first()
     if parada is None:
@@ -59,8 +53,6 @@ def buscar_parada(parada_id):
 
 def paradas_visibles(ruta, usuario):
     """Las aprobadas para todos; las propuestas para choferes, administradores y su autor."""
-    from django.db.models import Q
-
     paradas = ruta.paradas.exclude(estado=Parada.Estado.RECHAZADA)
     if getattr(usuario, "rol", None) not in ("chofer", "administrador"):
         if getattr(usuario, "is_authenticated", False):

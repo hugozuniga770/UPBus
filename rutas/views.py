@@ -8,11 +8,13 @@ from comun.vistas import leer
 from . import servicios
 from .serializadores import (
     MarcaEntrada,
+    PropuestaParadaEntrada,
     PuntosEntrada,
     RegistroNuevoEntrada,
+    parada_a_dict,
     registro_a_dict,
     ruta_detallada,
-    ruta_resumida, PropuestaParadaEntrada, parada_a_dict,
+    ruta_resumida,
 )
 
 
@@ -84,6 +86,7 @@ class CancelarRegistroVista(APIView):
     def post(self, request, registro_id):
         servicios.cancelar_registro(request.user, registro_id)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class PropuestasParadaVista(APIView):
     """HU-08. POST /api/rutas/<id>/paradas: propone una parada sobre el recorrido."""
