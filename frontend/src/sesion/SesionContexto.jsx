@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 
 import { api } from "../api/cliente.js";
 
-const SesionContexto = createContext(null);
+export const SesionContexto = createContext(null);
 
 /** Guarda quién inició sesión (HU-02). `usuario` es `undefined` mientras carga. */
 export function SesionProveedor({ children }) {

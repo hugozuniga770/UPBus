@@ -4,6 +4,7 @@ import { CircleMarker, Polyline, Tooltip } from "react-leaflet";
 import { api } from "../api/cliente.js";
 import Aviso from "../componentes/Aviso.jsx";
 import Mapa from "../componentes/Mapa.jsx";
+import VoyASubir from "../componentes/VoyASubir.jsx";
 
 const SENTIDO = { ingreso: "Ingreso", salida: "Salida" };
 
@@ -137,6 +138,7 @@ export default function Rutas() {
                 <>No hay un bus en curso en esta ruta.</>
               )}
             </div>
+            <VoyASubir rutaId={rutaId} horarioId={horarioId} paradas={paradas} />
             <div className="mt-3 flex flex-wrap gap-2">
               {ruta.horarios.map((h) => (
                 <button
