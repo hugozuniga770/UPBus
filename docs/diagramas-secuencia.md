@@ -553,24 +553,25 @@ sequenceDiagram
 
 ## 18. Simulador de escenarios (T23)
 
-No es un caso de uso del usuario: es la herramienta de la demo y de las pruebas. Lo importante es que **llama a los mismos servicios que la app**, así que un escenario solo funciona si las reglas funcionan.
+No es un caso de uso del usuario: es la herramienta de la demo y de las pruebas. Lo importante es que **llama a los mismos servicios que la app**, así que un escenario solo funciona si las reglas funcionan. Cómo se usa: [guía del simulador](guia-simulador.md).
 
 ```mermaid
 sequenceDiagram
-    actor D as Integrante (terminal o panel de demo)
+    actor D as Administrador (panel Demo o terminal)
     participant Sim as Simulador
     participant S as Servicios
     participant B as BD
     participant W as Canal
     participant FE as Pantallas abiertas
-    D->>Sim: simular bus-deja-estudiante --velocidad 10
-    Sim->>S: iniciar_viaje(Marco, Ruta Norte 06:40)
-    Sim->>S: avisar_que_sube(Ismael, Sevilla)
-    loop Puntos del recorrido, con el reloj acelerado
-        Sim->>S: registrar_ubicacion_bus(posición, ahora simulado)
-        S->>B: guardar
+    D->>Sim: no_se_presenta en la Ruta Sur, velocidad 10
+    Sim->>S: iniciar_viaje(chofer de la simulación, viaje simulado)
+    Sim->>S: avisar_que_va_a_subir(estudiante de la simulación, Parque Urbano)
+    loop Cada 25 m del recorrido grabado, con el reloj acelerado
+        Sim->>S: compartir_ubicacion(estudiante, junto a su parada), cada 15 s
+        Sim->>S: registrar_posicion(chofer, posición, ahora)
+        S->>B: guarda la posición, sin pasos que enseñen horas (C-28)
         S->>W: nueva posición
-        W-->>FE: el bus se mueve
+        W-->>FE: el bus simulado se mueve
     end
     Note over Sim,S: Ismael nunca sube. Cuando el bus llega a Petrol, cerrar_avisos_pasados lo marca No se presentó
     Note over S,B: Los pasos de un viaje simulado no cambian las horas aproximadas (C-28)

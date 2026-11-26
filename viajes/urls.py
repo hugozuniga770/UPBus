@@ -9,4 +9,10 @@ urlpatterns = [
     path("viajes/<int:viaje_id>/iniciar", views.IniciarViajeVista.as_view(), name="iniciar-viaje"),
     path("viajes/<int:viaje_id>/terminar", views.TerminarViajeVista.as_view(), name="terminar-viaje"),
     path("viajes/<int:viaje_id>/posiciones", views.PosicionesVista.as_view(), name="posiciones-viaje"),
+    path("viajes/<int:viaje_id>/avisos", views.AvisosVista.as_view(), name="avisos-viaje"),
+    path("viajes/<int:viaje_id>/mi-aviso", views.MiAvisoVista.as_view(), name="mi-aviso"),
+    path("avisos/<int:aviso_id>/cancelar", views.CancelarAvisoVista.as_view(), name="cancelar-aviso"),
+    path("avisos/<int:aviso_id>/ubicacion", views.UbicacionDelAvisoVista.as_view(), name="ubicacion-aviso"),
+    path("simulaciones", views.SimulacionesVista.as_view(), name="simulaciones"),
+    path("simulaciones/<int:simulacion_id>/detener", views.DetenerSimulacionVista.as_view(), name="detener-simulacion"),
 ]

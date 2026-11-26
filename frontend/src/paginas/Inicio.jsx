@@ -6,15 +6,16 @@ const TARJETAS = {
   rutas: { titulo: "Rutas y horarios", texto: "Recorridos, paradas y la hora aproximada en cada una.", a: "/rutas", icono: "🗺️" },
   registro: { titulo: "Modo registro", texto: "Marca las paradas en un viaje real para que UPBus las aprenda.", a: "/modo-registro", icono: "📍" },
   usuarios: { titulo: "Usuarios", texto: "Crea y desactiva cuentas de choferes y estudiantes.", a: "/usuarios", icono: "👥" },
-  subir: { titulo: "Voy a subir", texto: "Avisa al chofer y comparte tu ubicación.", pendiente: "HU-07", icono: "✋" },
+  subir: { titulo: "Voy a subir", texto: "Elige tu ruta, avisa al chofer y comparte tu ubicación.", a: "/rutas", icono: "✋" },
   creditos: { titulo: "Mis créditos", texto: "Recarga y paga tus viajes desde la app.", pendiente: "HU-11", icono: "💳" },
   viajes: { titulo: "Mis viajes", texto: "Inicia tu ruta y comparte la ubicación del bus.", a: "/viajes", icono: "🚌" },
+  demo: { titulo: "Demo", texto: "Simula un viaje para mostrar UPBus en clase.", a: "/demo", icono: "🧪" },
 };
 
 const POR_ROL = {
   estudiante: ["rutas", "subir", "creditos"],
   chofer: ["viajes", "registro", "rutas"],
-  administrador: ["rutas", "registro", "usuarios", "subir", "creditos"],
+  administrador: ["rutas", "registro", "usuarios", "subir", "creditos", "demo"],
 };
 
 function Tarjeta({ titulo, texto, a, icono, pendiente }) {

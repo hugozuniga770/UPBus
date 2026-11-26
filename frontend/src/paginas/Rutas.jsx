@@ -4,6 +4,7 @@ import { CircleMarker, Polyline, Tooltip } from "react-leaflet";
 import { api } from "../api/cliente.js";
 import Aviso from "../componentes/Aviso.jsx";
 import Mapa from "../componentes/Mapa.jsx";
+import VoyASubir from "../componentes/VoyASubir.jsx";
 
 const SENTIDO = { ingreso: "Ingreso", salida: "Salida" };
 
@@ -103,7 +104,7 @@ export default function Rutas() {
             radius={12}
             pathOptions={{ color: "#fff", weight: 4, fillColor: "#009fe3", fillOpacity: 1 }}
           >
-            <Tooltip direction="top" permanent>🚌 Bus en vivo</Tooltip>
+            <Tooltip direction="top" permanent>{viajeActivo?.simulado ? "🧪 Bus simulado" : "🚌 Bus en vivo"}</Tooltip>
           </CircleMarker>
         )}
       </Mapa>
@@ -131,12 +132,13 @@ export default function Rutas() {
             <div className="mt-3 rounded-xl bg-celeste/20 px-3 py-2 text-sm text-upb">
               {viajeActivo ? (
                 posicionDelBus
-                  ? <>🚌 Bus en vivo · última señal {new Date(posicionDelBus.tomada_en).toLocaleTimeString("es-BO", { hour: "2-digit", minute: "2-digit", timeZone: "America/La_Paz" })}</>
+                  ? <>{viajeActivo.simulado ? "🧪 Bus simulado" : "🚌 Bus en vivo"} · última señal {new Date(posicionDelBus.tomada_en).toLocaleTimeString("es-BO", { hour: "2-digit", minute: "2-digit", timeZone: "America/La_Paz" })}</>
                   : <>🚌 El viaje está en curso; esperando la primera posición.</>
               ) : (
                 <>No hay un bus en curso en esta ruta.</>
               )}
             </div>
+            <VoyASubir rutaId={rutaId} horarioId={horarioId} paradas={paradas} />
             <div className="mt-3 flex flex-wrap gap-2">
               {ruta.horarios.map((h) => (
                 <button
