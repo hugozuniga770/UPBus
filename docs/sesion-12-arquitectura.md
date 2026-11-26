@@ -3,7 +3,7 @@
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Fecha: 26/11/2026 · Sprint 2 · Tarea T03 del [plan](sesion-08-09-plan.md) · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
-- Estado: en revisión de Andrés Laura Vargas, responsable de T03 (C-36).
+- Estado: aprobado por el Product Owner el 26/11/2026 (T03). Andrés Laura Vargas, responsable de T03, puede proponer cambios con un Pull Request (C-36).
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) (restricciones BUS-RT y calidad BUS-RC) · Diseño de datos y clases: [Sesiones 13–14](sesion-13-14-diseno.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Siglas: [glosario.md](glosario.md)
 
 ## 0. Cómo leer este documento
@@ -190,5 +190,5 @@ Al terminar, la base tenía **una sola cuenta** (70004, estudiante), con la cont
 ## 8. Participación y asistencia utilizada
 
 - **Hugo Zuñiga:** redactó este documento y la verificación de la sección 7 el 26/11/2026 (C-36).
-- **Andrés Laura Vargas:** responsable de T03; revisa este documento en su Pull Request.
+- **Andrés Laura Vargas:** responsable de T03; su revisión de este documento queda pendiente.
 - **Asistencia de IA:** se usó Claude (Anthropic) para redactar el documento a partir del código, la sesión 13–14 y los requisitos, y para automatizar con Playwright la verificación de la sección 7.
