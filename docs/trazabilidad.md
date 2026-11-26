@@ -8,7 +8,7 @@
 
 - Cada criterio de la sesión 7 es un test con el mismo nombre. Cuando una historia se termina, quien la hizo agrega aquí sus filas, en el mismo Pull Request.
 - «Código» nombra el servicio, la regla o la vista que cumple el criterio, para encontrarlo rápido.
-- Al 25/11/2026 hay **34 de 73** criterios con su test en verde.
+- Al 26/11/2026 hay **34 de 75** criterios con su test en verde.
 
 ## 1. Criterios con su test (base del código)
 
@@ -70,7 +70,7 @@ No son criterios: prueban herramientas que usan las historias.
 
 ## 3. Criterios por hacer
 
-Los 39 criterios restantes (HU07-CA6, que se escribe con T16, y HU-08 a HU-17) están en la [sesión 7](sesion-07-modelos.md), cada uno con el nombre de su test, y en el issue de su tarea. Cuando se terminan, sus filas pasan a la sección 1.
+Los 41 criterios restantes (HU07-CA6, que se escribe con T16, y HU-08 a HU-17) están en la [sesión 7](sesion-07-modelos.md), cada uno con el nombre de su test, y en el issue de su tarea. Cuando se terminan, sus filas pasan a la sección 1.
 
 ## 4. Participación y asistencia utilizada
 

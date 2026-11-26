@@ -573,9 +573,8 @@ sequenceDiagram
         S->>W: nueva posición
         W-->>FE: el bus simulado se mueve
     end
-    Note over Sim,S: Ismael nunca sube. Cuando el bus llega a Petrol, cerrar_avisos_pasados lo marca No se presentó
-    Note over S,B: Los pasos de un viaje simulado no cambian las horas aproximadas (C-28)
-    Sim->>S: terminar_viaje(Marco)
+    Note over Sim,S: El estudiante nunca sube. Cuando el bus llega a Banco Ganadero, cerrar_no_presentados lo marca No se presentó
+    Sim->>S: terminar_viaje(chofer de la simulación)
 ```
 
 ## 19. Participación y asistencia utilizada
