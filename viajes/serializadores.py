@@ -4,6 +4,23 @@ from rest_framework import serializers
 from comun.tiempo import a_hora_local
 
 
+class AvisoEntrada(serializers.Serializer):
+    parada = serializers.IntegerField()
+
+
+class UbicacionEntrada(serializers.Serializer):
+    latitud = serializers.FloatField()
+    longitud = serializers.FloatField()
+    tomada_en = serializers.DateTimeField()
+
+
+class SimulacionEntrada(serializers.Serializer):
+    escenario = serializers.CharField(max_length=30)
+    ruta = serializers.IntegerField()
+    velocidad = serializers.FloatField(default=10)
+    parada = serializers.IntegerField(required=False, allow_null=True)
+
+
 class PosicionEntrada(serializers.Serializer):
     id_cliente = serializers.CharField(max_length=64)
     latitud = serializers.FloatField()
@@ -41,4 +58,40 @@ def viaje_a_dict(viaje):
         "iniciado_en": _momento(viaje.iniciado_en),
         "terminado_en": _momento(viaje.terminado_en),
         "ultima_posicion": ultima_posicion,
+        "simulado": viaje.simulado,
+    }
+
+
+def aviso_a_dict(aviso, con_ubicacion=False):
+    """Con la ubicación solo para el chofer del viaje y el administrador (BUS-RF-08)."""
+    ubicacion = None
+    if con_ubicacion and aviso.ubicacion_en is not None:
+        ubicacion = {
+            "latitud": aviso.ubicacion_latitud,
+            "longitud": aviso.ubicacion_longitud,
+            "tomada_en": _momento(aviso.ubicacion_en),
+        }
+    return {
+        "id": aviso.pk,
+        "viaje": aviso.viaje_id,
+        "estudiante": {"id": aviso.estudiante_id, "nombre": aviso.estudiante.nombre},
+        "parada": {"id": aviso.parada_id, "nombre": aviso.parada.nombre},
+        "estado": aviso.estado,
+        "creado_en": _momento(aviso.creado_en),
+        "compartiendo_ubicacion": aviso.ubicacion_en is not None,
+        "ubicacion": ubicacion,
+    }
+
+
+def simulacion_a_dict(simulacion):
+    return {
+        "id": simulacion.id,
+        "escenario": simulacion.escenario,
+        "ruta": simulacion.ruta,
+        "velocidad": simulacion.velocidad,
+        "estado": simulacion.estado,
+        "deteniendo": simulacion.estado == "en_curso" and simulacion.detener.is_set(),
+        "viaje": simulacion.viaje,
+        "iniciada_en": _momento(simulacion.iniciada_en),
+        "notas": list(simulacion.notas),
     }

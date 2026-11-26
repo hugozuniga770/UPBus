@@ -105,3 +105,21 @@ def test_el_registro_real_de_la_ruta_sur_da_las_horas_observadas(cliente_de, seb
     ]
     assert all(p["estado"] == "aprobada" for p in paradas)
     assert len(Ruta.objects.get(clave="sur").recorrido) == 96
+
+
+def test_la_distancia_de_llegada_se_calibra_sin_cambiar_el_codigo(settings):
+    """C-34: la distancia de RF-11 empieza en 50 m y se calibra con UPBUS_RADIO_DE_LLEGADA_M."""
+    from types import SimpleNamespace
+
+    from comun.rechazos import Rechazo
+    from rutas import reglas
+
+    a_80_m = SimpleNamespace(punto=(SEVILLA[0] + 80 / 111_320, SEVILLA[1]))
+    assert not reglas.llego_a_la_parada(80)
+
+    settings.UPBUS_RADIO_DE_LLEGADA_M = 100
+
+    assert reglas.llego_a_la_parada(80)
+    assert not reglas.llego_a_la_parada(100)
+    with pytest.raises(Rechazo, match="ya marcaste una parada a menos de 100 m"):
+        reglas.verificar_lejos_de_las_otras_marcas(SEVILLA, [a_80_m])

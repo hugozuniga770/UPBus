@@ -87,6 +87,17 @@ export const api = {
   iniciarViaje: (id) => pedir("POST", `/viajes/${id}/iniciar`),
   terminarViaje: (id) => pedir("POST", `/viajes/${id}/terminar`),
   registrarPosicion: (id, posicion) => pedir("POST", `/viajes/${id}/posiciones`, posicion),
+
+  // HU-07
+  avisar: (viajeId, paradaId) => pedir("POST", `/viajes/${viajeId}/avisos`, { parada: paradaId }),
+  miAviso: (viajeId) => pedir("GET", `/viajes/${viajeId}/mi-aviso`),
+  avisosDelViaje: (viajeId) => pedir("GET", `/viajes/${viajeId}/avisos`),
+  cancelarAviso: (avisoId) => pedir("POST", `/avisos/${avisoId}/cancelar`),
+  compartirUbicacion: (avisoId, ubicacion) => pedir("POST", `/avisos/${avisoId}/ubicacion`, ubicacion),
+  // T23: panel de demo
+  simulaciones: () => pedir("GET", "/simulaciones"),
+  iniciarSimulacion: (datos) => pedir("POST", "/simulaciones", datos),
+  detenerSimulacion: (id) => pedir("POST", `/simulaciones/${id}/detener`),
   // HU-18
   iniciarRegistro: (datos) => pedir("POST", "/registros", datos),
   registroEnCurso: () => pedir("GET", "/registros/en-curso"),

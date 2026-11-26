@@ -32,6 +32,7 @@ pytest                              # servidor
 cd frontend && npm test             # interfaz
 cd frontend && npm run build        # compila como en la integración continua
 python manage.py makemigrations     # después de cambiar un modelo
+python manage.py simular --lista    # escenarios del simulador (T23)
 ```
 
 ## Mapa

@@ -2,8 +2,8 @@
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
-- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25) · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
-- Estado: la sección 2 y las secciones 4 a 6 describen el **código ya construido**. En la sección 3, `Viaje` y `PosicionDeViaje` ya están implementados; los demás modelos son **[PROPUESTA]** para las historias que faltan.
+- Fecha: 18/11/2026 · Actualizado: 26/11/2026 (`AvisoDeSubida` de T14, `Viaje.simulado` de T23 y, en la sección 3, C-28 a C-32; antes, C-23 y C-25) · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
+- Estado: la sección 2 y las secciones 4 a 6 describen el **código ya construido**. En la sección 3, `Viaje`, `PosicionDeViaje` y `AvisoDeSubida` ya están implementados; los demás modelos y los campos marcados para T16 son **[PROPUESTA]** para las historias que faltan.
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Historias: [Sesión 7](sesion-07-modelos.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Trazabilidad: [trazabilidad.md](trazabilidad.md)
 
 ## 0. Cómo leer este documento
@@ -122,9 +122,8 @@ erDiagram
 erDiagram
     VIAJE ||--o{ AVISO_DE_SUBIDA : tiene
     VIAJE ||--o{ MENSAJE : "chat directo"
-    AVISO_DE_SUBIDA ||--o| ABORDAJE : "termina en"
-    AVISO_DE_SUBIDA ||--o{ UBICACION_DEL_ESTUDIANTE : comparte
-    ABORDAJE ||--o| MOVIMIENTO : "se cobra con"
+    VIAJE ||--o{ PAGO_DE_VIAJE : recibe
+    PAGO_DE_VIAJE ||--o| MOVIMIENTO : "se cobra con"
     RECARGA ||--o| MOVIMIENTO : "suma con"
     RUTA ||--o{ MIEMBRO_DE_RUTA : "tiene"
     RUTA ||--o{ CAMBIO_DE_RUTA : "recibe"
@@ -139,6 +138,7 @@ erDiagram
         float ultima_latitud
         float ultima_longitud
         datetime ultima_posicion_en
+        bool simulado "T23: no enseña horas (C-28)"
         bool aviso_de_minimo_enviado
     }
     AVISO_DE_SUBIDA {
@@ -146,18 +146,21 @@ erDiagram
         int estudiante_id
         int parada_id
         string estado "confirmado, a_bordo, cancelado o no_se_presento"
-        bool aviso_de_cercania_enviado
+        float ubicacion_latitud "la última que compartió"
+        float ubicacion_longitud
+        datetime ubicacion_en
+        datetime cerrado_en
+        string subio_por "T16: estudiante, chofer o app"
+        int ubicaciones_junto_al_bus "T16: abordaje automático"
+        bool aviso_de_cercania_enviado "T16"
     }
-    UBICACION_DEL_ESTUDIANTE {
-        float latitud
-        float longitud
-        datetime tomada_en
-    }
-    ABORDAJE {
+    PAGO_DE_VIAJE {
+        int viaje_id
+        int estudiante_id
+        string medio "creditos o efectivo"
         string id_cliente UK "para no cobrar dos veces"
-        int registrado_por_id
-        string pago "creditos, efectivo_pendiente o efectivo"
-        datetime registrado_en
+        int marcado_por_id "el chofer, si fue en efectivo"
+        datetime pagado_en
     }
     RECARGA {
         int estudiante_id
@@ -167,8 +170,10 @@ erDiagram
     }
     MOVIMIENTO {
         int cuenta_id
-        string tipo "recarga, pago, devolucion o retiro"
+        string tipo "recarga, pago, devolucion, retiro o ajuste"
         int monto "con signo"
+        string motivo "solo en los ajustes"
+        int hecho_por_id "quién hizo el ajuste"
         int viaje_id
         string comprobante UK "ID del comprobante"
         datetime creado_en
@@ -183,23 +188,21 @@ erDiagram
         int usuario_id
     }
     CAMBIO_DE_RUTA {
-        int chofer_id
+        int propuesto_por_id
         json cambio
-        float metros
-        string estado "aplicado, pendiente, aprobado o rechazado"
+        string estado "pendiente, aprobado, rechazado o aplicado"
         int aprobado_por_id
     }
 ```
 
 | Modelo | App | Historia | Notas |
 |---|---|---|---|
-| `Viaje` y `PosicionDeViaje` | viajes | HU-05, HU-06 | Implementados. `Viaje` guarda la última posición; `PosicionDeViaje.id_cliente` evita duplicar reenvíos. Un chofer tiene un solo viaje en curso |
-| `AvisoDeSubida` | viajes | HU-07, HU-09 | Uno por estudiante y viaje (HU07-CA2). Al pasar el bus, los confirmados que no subieron pasan a «no se presentó» |
-| `UbicacionDelEstudiante` | viajes | HU-07 | Solo se guarda la última; se borra al subir o al terminar el viaje |
-| `Abordaje` | viajes | HU-10, HU-12 | `id_cliente` único para que un reenvío no cobre dos veces (HU12-CA3) |
-| `Recarga` y `Movimiento` | `creditos` (app nueva) o viajes | HU-11 a HU-13 | El saldo es la suma de los movimientos; nunca se guarda aparte. Cada cobro, devolución o retiro es un movimiento completo o ninguno (RC-03) |
+| `Viaje` y `PosicionDeViaje` | viajes | HU-05, HU-06 | Implementados. `Viaje` guarda la última posición; `PosicionDeViaje.id_cliente` evita duplicar reenvíos. Un chofer tiene un solo viaje en curso. `Viaje.simulado` marca los viajes del simulador (T23), que no enseñan horas (C-28) |
+| `AvisoDeSubida` | viajes | HU-07, HU-09, HU-10 | Implementado. Un aviso activo por estudiante y viaje (HU07-CA2). Cuando el bus llega a otra parada, los confirmados en las que ya pasó quedan «no se presentó»; al terminar el viaje, todos los confirmados (P-33). La ubicación del estudiante va en el mismo aviso (`ubicacion_latitud`, `ubicacion_longitud`, `ubicacion_en`): solo la última, y se borra al cancelar, al cerrarse o al terminar el viaje; con T16, también al subir. Con esa ubicación, T16 detecta que subió: el bus a más de 100 m de su parada y dos ubicaciones seguidas a menos de 50 m del bus (P-33). El abordaje es su estado A bordo, con quién lo marcó: el estudiante, el chofer o la app (C-30); subir no cobra (C-31) |
+| `PagoDeViaje` | `creditos` (app nueva) o viajes | HU-12 | Uno por estudiante y viaje. Con créditos genera el cobro, el abono al chofer y el comprobante; en efectivo lo marca el chofer, sin movimiento. `id_cliente` único para que un reenvío no cobre dos veces (HU12-CA3) |
+| `Recarga` y `Movimiento` | `creditos` (app nueva) o viajes | HU-11 a HU-13 | El saldo es la suma de los movimientos; nunca se guarda aparte. Cada cobro, devolución, retiro o ajuste es un movimiento completo o ninguno (RC-03). El ajuste del administrador lleva su motivo y quién lo hizo, y no deja el saldo en negativo (C-29) |
 | `Mensaje` y `MiembroDeRuta` | mensajes | HU-14, HU-15 | Solo texto (P-10) |
-| `CambioDeRuta` | rutas | HU-16 | Los grandes quedan pendientes; P-25 puede hacer que todos lo queden |
+| `CambioDeRuta` | rutas | HU-16 | Todo cambio del chofer queda pendiente hasta que un administrador lo aprueba; los del administrador se aplican directamente (C-32) |
 
 ## 4. Clases y funciones por capa (lo que hay)
 
@@ -207,11 +210,11 @@ erDiagram
 |---|---|---|---|
 | `comun` | `Rechazo` (400), `SinPermiso` (403), `NoExiste` (404); `distancia_en_metros`, `coordenadas_validas`; `ahora`, `a_hora_local` | `leer` (valida un serializador) | `manejar_excepcion` y `falla_csrf`: todo rechazo sale como `{"causa": ...}` |
 | `cuentas` | `verificar_persona_en_padron`, `verificar_correo_del_padron`, `verificar_persona_activa`, `verificar_sin_cuenta`, `verificar_contrasenas_iguales`, `verificar_contrasena`, `rol_desde_el_padron`, `verificar_credenciales`, `verificar_es_administrador`, `verificar_rol_valido`, `verificar_correo_libre`, `verificar_codigo_libre`, `verificar_no_es_uno_mismo` | `registrar`, `autenticar`, `listar_cuentas`, `crear_cuenta`, `buscar_cuenta`, `eliminar_cuenta` | `CsrfVista`, `RegistroVista`, `SesionVista`, `UsuariosVista`, `UsuarioVista` |
-| `rutas` | `verificar_puede_registrar`, `verificar_horario_de_la_ruta`, `verificar_sin_registro_en_curso`, `verificar_es_su_registro`, `verificar_registro_en_curso`, `verificar_coordenadas`, `verificar_lejos_de_las_otras_marcas`, `verificar_hay_marcas`, `estado_de_una_parada_nueva`, `llego_a_la_parada`, `parada_mas_cercana`, `minutos_entre`, `salida_programada`, `promedio_de_los_ultimos`, `hora_aproximada`, `llegada_limite` | `listar_rutas`, `ver_ruta`, `paradas_visibles`, `horas_aproximadas`, `registrar_paso`, `reordenar_paradas`, `iniciar_registro`, `marcar_parada`, `agregar_puntos`, `terminar_registro`, `cancelar_registro`, `importar_registro` | `RutasVista`, `RutaVista`, `RegistrosVista`, `RegistroEnCursoVista`, `MarcasVista`, `PuntosVista`, `TerminarRegistroVista`, `CancelarRegistroVista` |
-| `viajes` | `verificar_es_su_viaje`, `verificar_programado`, `verificar_sin_viaje_en_curso`, `verificar_en_curso`, `verificar_coordenadas` | `listar_viajes`, `buscar_viaje`, `iniciar_viaje`, `terminar_viaje`, `registrar_posicion` | Vistas de viajes y posiciones; `ViajeConsumer` entrega posiciones al grupo `viaje_<id>` |
+| `rutas` | `verificar_puede_registrar`, `verificar_horario_de_la_ruta`, `verificar_sin_registro_en_curso`, `verificar_es_su_registro`, `verificar_registro_en_curso`, `verificar_coordenadas`, `verificar_lejos_de_las_otras_marcas`, `verificar_hay_marcas`, `estado_de_una_parada_nueva`, `radio_de_llegada`, `llego_a_la_parada`, `parada_mas_cercana`, `minutos_entre`, `salida_programada`, `promedio_de_los_ultimos`, `hora_aproximada`, `llegada_limite` | `listar_rutas`, `ver_ruta`, `paradas_visibles`, `horas_aproximadas`, `registrar_paso`, `reordenar_paradas`, `iniciar_registro`, `marcar_parada`, `agregar_puntos`, `terminar_registro`, `cancelar_registro`, `importar_registro` | `RutasVista`, `RutaVista`, `RegistrosVista`, `RegistroEnCursoVista`, `MarcasVista`, `PuntosVista`, `TerminarRegistroVista`, `CancelarRegistroVista` |
+| `viajes` | `verificar_es_su_viaje`, `verificar_programado`, `verificar_sin_viaje_en_curso`, `verificar_en_curso`, `verificar_coordenadas`, `verificar_puede_avisar`, `verificar_viaje_abierto`, `verificar_parada_de_la_ruta`, `verificar_bus_no_paso`, `verificar_sin_aviso_activo`, `verificar_es_su_aviso`, `verificar_aviso_confirmado`, `verificar_puede_ver_avisos`; del simulador: `verificar_escenario`, `verificar_velocidad`, `verificar_recorrido`, `verificar_hay_paradas`, `verificar_sin_simulacion_en_curso` | `listar_viajes`, `buscar_viaje`, `iniciar_viaje`, `terminar_viaje`, `registrar_posicion`, `avisar_que_va_a_subir`, `cancelar_aviso`, `compartir_ubicacion`, `avisos_del_viaje`, `aviso_activo_de`, `dejar_de_compartir`, `cerrar_no_presentados`, `cerrar_avisos_del_viaje`. En `simulador.py` (T23): `trayecto`, `correr`, `panel`, `iniciar_simulacion`, `detener_simulacion` | Vistas de viajes y posiciones; `ViajeConsumer` entrega posiciones al grupo `viaje_<id>`; `ChoferDelViajeConsumer`, canal privado del chofer; `SimulacionesVista` y `DetenerSimulacionVista`, panel de demo |
 | `mensajes` | Por hacer (T19) | Por hacer | Por hacer |
 
-Comandos: `importar_padron` (cuentas), `cargar_rutas` e `importar_registro` (rutas).
+Comandos: `importar_padron` (cuentas), `cargar_rutas` e `importar_registro` (rutas), `simular` (viajes, T23).
 
 ## 5. API
 
@@ -232,13 +235,19 @@ Todas las rutas empiezan con `/api/` y responden JSON. Toda escritura lleva el t
 | `GET viajes/<id>` | Con sesión | Detalle y última posición conocida del viaje | HU-06 |
 | `POST viajes/<id>/iniciar` · `POST viajes/<id>/terminar` | Chofer asignado | Cambia el estado y guarda la hora de inicio o fin | HU-05 |
 | `POST viajes/<id>/posiciones` | Chofer asignado | Guarda una posición única, registra pasos cercanos y la publica por WebSocket | HU-06 |
+| `POST viajes/<id>/avisos` · `GET viajes/<id>/avisos` | Estudiante o administrador · chofer del viaje o administrador | Avisa «Voy a subir» · lista quién va a subir, con su ubicación | HU-07 |
+| `GET viajes/<id>/mi-aviso` | Con sesión | El aviso activo de quien pregunta, si tiene | HU-07 |
+| `POST avisos/<id>/cancelar` · `POST avisos/<id>/ubicacion` | El estudiante del aviso | Cancela mientras el bus no pasó · comparte su ubicación | HU-07 |
 | `POST registros` | Chofer o administrador | Inicia un registro | HU-18 |
 | `GET registros/en-curso` | Chofer o administrador | El registro sin terminar, si hay | HU-18 |
 | `POST registros/<id>/marcas` | Quien graba | Guarda una marca; un reenvío no duplica | HU-18 |
 | `POST registros/<id>/puntos` | Quien graba | Guarda puntos del recorrido | HU-18 |
 | `POST registros/<id>/terminar` | Quien graba | Crea o une paradas y recalcula horas | HU-18 |
 | `POST registros/<id>/cancelar` | Quien graba | Cancela sin crear nada | HU-18 |
-| `ws/viajes/<id>/` (WebSocket) | Con sesión | Canal que confirma la conexión y entrega la posición del bus | HU-06 |
+| `ws/viajes/<id>/` (WebSocket) | Cualquiera desde la app (solo se valida el origen; la posición del bus no es un dato personal) | Canal que confirma la conexión y entrega la posición del bus | HU-06 |
+| `ws/viajes/<id>/chofer/` (WebSocket) | Chofer del viaje o administrador | Canal privado: «Ismael va a subir en Sevilla», avisos cerrados y ubicaciones | HU-07 |
+| `GET simulaciones` · `POST simulaciones` | Administrador | Escenarios y simulaciones corridas · inicia una (202); una a la vez | T23 |
+| `POST simulaciones/<id>/detener` | Administrador | Detiene la simulación y termina su viaje | T23 |
 
 ## 6. Interfaz
 
@@ -247,10 +256,11 @@ Todas las rutas empiezan con `/api/` y responden JSON. Toda escritura lleva el t
 | `/ingresar` | Iniciar sesión con código o correo | Cualquiera | HU-02 |
 | `/registrarse` | Crear la cuenta con el padrón | Persona del padrón | HU-01 |
 | `/` | Inicio con tarjetas según el rol; las que faltan dicen «Próximamente» con su historia | Con sesión | — |
-| `/rutas` | Mapa con recorrido, paradas, horas aproximadas y el bus del viaje en curso | Con sesión | HU-04, HU-06 |
-| `/viajes` | Iniciar o terminar el viaje asignado y compartir el GPS del bus | Chofer | HU-05, HU-06 |
+| `/rutas` | Mapa con recorrido, paradas, horas aproximadas y el bus del viaje en curso; «Voy a subir», cancelar y compartir la ubicación | Con sesión | HU-04, HU-06, HU-07 |
+| `/viajes` | Iniciar o terminar el viaje asignado, compartir el GPS del bus y ver quién va a subir | Chofer | HU-05, HU-06, HU-07 |
 | `/modo-registro` | Grabar paradas y horas con el GPS | Chofer o administrador | HU-18 |
 | `/usuarios` | Crear choferes y personas, y desactivar cuentas | Administrador | HU-03 |
+| `/demo` | Panel de demo: correr y detener escenarios del simulador | Administrador | T23 |
 
 Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `ErrorApi` con la causa), `sesion/` (quién está dentro y las rutas protegidas por rol), `componentes/` (Boton, Campo, Aviso, Mapa, Plantilla, PantallaDeAcceso, Logo) y `registro/` (la cola sin señal, el almacenamiento en el celular y el respaldo).
 
@@ -266,11 +276,15 @@ Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `Error
 | Todo lo que manda el celular lleva un `id_cliente` | Sin señal, el celular reintenta; el servidor reconoce el reenvío y no duplica (HU18-CA5) |
 | Canal de Channels en memoria | Basta con el único proceso configurado en Render. Si se escala a más de uno, se cambia a Redis |
 | SQLite local y PostgreSQL en Render (RT-02, C-27) | SQLite mantiene simple el desarrollo; PostgreSQL evita perder los datos cuando Render reemplaza el contenedor |
+| Subir y pagar son dos pasos distintos (C-31) | Así se paga hoy: el chofer revisa los comprobantes al final. Además, el abordaje automático no podría cobrar sin que el estudiante lo pida |
+| Los viajes del simulador no guardan pasos (C-28) | Las horas que ve el estudiante salen solo de viajes reales |
+| Distancia de llegada configurable (`UPBUS_RADIO_DE_LLEGADA_M`, C-34) | Empieza en 50 m y se calibra con los viajes de prueba sin cambiar el código; la leen las reglas con `radio_de_llegada()` |
 
 ## 8. Participación y asistencia utilizada
 
 - **Hugo Zuñiga:** decidió la tecnología (PO13) y aprueba este diseño.
 - **Sebastian Cruz:** implementó el diseño de viajes y bus en vivo de T11 (HU-05 y HU-06); mantiene pendiente la revisión de T03.
-- **Asistencia de IA:** se usó Claude (Anthropic) para construir la base, describir su diseño y proponer los modelos de la sección 3. Sebastian usó OpenAI Codex para implementar y verificar T11 siguiendo la skill `implementar-historia`.
+- **Asistencia de IA:** se usó Claude (Anthropic) para construir la base, describir su diseño y proponer los modelos de la sección 3; el 25/11/2026, para ajustarlos a las decisiones del Product Owner (PO25). Sebastian usó OpenAI Codex para implementar y verificar T11 siguiendo la skill `implementar-historia`.
+- **Hugo Zuñiga (25/11/2026):** implementó `AvisoDeSubida`, el canal privado del chofer y las rutas de HU-07 (T14), con asistencia de Claude (Anthropic).
 - **Sebastian Cruz (T22):** preparó el diseño de despliegue en Render con un solo proceso y PostgreSQL.
 - **Asistencia de IA (T22):** Sebastian usó OpenAI Codex para implementar y verificar la configuración de despliegue.

@@ -2,13 +2,25 @@
 from datetime import date, datetime, timedelta
 from math import floor
 
+from django.conf import settings
+
 from comun.geo import coordenadas_validas, distancia_en_metros
 from comun.rechazos import Rechazo, SinPermiso
 from comun.tiempo import ZONA_HORARIA, a_hora_local
 
-RADIO_DE_LLEGADA_M = 50  # RF-11: el bus «llega» a menos de 50 m
+RADIO_DE_LLEGADA_M = 50  # RF-11: por defecto, el bus «llega» a menos de 50 m (C-34)
 PASOS_PARA_EL_PROMEDIO = 5  # P-11 [PROVISIONAL]
 MINUTOS_HASTA_LA_U = 60  # P-06 [PROVISIONAL] cuando un horario no tiene llegada
+
+
+def radio_de_llegada():
+    """Metros a los que el bus «llega» a una parada (RF-11).
+
+    Empieza en 50 m y se calibra con `UPBUS_RADIO_DE_LLEGADA_M`, sin cambiar el
+    código, después de los viajes de prueba (C-34). La usan también el modo
+    registro (RF-23) y el simulador.
+    """
+    return getattr(settings, "UPBUS_RADIO_DE_LLEGADA_M", RADIO_DE_LLEGADA_M)
 
 
 # ---- HU-18: modo registro (BUS-RF-23) ----
@@ -44,9 +56,10 @@ def verificar_coordenadas(latitud, longitud):
 
 
 def verificar_lejos_de_las_otras_marcas(punto, marcas_anteriores):
+    radio = radio_de_llegada()
     for marca in marcas_anteriores:
-        if distancia_en_metros(punto, marca.punto) < RADIO_DE_LLEGADA_M:
-            raise Rechazo("ya marcaste una parada a menos de 50 m")
+        if distancia_en_metros(punto, marca.punto) < radio:
+            raise Rechazo(f"ya marcaste una parada a menos de {radio:g} m")
 
 
 def verificar_hay_marcas(cantidad):
@@ -62,11 +75,11 @@ def estado_de_una_parada_nueva(usuario):
 # ---- Paradas y horas aproximadas (BUS-RF-11) ----
 
 def llego_a_la_parada(distancia_m):
-    return distancia_m < RADIO_DE_LLEGADA_M
+    return distancia_m < radio_de_llegada()
 
 
 def parada_mas_cercana(punto, paradas):
-    """La parada a menos de 50 m más cercana, o `None`."""
+    """La parada más cercana entre las que están a menos del radio de llegada, o `None`."""
     mejor, mejor_distancia = None, None
     for parada in paradas:
         distancia = distancia_en_metros(punto, parada.punto)

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { api } from "../api/cliente.js";
 import Aviso from "../componentes/Aviso.jsx";
+import AvisosDelViaje from "../componentes/AvisosDelViaje.jsx";
 import Boton from "../componentes/Boton.jsx";
 import { distanciaEnMetros } from "../registro/geo.js";
 
@@ -140,6 +141,7 @@ export default function Viajes() {
                 Terminar viaje
               </Boton>
             )}
+            {viaje.estado === "en_curso" && <AvisosDelViaje viajeId={viaje.id} />}
           </article>
         ))}
         {!viajes.length && !error && (
