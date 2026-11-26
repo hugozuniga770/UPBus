@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 import { api } from "../api/cliente.js";
 import Aviso from "./Aviso.jsx";
+import ChatDirecto from "./ChatDirecto.jsx";
 
 function hora(momento) {
   return new Date(momento).toLocaleTimeString("es-BO", { hour: "2-digit", minute: "2-digit", timeZone: "America/La_Paz" });
@@ -50,21 +51,26 @@ export default function AvisosDelViaje({ viajeId }) {
       {error && <div className="mt-2"><Aviso tipo="error">{error}</Aviso></div>}
       <ul className="mt-2 space-y-2">
         {avisos.map((aviso) => (
-          <li key={aviso.id} className="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-fondo px-3 py-2 text-sm">
-            <span><strong>{aviso.estudiante.nombre}</strong> · {aviso.parada.nombre}</span>
-            <span className="text-suave">
-              {aviso.estado === "a_bordo" && "a bordo"}
-              {aviso.estado === "confirmado" && (aviso.ubicacion
-                ? <a
-                    className="text-boton underline"
-                    href={`https://www.openstreetmap.org/?mlat=${aviso.ubicacion.latitud}&mlon=${aviso.ubicacion.longitud}#map=18/${aviso.ubicacion.latitud}/${aviso.ubicacion.longitud}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    📍 ubicación de las {hora(aviso.ubicacion.tomada_en)}
-                  </a>
-                : "esperando")}
-            </span>
+          <li key={aviso.id} className="rounded-xl bg-fondo px-3 py-2 text-sm">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span><strong>{aviso.estudiante.nombre}</strong> · {aviso.parada.nombre}</span>
+              <span className="text-suave">
+                {aviso.estado === "a_bordo" && "a bordo"}
+                {aviso.estado === "confirmado" && (aviso.ubicacion
+                  ? <a
+                      className="text-boton underline"
+                      href={`https://www.openstreetmap.org/?mlat=${aviso.ubicacion.latitud}&mlon=${aviso.ubicacion.longitud}#map=18/${aviso.ubicacion.latitud}/${aviso.ubicacion.longitud}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      📍 ubicación de las {hora(aviso.ubicacion.tomada_en)}
+                    </a>
+                  : "esperando")}
+              </span>
+            </div>
+            {aviso.estado === "confirmado" && (
+              <ChatDirecto viajeId={viajeId} estudiante={aviso.estudiante} esChofer />
+            )}
           </li>
         ))}
       </ul>

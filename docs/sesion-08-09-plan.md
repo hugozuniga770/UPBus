@@ -66,7 +66,7 @@ Las estimaciones son en horas-persona (h-p) y son **[PROPUESTA]**: no hay horas 
 | T16 | Aviso de bus cerca y registro de quién subió (HU-09, HU-10) | Aviso a 500 m; sugerencia de seguir al chofer; «ha subido» en la lista del chofer, también cuando la app detecta que subió | 6 | Andrés | 3 | Por hacer |
 | T17 | Créditos: recarga y pago (HU-11, HU-12) | Recarga aprobada; ajustes del administrador; pago desde la app con comprobante; el chofer revisa los comprobantes y marca el efectivo | 10 | Sebastian | 3 y 4 | Por hacer |
 | T18 | Retiro del chofer (HU-13) | El chofer retira y el saldo no queda negativo | 3 | Hugo | 4 | Por hacer |
-| T19 | Chats (HU-14, HU-15) | Chat directo y chat de ruta por WebSocket | 8 | Sebastian | 4 | Por hacer |
+| T19 | Chats (HU-14, HU-15) | Chat directo y chat de ruta por WebSocket | 8 | Sebastian | 4 | Hecho: 5 criterios, canales privados e interfaz (#14) |
 | T20 | Modificación de rutas y aviso de mínimo (HU-16, HU-17) | Todo cambio del chofer pendiente de aprobación; aviso con menos de 15 | 6 | Andrés | 4 | Por hacer |
 | T21 | Trazabilidad y pruebas completas | `trazabilidad.md` completa; todos los tests en verde | 5 | Hugo | Cierre | Empezada: `trazabilidad.md` llega con la base |
 | T22 | Despliegue en hosting gratuito | App publicada con HTTPS | 5 | Sebastian | Cierre | En curso en #17: configuración y guía listas; falta publicar después de integrar |
