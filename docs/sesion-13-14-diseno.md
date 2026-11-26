@@ -8,7 +8,7 @@
 
 ## 0. Cómo leer este documento
 
-- **FE** es la interfaz (React), **MW** el servidor Django que aplica las reglas, **Padrón** la lista de la universidad y **BD** la base de datos (SQLite).
+- **FE** es la interfaz (React), **MW** el servidor Django que aplica las reglas, **Padrón** la lista de la universidad y **BD** la base de datos (SQLite local o PostgreSQL en el hosting).
 - Quien toma una historia lee la sección 3 para su modelo y la sección 4 para el molde de sus capas. Si cambia algo de lo propuesto, lo corrige aquí y, si era algo acordado, lo anota en [cambios.md](cambios.md).
 
 ## 1. Arquitectura FE / MW / Padrón / BD
@@ -23,7 +23,7 @@ flowchart LR
         C["Canal · Channels"] --> S
     end
     P[("Padrón<br/>archivo JSON de solo lectura")]
-    B[("BD · SQLite")]
+    B[("BD · SQLite local<br/>PostgreSQL en Render")]
     FE -- "HTTP JSON /api<br/>cookie de sesión y CSRF" --> V
     FE <-- "WebSocket /ws" --> C
     S --> B
@@ -41,6 +41,8 @@ flowchart LR
 | BD | Las tablas | `models.py` y `migrations/` |
 
 **En desarrollo**, Vite (puerto 5173) le pasa `/api`, `/admin`, `/static` y `/ws` a Django (puerto 8000), así FE y MW comparten el mismo origen. Para el celular, un túnel HTTPS gratuito apunta a Vite ([guía del modo registro](guia-modo-registro.md)).
+
+**En el despliegue**, un solo contenedor sirve la interfaz compilada, la API y el WebSocket con Django, WhiteNoise y Daphne. Render termina HTTPS y PostgreSQL conserva los datos fuera del disco efímero del contenedor ([guía de despliegue](guia-despliegue.md), C-27).
 
 ## 2. Datos que ya existen
 
@@ -272,8 +274,8 @@ Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `Error
 | Cada paso guarda los minutos desde la salida programada del horario | Así se promedian viajes distintos y también se aprende si el bus suele salir tarde: con el primer viaje real, contar desde la primera marca adelantaba las horas 6 minutos (C-23) |
 | Promedio de los últimos 5 pasos (P-11), redondeado hacia abajo | Reacciona a cambios recientes sin depender de un solo viaje; hacia abajo para que nadie llegue segundos tarde (C-23) |
 | Todo lo que manda el celular lleva un `id_cliente` | Sin señal, el celular reintenta; el servidor reconoce el reenvío y no duplica (HU18-CA5) |
-| Canal de Channels en memoria | Basta con un solo proceso en el MVP. Si el hosting usa más de uno, se cambia a Redis **[PROPUESTA]** (T22) |
-| SQLite (RT-02) | Gratis y sin servidor aparte; suficiente para el MVP |
+| Canal de Channels en memoria | Basta con el único proceso configurado en Render. Si se escala a más de uno, se cambia a Redis |
+| SQLite local y PostgreSQL en Render (RT-02, C-27) | SQLite mantiene simple el desarrollo; PostgreSQL evita perder los datos cuando Render reemplaza el contenedor |
 | Subir y pagar son dos pasos distintos (C-31) | Así se paga hoy: el chofer revisa los comprobantes al final. Además, el abordaje automático no podría cobrar sin que el estudiante lo pida |
 | Los viajes del simulador no guardan pasos (C-28) | Las horas que ve el estudiante salen solo de viajes reales |
 | Distancia de llegada configurable (`UPBUS_RADIO_DE_LLEGADA_M`, C-34) | Empieza en 50 m y se calibra con los viajes de prueba sin cambiar el código; la leen las reglas con `radio_de_llegada()` |
@@ -284,3 +286,5 @@ Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `Error
 - **Sebastian Cruz:** implementó el diseño de viajes y bus en vivo de T11 (HU-05 y HU-06); mantiene pendiente la revisión de T03.
 - **Asistencia de IA:** se usó Claude (Anthropic) para construir la base, describir su diseño y proponer los modelos de la sección 3; el 25/11/2026, para ajustarlos a las decisiones del Product Owner (PO25). Sebastian usó OpenAI Codex para implementar y verificar T11 siguiendo la skill `implementar-historia`.
 - **Hugo Zuñiga (25/11/2026):** implementó `AvisoDeSubida`, el canal privado del chofer y las rutas de HU-07 (T14), con asistencia de Claude (Anthropic).
+- **Sebastian Cruz (T22):** preparó el diseño de despliegue en Render con un solo proceso y PostgreSQL.
+- **Asistencia de IA (T22):** Sebastian usó OpenAI Codex para implementar y verificar la configuración de despliegue.

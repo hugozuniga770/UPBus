@@ -390,7 +390,7 @@ El chofer **no** puede ver otros viajes, ver datos de estudiantes fuera de su vi
 | ID | Restricción | Estado |
 |---|---|---|
 | BUS-RT-01 | El servidor se hace con Django y Django REST Framework; las reglas de negocio, en Python | **[ACUERDO]** (PO13) |
-| BUS-RT-02 | La persistencia usa SQLite | **[ACUERDO]** (PO13) |
+| BUS-RT-02 | La persistencia usa SQLite en desarrollo y pruebas; en el hosting usa PostgreSQL porque el disco del contenedor es efímero (C-27) | **[ACUERDO]** (PO13, ajustado por T22) |
 | BUS-RT-03 | La interfaz se hace con React y Tailwind CSS, como aplicación aparte que consume la API | **[ACUERDO]** (PO13) |
 | BUS-RT-04 | El tiempo real usa WebSockets (Django Channels) | **[ACUERDO]** (PO13) |
 | BUS-RT-05 | La sesión se mantiene con la cookie de Django y protección CSRF | **[ACUERDO]** (PO13) |
@@ -437,7 +437,7 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 | P-13 | ¿El chofer marca «pagó en efectivo» al final de la ruta? Respondida (PO25): sí; al final revisa la lista de comprobantes de su viaje, por código o nombre, y marca a quien pagó en efectivo (C-31) | Sí | RF-16 |
 | P-14 | ¿Un administrador puede actuar también como chofer? | No: el chofer es una cuenta aparte | RF-03 |
 | P-15 | ¿La recarga tiene monto máximo? | No | RF-15 |
-| P-16 | ¿Qué hosting gratuito se usa? | Se decide en el Sprint 2 | RT-08 |
+| P-16 | ¿Qué hosting gratuito se usa? Respondida en T22: Render, con servicio web Docker y PostgreSQL gratuitos; HTTPS y WebSocket salen por el mismo dominio | Render; una instancia y un proceso para conservar el canal en memoria (C-27) | RT-08 |
 | P-17 | ¿Con cuánta anticipación se avisa al administrador que hay menos de 15? | 30 minutos antes de la salida | RF-22 |
 | P-18 | ¿Cuáles son las paradas reales de cada ruta, su orden y sus coordenadas? Respondida en parte (ENT-01): la Ruta Norte pasa por «varios puntos de Sevilla», Petrol y parte de Campos. Faltan el orden, las coordenadas y las demás rutas (ENT-03). Se responde con el modo registro: la primera ruta grabada es la Ruta Sur (REG-01, 25/11); la Ruta Norte y las demás se graban en los viajes siguientes (C-24) | Las paradas de la sección 0, solo en los ejemplos y los tests | RF-05, RF-23 |
 | P-19 | El chofer de ENT-01 espera «hasta dos minutos», y como máximo uno más; Don Iván dice «mayormente son 2 minutos» (ENT-03); el docente indicó que el bus no espera. ¿Se da una tolerancia de espera? Respondida (ENT-07): la única condición de la UPB es la hora de llegada a la universidad; el chofer maneja su tiempo para cumplirla | La app no fija una espera: el chofer decide, cuidando la llegada (DOC, ENT-07) | RF-09, RF-12 |
@@ -475,6 +475,8 @@ Mientras no haya respuesta, rige el valor provisional. Las que dependen de una e
 - **Asistencia de IA (18/11/2026):** se usó Claude (Anthropic) para redactar BUS-RF-23, los criterios nuevos de RF-01, RF-02 y RF-04 y las preguntas P-28 a P-31, a partir de las decisiones de Hugo y de la base del código.
 - **Sebastian Cruz (25/11/2026):** grabó el primer viaje real, la Ruta Sur (REG-01), y anotó cuántas personas subieron en cada parada.
 - **Asistencia de IA (25/11/2026):** se usó Claude (Anthropic) para ajustar RF-11 y RF-23 con lo que mostró ese viaje (C-23) y redactar P-32.
+- **Sebastian Cruz (25/11/2026):** eligió Render para T22 y ajustó BUS-RT-02 y P-16 para el despliegue.
+- **Asistencia de IA (25/11/2026):** Sebastian usó OpenAI Codex para investigar las restricciones del plan gratuito y documentar C-27.
 - **Hugo Zuñiga (25/11/2026, noche):** revisó las historias (T02) y decidió el pago iniciado por el estudiante con revisión de comprobantes, el abordaje automático, que el administrador dé y quite créditos, que todo cambio de ruta pida aprobación y que los viajes simulados no enseñen horas (PO25).
 - **Asistencia de IA (25/11/2026, noche):** se usó Claude (Anthropic) para pasar esas decisiones a RF-08, RF-09, RF-14 a RF-16, RF-21 y RF-22, y proponer las distancias del abordaje automático y el momento de «no se presentó» (P-33).
 - **Hugo Zuñiga (26/11/2026):** hizo ENT-07 por correo y decidió los cambios de la revisión de T01: aclarar RF-01, calibrar la distancia de RF-11 y no guardar un historial de ubicaciones.

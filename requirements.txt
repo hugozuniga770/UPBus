@@ -3,6 +3,10 @@ Django==6.1.3
 djangorestframework==3.18.3
 channels==4.3.2
 daphne==4.2.3
+# Despliegue (T22): PostgreSQL de Render y archivos estáticos comprimidos.
+dj-database-url==3.1.2
+psycopg[binary]==3.3.9
+whitenoise[brotli]==6.12.0
 # Leer la lista de la clase en .xlsx (importar_padron)
 openpyxl==3.1.5
 
