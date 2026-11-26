@@ -2,7 +2,7 @@
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
-- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25) · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
+- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25; en la sección 3, C-27 a C-31) · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
 - Estado: la sección 2 y las secciones 4 a 6 describen el **código ya construido**. En la sección 3, `Viaje` y `PosicionDeViaje` ya están implementados; los demás modelos son **[PROPUESTA]** para las historias que faltan.
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Historias: [Sesión 7](sesion-07-modelos.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Trazabilidad: [trazabilidad.md](trazabilidad.md)
 
@@ -120,9 +120,9 @@ erDiagram
 erDiagram
     VIAJE ||--o{ AVISO_DE_SUBIDA : tiene
     VIAJE ||--o{ MENSAJE : "chat directo"
-    AVISO_DE_SUBIDA ||--o| ABORDAJE : "termina en"
     AVISO_DE_SUBIDA ||--o{ UBICACION_DEL_ESTUDIANTE : comparte
-    ABORDAJE ||--o| MOVIMIENTO : "se cobra con"
+    VIAJE ||--o{ PAGO_DE_VIAJE : recibe
+    PAGO_DE_VIAJE ||--o| MOVIMIENTO : "se cobra con"
     RECARGA ||--o| MOVIMIENTO : "suma con"
     RUTA ||--o{ MIEMBRO_DE_RUTA : "tiene"
     RUTA ||--o{ CAMBIO_DE_RUTA : "recibe"
@@ -144,6 +144,8 @@ erDiagram
         int estudiante_id
         int parada_id
         string estado "confirmado, a_bordo, cancelado o no_se_presento"
+        string subio_por "estudiante, chofer o app"
+        int ubicaciones_junto_al_bus "para el abordaje automático"
         bool aviso_de_cercania_enviado
     }
     UBICACION_DEL_ESTUDIANTE {
@@ -151,11 +153,13 @@ erDiagram
         float longitud
         datetime tomada_en
     }
-    ABORDAJE {
+    PAGO_DE_VIAJE {
+        int viaje_id
+        int estudiante_id
+        string medio "creditos o efectivo"
         string id_cliente UK "para no cobrar dos veces"
-        int registrado_por_id
-        string pago "creditos, efectivo_pendiente o efectivo"
-        datetime registrado_en
+        int marcado_por_id "el chofer, si fue en efectivo"
+        datetime pagado_en
     }
     RECARGA {
         int estudiante_id
@@ -165,8 +169,10 @@ erDiagram
     }
     MOVIMIENTO {
         int cuenta_id
-        string tipo "recarga, pago, devolucion o retiro"
+        string tipo "recarga, pago, devolucion, retiro o ajuste"
         int monto "con signo"
+        string motivo "solo en los ajustes"
+        int hecho_por_id "quién hizo el ajuste"
         int viaje_id
         string comprobante UK "ID del comprobante"
         datetime creado_en
@@ -181,10 +187,9 @@ erDiagram
         int usuario_id
     }
     CAMBIO_DE_RUTA {
-        int chofer_id
+        int propuesto_por_id
         json cambio
-        float metros
-        string estado "aplicado, pendiente, aprobado o rechazado"
+        string estado "pendiente, aprobado, rechazado o aplicado"
         int aprobado_por_id
     }
 ```
@@ -192,12 +197,12 @@ erDiagram
 | Modelo | App | Historia | Notas |
 |---|---|---|---|
 | `Viaje` y `PosicionDeViaje` | viajes | HU-05, HU-06 | Implementados. `Viaje` guarda la última posición; `PosicionDeViaje.id_cliente` evita duplicar reenvíos. Un chofer tiene un solo viaje en curso |
-| `AvisoDeSubida` | viajes | HU-07, HU-09 | Uno por estudiante y viaje (HU07-CA2). Al pasar el bus, los confirmados que no subieron pasan a «no se presentó» |
-| `UbicacionDelEstudiante` | viajes | HU-07 | Solo se guarda la última; se borra al subir o al terminar el viaje |
-| `Abordaje` | viajes | HU-10, HU-12 | `id_cliente` único para que un reenvío no cobre dos veces (HU12-CA3) |
-| `Recarga` y `Movimiento` | `creditos` (app nueva) o viajes | HU-11 a HU-13 | El saldo es la suma de los movimientos; nunca se guarda aparte. Cada cobro, devolución o retiro es un movimiento completo o ninguno (RC-03) |
+| `AvisoDeSubida` | viajes | HU-07, HU-09, HU-10 | Uno activo por estudiante y viaje (HU07-CA2). Cuando el bus llega a la parada siguiente, los confirmados que no subieron pasan a «no se presentó» (P-33). El abordaje es su estado A bordo, con quién lo marcó: el estudiante, el chofer o la app (C-29); subir no cobra (C-30) |
+| `UbicacionDelEstudiante` | viajes | HU-07, HU-10 | Solo se guarda la última. Con ella la app detecta que subió: el bus a más de 100 m de su parada y dos ubicaciones seguidas a menos de 50 m del bus (P-33). Se borra al subir o al terminar el viaje |
+| `PagoDeViaje` | `creditos` (app nueva) o viajes | HU-12 | Uno por estudiante y viaje. Con créditos genera el cobro, el abono al chofer y el comprobante; en efectivo lo marca el chofer, sin movimiento. `id_cliente` único para que un reenvío no cobre dos veces (HU12-CA3) |
+| `Recarga` y `Movimiento` | `creditos` (app nueva) o viajes | HU-11 a HU-13 | El saldo es la suma de los movimientos; nunca se guarda aparte. Cada cobro, devolución, retiro o ajuste es un movimiento completo o ninguno (RC-03). El ajuste del administrador lleva su motivo y quién lo hizo, y no deja el saldo en negativo (C-28) |
 | `Mensaje` y `MiembroDeRuta` | mensajes | HU-14, HU-15 | Solo texto (P-10) |
-| `CambioDeRuta` | rutas | HU-16 | Los grandes quedan pendientes; P-25 puede hacer que todos lo queden |
+| `CambioDeRuta` | rutas | HU-16 | Todo cambio del chofer queda pendiente hasta que un administrador lo aprueba; los del administrador se aplican directamente (C-31) |
 
 ## 4. Clases y funciones por capa (lo que hay)
 
@@ -264,9 +269,11 @@ Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `Error
 | Todo lo que manda el celular lleva un `id_cliente` | Sin señal, el celular reintenta; el servidor reconoce el reenvío y no duplica (HU18-CA5) |
 | Canal de Channels en memoria | Basta con un solo proceso en el MVP. Si el hosting usa más de uno, se cambia a Redis **[PROPUESTA]** (T22) |
 | SQLite (RT-02) | Gratis y sin servidor aparte; suficiente para el MVP |
+| Subir y pagar son dos pasos distintos (C-30) | Así se paga hoy: el chofer revisa los comprobantes al final. Además, el abordaje automático no podría cobrar sin que el estudiante lo pida |
+| Los viajes del simulador no guardan pasos (C-27) | Las horas que ve el estudiante salen solo de viajes reales |
 
 ## 8. Participación y asistencia utilizada
 
 - **Hugo Zuñiga:** decidió la tecnología (PO13) y aprueba este diseño.
 - **Sebastian Cruz:** implementó el diseño de viajes y bus en vivo de T11 (HU-05 y HU-06); mantiene pendiente la revisión de T03.
-- **Asistencia de IA:** se usó Claude (Anthropic) para construir la base, describir su diseño y proponer los modelos de la sección 3. Sebastian usó OpenAI Codex para implementar y verificar T11 siguiendo la skill `implementar-historia`.
+- **Asistencia de IA:** se usó Claude (Anthropic) para construir la base, describir su diseño y proponer los modelos de la sección 3; el 25/11/2026, para ajustarlos a las decisiones del Product Owner (PO25). Sebastian usó OpenAI Codex para implementar y verificar T11 siguiendo la skill `implementar-historia`.

@@ -3,7 +3,7 @@
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I) · Aprueba: Hugo Zuñiga, como Product Owner
-- Actualizado: 25/11/2026 · HU18-CA2 con las horas medidas desde la salida programada (C-23)
+- Actualizado: 25/11/2026 · revisión del Product Owner (PO25): HU-07 CA3, HU-10, HU-11, HU-12 y HU-16, con dos criterios nuevos (HU10-CA5 y HU11-CA5), 75 en total (C-27 a C-31). Antes, ese día: HU18-CA2 con las horas medidas desde la salida programada (C-23)
 - Fecha: 18/11/2026 · Sprint 1 · Tarea T02 del [plan](sesion-08-09-plan.md) · Issue: [#2](https://github.com/hugozuniga770/UPBus/issues/2) · Milestone: Sprint 1
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
@@ -29,17 +29,17 @@
 | HU-07 | estudiante | avisar «Voy a subir» en mi parada y compartir mi ubicación | que el chofer sepa que lo espero | RF-08, RF-09, RF-03 | 3 | Alta |
 | HU-08 | estudiante o chofer | proponer una parada sobre el recorrido | subir donde de verdad espero | RF-10 | 3 | Media |
 | HU-09 | estudiante | recibir un aviso cuando el bus está cerca de mi parada | salir a tiempo | RF-13, RF-12 | 3 | Media |
-| HU-10 | estudiante o chofer | registrar que subí, o que subió | que quede el abordaje y se cobre el viaje | RF-14 | 3 | Alta |
-| HU-11 | estudiante | recargar créditos | pagar el viaje desde la app | RF-15 | 3 y 4 | Media |
-| HU-12 | estudiante o chofer | pagar el viaje con créditos y tener un comprobante | no manejar efectivo y saber quién pagó | RF-16, RF-17 | 4 | Media |
+| HU-10 | estudiante o chofer | registrar que subí, o que subió, o que la app lo detecte sola si comparto mi ubicación | que quede el abordaje y el chofer sepa quién va en el bus | RF-14 | 3 | Alta |
+| HU-11 | estudiante o administrador | recargar créditos; el administrador, además, darlos y quitarlos | pagar el viaje desde la app y corregir errores | RF-15 | 3 y 4 | Media |
+| HU-12 | estudiante o chofer | pagar el viaje con créditos y tener un comprobante; el chofer, revisar los comprobantes de su viaje | no manejar efectivo y saber quién pagó | RF-16, RF-17 | 4 | Media |
 | HU-13 | chofer | retirar mi saldo | cobrar lo que pagaron con créditos | RF-18 | 4 | Baja |
 | HU-14 | estudiante o chofer | escribirnos directo durante el viaje | avisar sin llamar ni usar WhatsApp | RF-19 | 4 | Media |
 | HU-15 | estudiante o chofer | usar el chat de mi ruta | reemplazar el grupo de WhatsApp | RF-20 | 4 | Media |
-| HU-16 | chofer o administrador | modificar una ruta | mantenerla al día | RF-21 | 4 | Baja |
+| HU-16 | chofer o administrador | proponer un cambio a una ruta; el administrador, aprobarlo | mantenerla al día con la aprobación de la UPB | RF-21 | 4 | Baja |
 | HU-17 | chofer o administrador | ver cuántos confirmaron y recibir el aviso de mínimo | saber si la ruta tiene estudiantes suficientes | RF-22, RF-03 | 4 | Baja |
 | HU-18 | chofer o administrador | marcar cada parada mientras hago el recorrido | que la app aprenda las paradas y sus horas sin cargarlas a mano | RF-23, RF-11 | 1 · en la base | Alta |
 
-HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF-12, la sugerencia de saltar una parada, va con HU-09 porque sale del mismo cálculo: la posición del bus comparada con las paradas (C-21).
+HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF-12, la sugerencia de saltar una parada, va con HU-09 porque sale del mismo cálculo: la posición del bus comparada con las paradas (C-21). HU10-CA5 y HU11-CA5 salen de la revisión del Product Owner del 25/11/2026 (C-28, C-29).
 
 ## 2. Criterios de aceptación
 
@@ -184,8 +184,8 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 
 **CA3 — Si el bus pasa y no subió, queda «no se presentó»** ⏳ `test_HU07_CA3_si_el_bus_pasa_y_no_subio_queda_no_se_presento`
 - Dado: Ismael está Confirmado en Sevilla.
-- Cuando: el bus pasa Sevilla y sigue sin que Ismael suba ni cancele.
-- Entonces: el aviso queda «no se presentó», sin cobro.
+- Cuando: el bus pasa Sevilla y llega a Petrol sin que Ismael suba ni cancele.
+- Entonces: el aviso queda «no se presentó». Mientras el bus está en Sevilla, el aviso sigue Confirmado **[PROVISIONAL]** (P-33).
 
 **CA4 — Puede cancelar antes de que pase el bus** ⏳ `test_HU07_CA4_puede_cancelar_antes_de_que_pase_el_bus`
 - Dado: Ismael está Confirmado y el bus no llegó a Sevilla.
@@ -217,7 +217,7 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 **CA2 — Rechaza una parada lejos del recorrido** ⏳ `test_HU08_CA2_rechaza_una_parada_lejos_del_recorrido`
 - Dado: la misma ruta.
 - Cuando: Ismael propone una parada a más de 200 m del recorrido.
-- Entonces: se rechaza por «la parada debe estar sobre la ruta» **[PROVISIONAL]** (P-07).
+- Entonces: se rechaza por «la parada debe estar sobre la ruta» (P-07).
 
 **CA3 — Una parada sin nadie no está activa** ⏳ `test_HU08_CA3_una_parada_sin_nadie_no_esta_activa`
 - Dado: en el viaje de las 06:40 nadie marcó «Voy a subir» en Sevilla.
@@ -261,12 +261,12 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 **CA1 — El estudiante registra que subió** ⏳ `test_HU10_CA1_el_estudiante_registra_que_subio`
 - Dado: Ismael está Confirmado, tiene 10 créditos y el viaje está En curso.
 - Cuando: toca «He subido».
-- Entonces: queda A bordo, se le cobran 5 créditos y a Marco le aparece «Ismael: ha subido, ha pagado».
+- Entonces: queda A bordo, sigue con 10 créditos porque subir no cobra (C-30) y a Marco le aparece «Ismael: ha subido».
 
 **CA2 — El chofer registra que subió** ⏳ `test_HU10_CA2_el_chofer_registra_que_subio`
 - Dado: Ismael está Confirmado y el viaje está En curso.
 - Cuando: Marco lo marca «subió».
-- Entonces: Ismael queda A bordo y se cobra igual que en CA1.
+- Entonces: Ismael queda A bordo, sin cobro.
 
 **CA3 — Rechaza subir a un viaje terminado** ⏳ `test_HU10_CA3_rechaza_subir_a_un_viaje_terminado`
 - Dado: el viaje de las 06:40 está Terminado.
@@ -276,7 +276,12 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 **CA4 — El chofer marca «no se presentó»** ⏳ `test_HU10_CA4_el_chofer_marca_no_se_presento`
 - Dado: Ismael está Confirmado y el viaje está En curso.
 - Cuando: Marco lo marca «no se presentó».
-- Entonces: el aviso queda «no se presentó», sin cobro.
+- Entonces: el aviso queda «no se presentó».
+
+**CA5 — Queda a bordo si avanza con el bus** ⏳ `test_HU10_CA5_queda_a_bordo_si_avanza_con_el_bus`
+- Dado: Ismael está Confirmado en Sevilla, comparte su ubicación y el bus ya pasó por Sevilla.
+- Cuando: el bus está a más de 100 m de Sevilla y llegan dos ubicaciones seguidas de Ismael a menos de 50 m del bus.
+- Entonces: Ismael queda A bordo sin que nadie toque nada y deja de compartir su ubicación. Con una sola ubicación cerca del bus, sigue Confirmado **[PROVISIONAL]** (P-33).
 
 ### HU-11 — Recargar créditos
 
@@ -300,32 +305,37 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 - Cuando: Ismael intenta aprobarla.
 - Entonces: se rechaza por «solo el administrador puede hacer esto» y la recarga sigue Pendiente.
 
+**CA5 — El administrador da y quita créditos** ⏳ `test_HU11_CA5_el_administrador_da_y_quita_creditos`
+- Dado: Ismael tiene 0 créditos.
+- Cuando: Hugo le da 50 créditos con el motivo «demo» y después le quita 10 con el motivo «recarga de más».
+- Entonces: Ismael queda con 40 y quedan los dos ajustes como movimientos, con su motivo y quién los hizo. Si Hugo intenta quitarle 50, se rechaza por «saldo insuficiente» y nada cambia (C-28).
+
 ### HU-12 — Pagar el viaje y ver el comprobante
 
-**CA1 — Cobra 5 créditos al subir** ⏳ `test_HU12_CA1_cobra_5_creditos_al_subir`
-- Dado: Ismael tiene 10 créditos y Marco tiene saldo 0.
-- Cuando: se registra que Ismael subió.
+**CA1 — Paga el viaje con 5 créditos** ⏳ `test_HU12_CA1_paga_el_viaje_con_5_creditos`
+- Dado: Ismael tiene 10 créditos, Marco tiene saldo 0 y el viaje de las 06:40 está En curso.
+- Cuando: Ismael paga el viaje desde la app.
 - Entonces: Ismael queda con 5, Marco con 5 y existe un comprobante con su ID, el código, el correo y el nombre de Ismael, la ruta, el viaje, la fecha, la hora y el monto.
 
 **CA2 — Sin saldo, paga en efectivo** ⏳ `test_HU12_CA2_sin_saldo_paga_en_efectivo`
-- Dado: Ismael tiene 0 créditos.
-- Cuando: se registra que subió.
-- Entonces: no se cobra y a Marco le aparece «Ismael: ha subido, paga en efectivo».
+- Dado: Ismael tiene 3 créditos y el viaje está En curso.
+- Cuando: intenta pagar el viaje.
+- Entonces: se rechaza por «saldo insuficiente: paga en efectivo», no se cobra nada y su saldo sigue en 3.
 
-**CA3 — Un mismo abordaje se cobra una sola vez** ⏳ `test_HU12_CA3_un_mismo_abordaje_se_cobra_una_vez`
-- Dado: Ismael tiene 10 créditos.
-- Cuando: se envía dos veces el mismo «He subido».
-- Entonces: se cobra una sola vez y existe un solo comprobante.
+**CA3 — Un mismo pago se cobra una sola vez** ⏳ `test_HU12_CA3_un_mismo_pago_se_cobra_una_vez`
+- Dado: Ismael tiene 10 créditos y el viaje está En curso.
+- Cuando: el celular reenvía el mismo pago (mismo `id_cliente`) y después Ismael intenta pagar otra vez el mismo viaje.
+- Entonces: se cobra una sola vez, existe un solo comprobante y el segundo intento se rechaza por «ya pagaste este viaje».
 
 **CA4 — El chofer ve los pagos de su viaje** ⏳ `test_HU12_CA4_el_chofer_ve_los_pagos_de_su_viaje`
 - Dado: en el viaje de las 06:40 pagaron Ismael y Hugo.
-- Cuando: Marco abre los pagos de su viaje y busca el código 70004.
-- Entonces: ve los dos pagos con un total de 10 y la búsqueda devuelve el de Ismael.
+- Cuando: al final de la ruta, Marco abre la lista de comprobantes de su viaje y busca «70004» y después «Ismael».
+- Entonces: ve los dos comprobantes con un total de 10, y las dos búsquedas devuelven el de Ismael con «pagado».
 
 **CA5 — El chofer marca que pagó en efectivo** ⏳ `test_HU12_CA5_el_chofer_marca_que_pago_en_efectivo`
-- Dado: Ismael subió sin saldo.
-- Cuando: al final de la ruta, Marco marca que pagó en efectivo.
-- Entonces: el abordaje queda «pagó en efectivo», sin movimiento de créditos **[PROVISIONAL]** (P-13).
+- Dado: Ismael viajó en el viaje de las 06:40 y no pagó con créditos.
+- Cuando: al final de la ruta, Marco lo busca por su código y marca que pagó en efectivo.
+- Entonces: Ismael aparece en la lista como «pagó en efectivo», sin movimiento de créditos (P-13).
 
 **CA6 — Devuelve los créditos si se cancela el viaje** ⏳ `test_HU12_CA6_devuelve_los_creditos_si_se_cancela_el_viaje`
 - Dado: Ismael pagó 5 créditos en el viaje de las 06:40.
@@ -375,18 +385,18 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 
 ### HU-16 — Modificar una ruta
 
-**CA1 — Un cambio pequeño se aplica** ⏳ `test_HU16_CA1_un_cambio_pequeno_se_aplica`
+**CA1 — Todo cambio queda pendiente** ⏳ `test_HU16_CA1_todo_cambio_queda_pendiente`
 - Dado: Marco es el chofer de la Ruta Norte.
 - Cuando: mueve un punto del recorrido 80 m.
-- Entonces: el cambio se aplica **[PROVISIONAL]**: si se aprueba C-17 (P-25), también este cambio queda Pendiente.
+- Entonces: el cambio queda Pendiente y la ruta sigue igual (C-31).
 
-**CA2 — Un cambio grande queda pendiente** ⏳ `test_HU16_CA2_un_cambio_grande_queda_pendiente`
-- Dado: lo mismo.
-- Cuando: Marco mueve un punto 250 m.
-- Entonces: el cambio queda Pendiente y la ruta sigue igual hasta que Hugo lo aprueba.
+**CA2 — El administrador aprueba el cambio** ⏳ `test_HU16_CA2_el_administrador_aprueba_el_cambio`
+- Dado: el cambio de 80 m de Marco está Pendiente.
+- Cuando: Hugo lo aprueba.
+- Entonces: el cambio se aplica y todos ven la ruta nueva.
 
 **CA3 — El chofer no cambia la hora de llegada** ⏳ `test_HU16_CA3_el_chofer_no_cambia_la_hora_de_llegada`
-- Dado: lo mismo.
+- Dado: Marco es el chofer de la Ruta Norte.
 - Cuando: Marco intenta cambiar la hora de llegada a la U.
 - Entonces: se rechaza por «no puedes cambiar la hora de llegada a la U».
 
@@ -459,13 +469,13 @@ Cada caso de uso tiene el número de su historia. El flujo principal está en su
 | CU-07 «Voy a subir» | HU-07 | Estudiante | Marca su parada en un viaje | Aviso Confirmado y alerta al chofer | Sección 7 |
 | CU-08 Proponer una parada | HU-08 | Estudiante o chofer | Toca un punto del recorrido | Parada propuesta | Sección 8 |
 | CU-09 Aviso de bus cerca | HU-09 | Sistema (posición del bus) | Llega una posición nueva | Aviso al estudiante o sugerencia al chofer | Sección 9 |
-| CU-10 Registrar quién subió | HU-10 | Estudiante o chofer | «He subido» o «subió» | Abordaje registrado y cobro | Sección 10 |
-| CU-11 Recargar créditos | HU-11 | Estudiante | Pide una recarga | Recarga Pendiente y luego Aprobada | Sección 11 |
-| CU-12 Pagar el viaje | HU-12 | Sistema (al subir) | Se registra el abordaje | Pago, comprobante o «paga en efectivo» | Sección 10 |
+| CU-10 Registrar quién subió | HU-10 | Estudiante, chofer o sistema (ubicación del estudiante) | «He subido», «subió», o la ubicación del estudiante sigue al bus | Abordaje registrado, sin cobro | Sección 10 |
+| CU-11 Recargar créditos | HU-11 | Estudiante o administrador | Pide una recarga, o el administrador hace un ajuste | Recarga Pendiente y luego Aprobada, o ajuste registrado | Sección 11 |
+| CU-12 Pagar el viaje | HU-12 | Estudiante; el chofer revisa | Toca «Pagar» en su viaje | Pago y comprobante; al final, el chofer revisa la lista y marca el efectivo | Sección 10 |
 | CU-13 Retirar el saldo | HU-13 | Chofer | Pide un retiro | Saldo descontado y movimiento | Sección 12 |
 | CU-14 Chat directo | HU-14 | Estudiante o chofer | Escribe un mensaje | Mensaje entregado al otro | Sección 13 |
 | CU-15 Chat de la ruta | HU-15 | Estudiante o chofer | Escribe en el chat de su ruta | Mensaje visible para la ruta | Sección 14 |
-| CU-16 Modificar una ruta | HU-16 | Chofer o administrador | Edita el recorrido o una parada | Cambio aplicado o Pendiente | Sección 15 |
+| CU-16 Modificar una ruta | HU-16 | Chofer o administrador | Edita el recorrido o una parada | Cambio Pendiente si es del chofer, hasta que el administrador lo aprueba | Sección 15 |
 | CU-17 Confirmados y aviso de mínimo | HU-17 | Tarea programada | Faltan 30 minutos para la salida | Aviso al administrador si hay menos de 15 | Sección 16 |
 | CU-18 Modo registro | HU-18 | Chofer o administrador | Inicia un registro en un viaje real | Paradas, recorrido y horas aprendidas | Sección 17 y la actividad de la sección 5 de este documento |
 
@@ -492,9 +502,9 @@ stateDiagram-v2
     state "A bordo" as ABordo
     state "No se presentó" as NoSePresento
     [*] --> Confirmado: el estudiante marca su parada
-    Confirmado --> ABordo: «He subido» o el chofer marca «subió»
+    Confirmado --> ABordo: «He subido», el chofer marca «subió» o su ubicación sigue al bus
     Confirmado --> Cancelado: el estudiante cancela antes de que pase el bus, o se cancela el viaje
-    Confirmado --> NoSePresento: el bus pasó la parada, o lo marca el chofer
+    Confirmado --> NoSePresento: el bus llegó a la parada siguiente, o lo marca el chofer
     ABordo --> [*]
     Cancelado --> [*]
     NoSePresento --> [*]
@@ -537,8 +547,8 @@ stateDiagram-v2
 
 ```mermaid
 stateDiagram-v2
-    [*] --> Aplicado: cambio pequeño (menos de 200 m)
-    [*] --> Pendiente: cambio grande o de avenida
+    [*] --> Pendiente: lo propone el chofer
+    [*] --> Aplicado: lo hace un administrador
     Pendiente --> Aplicado: el administrador lo aprueba
     Pendiente --> Rechazado: el administrador lo rechaza
 ```
@@ -589,14 +599,14 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | RF-05 Rutas, paradas y horarios | HU-04 | CA1 y CA2 |
 | RF-06 Viaje: iniciar y terminar | HU-05 | CA1 a CA4 |
 | RF-07 Ubicación del bus en vivo | HU-06 | CA1, CA2 y CA5 |
-| RF-08 Ubicación del estudiante | HU-07 | CA5 y CA6 |
+| RF-08 Ubicación del estudiante | HU-07, HU-10 | HU-07 CA5 y CA6; HU-10 CA5 |
 | RF-09 «Voy a subir» | HU-07 | CA1 a CA4 |
 | RF-10 Paradas propuestas y activas | HU-08 | CA1 a CA4 |
 | RF-11 Horas aproximadas | HU-06, HU-18 | HU-06 CA3 y CA4; HU-18 CA1 y CA2 |
 | RF-12 Sugerencia de saltar una parada | HU-09 | CA4 y CA5 |
 | RF-13 Aviso de bus cerca | HU-09 | CA1 a CA3 |
-| RF-14 Registrar quién subió | HU-10 | CA1 a CA4 |
-| RF-15 Recarga de créditos | HU-11 | CA1 a CA4 |
+| RF-14 Registrar quién subió | HU-10 | CA1 a CA5 |
+| RF-15 Recarga de créditos | HU-11 | CA1 a CA5 |
 | RF-16 Pago del viaje y comprobante | HU-12 | CA1 a CA5 |
 | RF-17 Devolución por viaje cancelado | HU-12 | CA6 |
 | RF-18 Retiro del saldo del chofer | HU-13 | CA1 y CA2 |
@@ -619,8 +629,8 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-07 | 7 | 0 | 7 |
 | HU-08 | 4 | 0 | 4 |
 | HU-09 | 5 | 0 | 5 |
-| HU-10 | 4 | 0 | 4 |
-| HU-11 | 4 | 0 | 4 |
+| HU-10 | 5 | 0 | 5 |
+| HU-11 | 5 | 0 | 5 |
 | HU-12 | 6 | 0 | 6 |
 | HU-13 | 2 | 0 | 2 |
 | HU-14 | 3 | 0 | 3 |
@@ -628,13 +638,14 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-16 | 4 | 0 | 4 |
 | HU-17 | 4 | 0 | 4 |
 | HU-18 | 5 | 5 | 0 |
-| **Total** | **73** | **28** | **45** |
+| **Total** | **75** | **28** | **47** |
 
 Además de los 28 tests de criterios, hay 4 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur y conectar el WebSocket del viaje) y 11 pruebas de interfaz en Vitest: 4 de historias (HU01, HU02, HU05 y HU18) y 7 de soporte (el cliente de la API, la cola y el respaldo del modo registro). Las pruebas de soporte no cuentan como criterios.
 
 ## 8. Participación y asistencia utilizada
 
 - **Hugo Zuñiga (Product Owner):** definió las historias a partir de los requisitos, decidió el modo registro (HU-18) y aprueba este documento.
+- **Hugo Zuñiga (25/11/2026, noche):** revisó las 18 historias (T02) y decidió los cambios de PO25: pago iniciado por el estudiante, abordaje automático, ajustes de créditos del administrador y todo cambio de ruta con aprobación (C-28 a C-31).
 - **Andrés Laura Vargas (Scrum Master):** dirigió el reparto del 18/11, en el que cada uno tomó sus historias con sus tests (C-26).
 - **Sebastian Cruz:** implementó y verificó HU-05 y HU-06 (T11, issue #6), además de revisar las historias que tocan rutas y viajes.
-- **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base; el 25/11/2026, para ajustar HU18-CA2 con lo que mostró el primer viaje real (C-23). Sebastian usó OpenAI Codex para implementar y probar HU-05 y HU-06 siguiendo la skill `implementar-historia` del repositorio.
+- **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base; el 25/11/2026, para ajustar HU18-CA2 con lo que mostró el primer viaje real (C-23) y, esa noche, para pasar las decisiones del Product Owner a HU-07, HU-10, HU-11, HU-12 y HU-16. Sebastian usó OpenAI Codex para implementar y probar HU-05 y HU-06 siguiendo la skill `implementar-historia` del repositorio.

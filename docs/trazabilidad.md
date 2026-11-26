@@ -1,14 +1,14 @@
 # Trazabilidad: requisito → criterio → test → código
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
-- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25) · Tarea T21 (empezada con la base) · Issue: [#16](https://github.com/hugozuniga770/UPBus/issues/16)
+- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25; 75 criterios desde C-28 y C-29) · Tarea T21 (empezada con la base) · Issue: [#16](https://github.com/hugozuniga770/UPBus/issues/16)
 - Criterios completos: [Sesión 7](sesion-07-modelos.md) · Requisitos: [Sesión 6](sesion-06-requisitos.md)
 
 ## 0. Cómo se mantiene
 
 - Cada criterio de la sesión 7 es un test con el mismo nombre. Cuando una historia se termina, quien la hizo agrega aquí sus filas, en el mismo Pull Request.
 - «Código» nombra el servicio, la regla o la vista que cumple el criterio, para encontrarlo rápido.
-- Al 25/11/2026 hay **28 de 73** criterios con su test en verde.
+- Al 25/11/2026 hay **28 de 75** criterios con su test en verde.
 
 ## 1. Criterios con su test (base del código)
 
@@ -61,7 +61,7 @@ No son criterios: prueban herramientas que usan las historias.
 
 ## 3. Criterios por hacer
 
-Los 45 criterios restantes (HU-07 a HU-17) están en la [sesión 7](sesion-07-modelos.md), cada uno con el nombre de su test, y en el issue de su tarea. Cuando se terminan, sus filas pasan a la sección 1.
+Los 47 criterios restantes (HU-07 a HU-17) están en la [sesión 7](sesion-07-modelos.md), cada uno con el nombre de su test, y en el issue de su tarea. Cuando se terminan, sus filas pasan a la sección 1.
 
 ## 4. Participación y asistencia utilizada
 

@@ -38,12 +38,12 @@ En el MVP la ubicación del bus y de los estudiantes, la recarga de créditos, e
 | Documento | Contenido | Estado |
 |---|---|---|
 | [sesion-06-requisitos.md](docs/sesion-06-requisitos.md) | Requisitos, alcance, lo que se simula y preguntas abiertas | Listo para revisión · RF-23 el 18/11 |
-| [sesion-07-modelos.md](docs/sesion-07-modelos.md) | 18 historias, 73 criterios Dado/Cuando/Entonces con el nombre de su test, casos de uso, estados y trazabilidad | Listo para revisión |
+| [sesion-07-modelos.md](docs/sesion-07-modelos.md) | 18 historias, 75 criterios Dado/Cuando/Entonces con el nombre de su test, casos de uso, estados y trazabilidad | Listo para revisión |
 | [sesion-08-09-plan.md](docs/sesion-08-09-plan.md) | Plan por sprints, tareas, Gantt, riesgos y recortes | Listo para revisión |
 | [sesion-12-arquitectura.md](docs/sesion-12-arquitectura.md) | Arquitectura y verificación de un flujo | Pendiente |
 | [sesion-13-14-diseno.md](docs/sesion-13-14-diseno.md) | Arquitectura FE / MW / Padrón / BD, datos, clases y API | Base descrita; modelos que faltan propuestos |
 | [diagramas-secuencia.md](docs/diagramas-secuencia.md) | Un diagrama de secuencia por caso de uso, CU-18 incluido | Propuesta para revisión |
-| [trazabilidad.md](docs/trazabilidad.md) | Cada test con su criterio, su requisito y su código | 19 de 73 criterios con test |
+| [trazabilidad.md](docs/trazabilidad.md) | Cada test con su criterio, su requisito y su código | 28 de 75 criterios con test |
 | [entrevistas.md](docs/entrevistas.md) | Entrevistas, conclusiones y guías de las siguientes | ENT-01 a ENT-03 hechas |
 | [viajes-grabados.md](docs/viajes-grabados.md) | Viajes reales grabados con el modo registro: paradas, horas y personas que suben | REG-01 (Ruta Sur, 25/11) |
 | [sesion-15-costos.md](docs/sesion-15-costos.md) | Horas-persona, tarifa, precio y estimado contra real | Listo para revisión |
