@@ -172,37 +172,37 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 
 ### HU-07 — Avisar «Voy a subir» y compartir mi ubicación
 
-**CA1 — Avisa que va a subir** ⏳ `test_HU07_CA1_avisa_que_va_a_subir`
+**CA1 — Avisa que va a subir** ✅ `test_HU07_CA1_avisa_que_va_a_subir`
 - Dado: el viaje de las 06:40 no pasó por Sevilla.
 - Cuando: Ismael marca «Voy a subir» en Sevilla.
 - Entonces: el aviso queda Confirmado y a Marco le llega «Ismael va a subir en Sevilla».
 
-**CA2 — Rechaza un segundo aviso en el mismo viaje** ⏳ `test_HU07_CA2_rechaza_un_segundo_aviso_en_el_mismo_viaje`
+**CA2 — Rechaza un segundo aviso en el mismo viaje** ✅ `test_HU07_CA2_rechaza_un_segundo_aviso_en_el_mismo_viaje`
 - Dado: Ismael ya está Confirmado en el viaje de las 06:40.
 - Cuando: lo marca de nuevo.
 - Entonces: se rechaza por «ya avisaste que vas a subir en este viaje».
 
-**CA3 — Si el bus pasa y no subió, queda «no se presentó»** ⏳ `test_HU07_CA3_si_el_bus_pasa_y_no_subio_queda_no_se_presento`
+**CA3 — Si el bus pasa y no subió, queda «no se presentó»** ✅ `test_HU07_CA3_si_el_bus_pasa_y_no_subio_queda_no_se_presento`
 - Dado: Ismael está Confirmado en Sevilla.
 - Cuando: el bus pasa Sevilla y sigue sin que Ismael suba ni cancele.
 - Entonces: el aviso queda «no se presentó», sin cobro.
 
-**CA4 — Puede cancelar antes de que pase el bus** ⏳ `test_HU07_CA4_puede_cancelar_antes_de_que_pase_el_bus`
+**CA4 — Puede cancelar antes de que pase el bus** ✅ `test_HU07_CA4_puede_cancelar_antes_de_que_pase_el_bus`
 - Dado: Ismael está Confirmado y el bus no llegó a Sevilla.
 - Cuando: cancela su aviso.
 - Entonces: el aviso queda Cancelado y Marco deja de verlo.
 
-**CA5 — El chofer ve la ubicación compartida** ⏳ `test_HU07_CA5_el_chofer_ve_la_ubicacion_compartida`
+**CA5 — El chofer ve la ubicación compartida** ✅ `test_HU07_CA5_el_chofer_ve_la_ubicacion_compartida`
 - Dado: Ismael está Confirmado en el viaje de las 06:40.
 - Cuando: comparte su ubicación.
 - Entonces: Marco y los administradores la ven; ningún otro estudiante la ve.
 
-**CA6 — Deja de compartir al subir** ⏳ `test_HU07_CA6_deja_de_compartir_al_subir`
+**CA6 — Deja de compartir al subir** ⏳ `test_HU07_CA6_deja_de_compartir_al_subir` · se escribe con T16, porque necesita «subió» (HU-10); el servicio `dejar_de_compartir` ya está listo
 - Dado: Ismael comparte su ubicación.
 - Cuando: Marco lo marca «subió».
 - Entonces: la ubicación de Ismael deja de compartirse en ese momento.
 
-**CA7 — Un administrador también puede avisar** ⏳ `test_HU07_CA7_un_administrador_tambien_puede_avisar`
+**CA7 — Un administrador también puede avisar** ✅ `test_HU07_CA7_un_administrador_tambien_puede_avisar`
 - Dado: Hugo es administrador.
 - Cuando: marca «Voy a subir» en Sevilla para el viaje de las 06:40.
 - Entonces: su aviso queda Confirmado, igual que el de un estudiante.
@@ -616,7 +616,7 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-04 | 2 | 2 | 0 |
 | HU-05 | 4 | 4 | 0 |
 | HU-06 | 5 | 5 | 0 |
-| HU-07 | 7 | 0 | 7 |
+| HU-07 | 7 | 6 | 1 |
 | HU-08 | 4 | 0 | 4 |
 | HU-09 | 5 | 0 | 5 |
 | HU-10 | 4 | 0 | 4 |
@@ -628,9 +628,9 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-16 | 4 | 0 | 4 |
 | HU-17 | 4 | 0 | 4 |
 | HU-18 | 5 | 5 | 0 |
-| **Total** | **73** | **28** | **45** |
+| **Total** | **73** | **34** | **39** |
 
-Además de los 28 tests de criterios, hay 4 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur y conectar el WebSocket del viaje) y 11 pruebas de interfaz en Vitest: 4 de historias (HU01, HU02, HU05 y HU18) y 7 de soporte (el cliente de la API, la cola y el respaldo del modo registro). Las pruebas de soporte no cuentan como criterios.
+Además de los 34 tests de criterios, hay 6 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur, conectar el WebSocket del viaje, programar viajes desde el panel y cerrar los avisos al terminar el viaje) y 16 pruebas de interfaz en Vitest: 6 de criterios (HU01-CA3, HU02-CA3, HU05-CA1, HU07-CA1, HU07-CA2 y HU18-CA5) y 10 de soporte (el cliente de la API, la cola y el respaldo del modo registro, la pantalla del chofer y la consulta del viaje en curso). Las pruebas de soporte no cuentan como criterios.
 
 ## 8. Participación y asistencia utilizada
 
@@ -638,3 +638,4 @@ Además de los 28 tests de criterios, hay 4 tests de soporte en pytest (importar
 - **Andrés Laura Vargas (Scrum Master):** dirigió el reparto del 18/11, en el que cada uno tomó sus historias con sus tests (C-26).
 - **Sebastian Cruz:** implementó y verificó HU-05 y HU-06 (T11, issue #6), además de revisar las historias que tocan rutas y viajes.
 - **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base; el 25/11/2026, para ajustar HU18-CA2 con lo que mostró el primer viaje real (C-23). Sebastian usó OpenAI Codex para implementar y probar HU-05 y HU-06 siguiendo la skill `implementar-historia` del repositorio.
+- **Hugo Zuñiga (25/11/2026):** implementó T14 (HU-07, salvo CA6, que se escribe con T16) con asistencia de Claude (Anthropic).
