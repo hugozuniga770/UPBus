@@ -8,7 +8,7 @@
 
 - Cada criterio de la sesión 7 es un test con el mismo nombre. Cuando una historia se termina, quien la hizo agrega aquí sus filas, en el mismo Pull Request.
 - «Código» nombra el servicio, la regla o la vista que cumple el criterio, para encontrarlo rápido.
-- Al 26/11/2026 hay **39 de 75** criterios con su test en verde.
+- Al 26/11/2026 hay **43 de 75** criterios con su test en verde.
 
 ## 1. Criterios con su test (base del código)
 
@@ -43,6 +43,10 @@
 | HU07-CA4 | RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA4_puede_cancelar_antes_de_que_pase_el_bus` | `viajes.servicios.cancelar_aviso` | — |
 | HU07-CA5 | RF-08 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA5_el_chofer_ve_la_ubicacion_compartida` | `viajes.servicios.compartir_ubicacion`, `viajes.reglas.verificar_puede_ver_avisos`, `frontend/src/componentes/AvisosDelViaje.jsx` | — |
 | HU07-CA7 | RF-03, RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA7_un_administrador_tambien_puede_avisar` | `viajes.reglas.verificar_puede_avisar` | — |
+| HU08-CA1 | RF-10 | `tests/test_hu08_paradas_propuestas.py::test_HU08_CA1_propone_una_parada_sobre_la_ruta` | `rutas.servicios.proponer_parada`, `frontend/src/paginas/Rutas.jsx` | `frontend/src/paginas/Rutas.test.jsx` |
+| HU08-CA2 | RF-10 | `tests/test_hu08_paradas_propuestas.py::test_HU08_CA2_rechaza_una_parada_lejos_del_recorrido` | `rutas.reglas.verificar_cerca_del_recorrido`, `comun.geo.distancia_a_recorrido` | — |
+| HU08-CA3 | RF-10 | `tests/test_hu08_paradas_propuestas.py::test_HU08_CA3_una_parada_sin_nadie_no_esta_activa` | `viajes.serializadores.viaje_a_dict` (`paradas_activas`) | — |
+| HU08-CA4 | RF-10 | `tests/test_hu08_paradas_propuestas.py::test_HU08_CA4_el_administrador_aprueba_una_parada_propuesta` | `rutas.servicios.aprobar_parada`, `rutas.reglas.verificar_puede_aprobar_parada`, `rutas.servicios.paradas_visibles` | `frontend/src/paginas/Rutas.test.jsx` |
 | HU14-CA1 | RF-19 | `tests/test_hu14_chat_directo.py::test_HU14_CA1_el_confirmado_le_escribe_al_chofer` | `mensajes.servicios.enviar_mensaje_directo`, `mensajes.consumers.ChatDirectoConsumer` | `frontend/src/componentes/ChatDirecto.test.jsx` |
 | HU14-CA2 | RF-19 | `tests/test_hu14_chat_directo.py::test_HU14_CA2_rechaza_escribir_sin_estar_en_el_viaje` | `mensajes.reglas.verificar_confirmado` | `frontend/src/componentes/ChatDirecto.test.jsx` |
 | HU14-CA3 | RF-19 | `tests/test_hu14_chat_directo.py::test_HU14_CA3_el_chofer_responde_con_una_respuesta_rapida` | `mensajes.reglas.verificar_respuesta_rapida`, `mensajes.servicios.enviar_mensaje_directo` | `frontend/src/componentes/ChatDirecto.test.jsx` |
@@ -96,11 +100,13 @@ Corren la app real en Chromium, con varias cuentas a la vez: el servidor con sus
 
 ## 3. Criterios por hacer
 
-Los 36 criterios restantes (HU07-CA6, que se escribe con T16; HU-08 a HU-13; HU-16 y HU-17) están en la [sesión 7](sesion-07-modelos.md), cada uno con el nombre de su test, y en el issue de su tarea. Cuando se terminan, sus filas pasan a la sección 1.
+Los 32 criterios restantes (HU07-CA6, que se escribe con T16; HU-09 a HU-13; HU-16 y HU-17) están en la [sesión 7](sesion-07-modelos.md), cada uno con el nombre de su test, y en el issue de su tarea. Cuando se terminan, sus filas pasan a la sección 1.
 
 ## 4. Participación y asistencia utilizada
 
 - **Hugo Zuñiga:** dejó la base con estos tests.
+- **Andrés Laura Vargas:** implementó HU-08 (T15) con sus cuatro tests.
+- **Hugo Zuñiga (26/11/2026):** agregó la trazabilidad de HU-08 al revisar T15, con asistencia de Claude (Anthropic).
 - **Sebastian Cruz:** agregó la trazabilidad de HU-05 y HU-06 al implementar T11.
 - **Sebastian Cruz:** agregó las pruebas de soporte del despliegue T22.
 - **Sebastian Cruz:** agregó la trazabilidad y las pruebas de privacidad de los canales de HU-14 y HU-15 al implementar T19.
