@@ -197,7 +197,7 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 - Cuando: comparte su ubicación.
 - Entonces: Marco y los administradores la ven; ningún otro estudiante la ve.
 
-**CA6 — Deja de compartir al subir** ⏳ `test_HU07_CA6_deja_de_compartir_al_subir` · se escribe con T16, porque necesita «subió» (HU-10); el servicio `dejar_de_compartir` ya está listo
+**CA6 — Deja de compartir al subir** ✅ `test_HU07_CA6_deja_de_compartir_al_subir`
 - Dado: Ismael comparte su ubicación.
 - Cuando: Marco lo marca «subió».
 - Entonces: la ubicación de Ismael deja de compartirse en ese momento.
@@ -231,54 +231,54 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 
 ### HU-09 — Recibir el aviso de bus cerca
 
-**CA1 — Avisa cuando el bus está a 500 m o menos** ⏳ `test_HU09_CA1_avisa_cuando_el_bus_esta_a_500_m_o_menos`
+**CA1 — Avisa cuando el bus está a 500 m o menos** ✅ `test_HU09_CA1_avisa_cuando_el_bus_esta_a_500_m_o_menos`
 - Dado: Ismael está Confirmado en Sevilla.
 - Cuando: el bus queda a 480 m de Sevilla.
 - Entonces: Ismael recibe «Tu bus está cerca».
 
-**CA2 — No avisa a más de 500 m** ⏳ `test_HU09_CA2_no_avisa_a_mas_de_500_m`
+**CA2 — No avisa a más de 500 m** ✅ `test_HU09_CA2_no_avisa_a_mas_de_500_m`
 - Dado: lo mismo.
 - Cuando: el bus está a 520 m.
 - Entonces: no hay aviso.
 
-**CA3 — Avisa una sola vez por viaje** ⏳ `test_HU09_CA3_avisa_una_sola_vez_por_viaje`
+**CA3 — Avisa una sola vez por viaje** ✅ `test_HU09_CA3_avisa_una_sola_vez_por_viaje`
 - Dado: Ismael ya recibió el aviso a 480 m.
 - Cuando: el bus llega a 300 m.
 - Entonces: no recibe un segundo aviso.
 
-**CA4 — Sugiere seguir si nadie espera** ⏳ `test_HU09_CA4_sugiere_seguir_si_nadie_espera`
+**CA4 — Sugiere seguir si nadie espera** ✅ `test_HU09_CA4_sugiere_seguir_si_nadie_espera`
 - Dado: el bus va 6 minutos atrasado y en Sevilla no hay confirmados ni estudiantes a menos de 500 m.
 - Cuando: el bus se acerca a Sevilla.
 - Entonces: a Marco le aparece «Nadie espera en Sevilla: puedes seguir». La app no decide por él (RF-12).
 
-**CA5 — No sugiere seguir si alguien viene** ⏳ `test_HU09_CA5_no_sugiere_seguir_si_alguien_viene`
+**CA5 — No sugiere seguir si alguien viene** ✅ `test_HU09_CA5_no_sugiere_seguir_si_alguien_viene`
 - Dado: el bus va atrasado y hay un estudiante confirmado a 300 m de Sevilla.
 - Cuando: el bus se acerca a Sevilla.
 - Entonces: no se muestra la sugerencia.
 
 ### HU-10 — Registrar quién subió
 
-**CA1 — El estudiante registra que subió** ⏳ `test_HU10_CA1_el_estudiante_registra_que_subio`
+**CA1 — El estudiante registra que subió** ✅ `test_HU10_CA1_el_estudiante_registra_que_subio`
 - Dado: Ismael está Confirmado, tiene 10 créditos y el viaje está En curso.
 - Cuando: toca «He subido».
 - Entonces: queda A bordo, sigue con 10 créditos porque subir no cobra (C-31) y a Marco le aparece «Ismael: ha subido».
 
-**CA2 — El chofer registra que subió** ⏳ `test_HU10_CA2_el_chofer_registra_que_subio`
+**CA2 — El chofer registra que subió** ✅ `test_HU10_CA2_el_chofer_registra_que_subio`
 - Dado: Ismael está Confirmado y el viaje está En curso.
 - Cuando: Marco lo marca «subió».
 - Entonces: Ismael queda A bordo, sin cobro.
 
-**CA3 — Rechaza subir a un viaje terminado** ⏳ `test_HU10_CA3_rechaza_subir_a_un_viaje_terminado`
+**CA3 — Rechaza subir a un viaje terminado** ✅ `test_HU10_CA3_rechaza_subir_a_un_viaje_terminado`
 - Dado: el viaje de las 06:40 está Terminado.
 - Cuando: Ismael toca «He subido».
 - Entonces: se rechaza por «el viaje ya terminó».
 
-**CA4 — El chofer marca «no se presentó»** ⏳ `test_HU10_CA4_el_chofer_marca_no_se_presento`
+**CA4 — El chofer marca «no se presentó»** ✅ `test_HU10_CA4_el_chofer_marca_no_se_presento`
 - Dado: Ismael está Confirmado y el viaje está En curso.
 - Cuando: Marco lo marca «no se presentó».
 - Entonces: el aviso queda «no se presentó».
 
-**CA5 — Queda a bordo si avanza con el bus** ⏳ `test_HU10_CA5_queda_a_bordo_si_avanza_con_el_bus`
+**CA5 — Queda a bordo si avanza con el bus** ✅ `test_HU10_CA5_queda_a_bordo_si_avanza_con_el_bus`
 - Dado: Ismael está Confirmado en Sevilla, comparte su ubicación y el bus ya pasó por Sevilla.
 - Cuando: el bus está a más de 100 m de Sevilla y llegan dos ubicaciones seguidas de Ismael a menos de 50 m del bus.
 - Entonces: Ismael queda A bordo sin que nadie toque nada y deja de compartir su ubicación. Con una sola ubicación cerca del bus, sigue Confirmado **[PROVISIONAL]** (P-33).
@@ -626,10 +626,10 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-04 | 2 | 2 | 0 |
 | HU-05 | 4 | 4 | 0 |
 | HU-06 | 5 | 5 | 0 |
-| HU-07 | 7 | 6 | 1 |
+| HU-07 | 7 | 7 | 0 |
 | HU-08 | 4 | 4 | 0 |
-| HU-09 | 5 | 0 | 5 |
-| HU-10 | 5 | 0 | 5 |
+| HU-09 | 5 | 5 | 0 |
+| HU-10 | 5 | 5 | 0 |
 | HU-11 | 5 | 0 | 5 |
 | HU-12 | 6 | 0 | 6 |
 | HU-13 | 2 | 0 | 2 |
@@ -638,9 +638,9 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-16 | 4 | 0 | 4 |
 | HU-17 | 4 | 0 | 4 |
 | HU-18 | 5 | 5 | 0 |
-| **Total** | **75** | **43** | **32** |
+| **Total** | **75** | **54** | **21** |
 
-Además de los 43 tests de criterios, hay 25 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur, los WebSockets del viaje y de los chats, programar viajes desde el panel, cerrar los avisos al terminar el viaje, calibrar la distancia de llegada, 12 del simulador de T23 y 4 del despliegue de T22) y 24 pruebas de interfaz en Vitest: 12 de criterios (HU01-CA3, HU02-CA3, HU05-CA1, HU07-CA1, HU07-CA2, HU08-CA1 y CA4 en una misma prueba, HU14-CA1 a CA3, HU15-CA1, HU15-CA2 y HU18-CA5) y 12 de soporte (el cliente de la API, la cola y el respaldo del modo registro, la pantalla del chofer, la consulta del viaje en curso y el panel de demo). Las pruebas de soporte no cuentan como criterios. Tampoco las 22 de punta a punta (T21), que corren la app real en el navegador con varias cuentas a la vez ([trazabilidad](trazabilidad.md), sección 2).
+Además de los 54 tests de criterios, hay 26 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur, los WebSockets del viaje y de los chats, programar viajes desde el panel, cerrar los avisos al terminar el viaje, calibrar la distancia de llegada, no sugerir seguir si el bus va a tiempo, 12 del simulador de T23 y 4 del despliegue de T22) y 26 pruebas de interfaz en Vitest: 14 de criterios (HU01-CA3, HU02-CA3, HU05-CA1, HU07-CA1, HU07-CA2, HU08-CA1 y CA4 en una misma prueba, HU10-CA1, HU10-CA2 y CA4 en una misma prueba, HU14-CA1 a CA3, HU15-CA1, HU15-CA2 y HU18-CA5) y 12 de soporte (el cliente de la API, la cola y el respaldo del modo registro, la pantalla del chofer, la consulta del viaje en curso y el panel de demo). Las pruebas de soporte no cuentan como criterios. Tampoco las 22 de punta a punta (T21), que corren la app real en el navegador con varias cuentas a la vez ([trazabilidad](trazabilidad.md), sección 2).
 
 ## 8. Participación y asistencia utilizada
 
@@ -651,5 +651,7 @@ Además de los 43 tests de criterios, hay 25 tests de soporte en pytest (importa
 - **Sebastian Cruz:** implementó y verificó HU-14 y HU-15 (T19, issue #14), incluidos sus canales privados y pantallas para celular.
 - **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base; el 25/11/2026, para ajustar HU18-CA2 con lo que mostró el primer viaje real (C-23) y, esa noche, para pasar las decisiones del Product Owner a HU-07, HU-10, HU-11, HU-12 y HU-16. Sebastian usó OpenAI Codex para implementar y probar HU-05, HU-06, HU-14 y HU-15 siguiendo la skill `implementar-historia` del repositorio.
 - **Andrés Laura Vargas:** implementó HU-08 (T15, issue #10): proponer una parada tocando el recorrido, aprobarla o rechazarla, y las paradas activas.
+- **Andrés Laura Vargas:** implementó HU-09 y HU-10 (T16, issue #11), con HU07-CA6: el aviso de bus cerca, la sugerencia de seguir, «He subido», «Subió», «No se presentó» y el abordaje automático.
+- **Hugo Zuñiga (27/11/2026):** revisó T16 y ajustó que «va atrasado» se mida contra la hora aproximada de la parada (C-40), que el canal público no lleve datos de la persona, que una posición del bus no cuente como otra ubicación del estudiante (P-33), los mensajes y distancias de la sesión 7 en los tests, y la documentación, con asistencia de Claude (Anthropic).
 - **Hugo Zuñiga (26/11/2026):** revisó T15 y ajustó la causa de HU08-CA2 a la de esta sesión, que una parada activa pida la ubicación compartida (RF-10), los tests de HU08-CA3 y CA4 y la documentación, con asistencia de Claude (Anthropic).
 - **Hugo Zuñiga (25/11/2026):** implementó T14 (HU-07, salvo CA6, que se escribe con T16) con asistencia de Claude (Anthropic).
