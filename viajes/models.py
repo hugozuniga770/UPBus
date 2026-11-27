@@ -28,6 +28,9 @@ class Viaje(models.Model):
     paradas_registradas = models.ManyToManyField(
         "rutas.Parada", related_name="viajes_registrados", blank=True
     )
+    paradas_sugeridas_saltar = models.ManyToManyField(
+        "rutas.Parada", related_name="viajes_sugeridos_saltar", blank=True
+    )
     # Lo creó el simulador (T23): se ve en vivo, pero no enseña horas (C-28).
     simulado = models.BooleanField(default=False)
 
@@ -91,6 +94,8 @@ class AvisoDeSubida(models.Model):
     ubicacion_latitud = models.FloatField(null=True, blank=True)
     ubicacion_longitud = models.FloatField(null=True, blank=True)
     ubicacion_en = models.DateTimeField(null=True, blank=True)
+    aviso_cercania_enviado = models.BooleanField(default=False)
+    ubicacion_anterior_cerca_del_bus = models.BooleanField(default=False)
 
     class Meta:
         ordering = ["parada__orden", "creado_en", "id"]

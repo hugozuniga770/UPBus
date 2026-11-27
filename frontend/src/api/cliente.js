@@ -104,6 +104,11 @@ export const api = {
   elegirRuta: (rutaId) => pedir("POST", `/rutas/${rutaId}/miembro`),
   mensajesDeRuta: (rutaId) => pedir("GET", `/rutas/${rutaId}/mensajes`),
   enviarMensajeDeRuta: (rutaId, datos) => pedir("POST", `/rutas/${rutaId}/mensajes`, datos),
+
+  // HU-10
+  marcarSubio: (avisoId) => pedir("POST", `/avisos/${avisoId}/subio`),
+  marcarNoSePresento: (avisoId) => pedir("POST", `/avisos/${avisoId}/no-se-presento`),
+
   // T23: panel de demo
   simulaciones: () => pedir("GET", "/simulaciones"),
   iniciarSimulacion: (datos) => pedir("POST", "/simulaciones", datos),

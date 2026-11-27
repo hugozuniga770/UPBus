@@ -115,6 +115,23 @@ def test_HU07_CA5_el_chofer_ve_la_ubicacion_compartida(cliente_de, ismael, marco
     assert de_otra_estudiante.status_code == 403
     assert de_otra_estudiante.json()["causa"] == "solo el chofer de este viaje puede ver quién va a subir"
 
+def test_HU07_CA6_deja_de_compartir_al_subir(cliente_de, ismael, viaje, paradas, hora):
+    sevilla, _ = paradas
+    aviso_id = avisar(cliente_de(ismael), viaje, sevilla).json()["aviso"]["id"]
+    cliente_de(ismael).post(
+        f"/api/avisos/{aviso_id}/ubicacion",
+        {"latitud": SEVILLA[0], "longitud": SEVILLA[1], "tomada_en": hora(16, 6, 50).isoformat()},
+        format="json",
+    )
+    assert AvisoDeSubida.objects.get(pk=aviso_id).ubicacion_en is not None
+
+    respuesta = cliente_de(ismael).post(f"/api/avisos/{aviso_id}/subio")
+
+    assert respuesta.status_code == 200
+    aviso = AvisoDeSubida.objects.get(pk=aviso_id)
+    assert (aviso.estado, aviso.ubicacion_latitud, aviso.ubicacion_longitud, aviso.ubicacion_en) == (
+        "a_bordo", None, None, None
+    )
 
 def test_HU07_CA7_un_administrador_tambien_puede_avisar(cliente_de, hugo, viaje, paradas):
     sevilla, _ = paradas

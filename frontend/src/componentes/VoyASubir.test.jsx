@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 import { servidorFalso } from "../pruebas/servidorFalso.js";
 import { SesionContexto } from "../sesion/SesionContexto.jsx";
+import AvisosDelViaje from "./AvisosDelViaje.jsx";
 import VoyASubir from "./VoyASubir.jsx";
 
 const VIAJE = {
@@ -55,5 +56,48 @@ describe("Voy a subir (HU-07)", () => {
     await userEvent.click(screen.getByRole("button", { name: "Voy a subir" }));
 
     expect(await screen.findByText("ya avisaste que vas a subir en este viaje")).toBeInTheDocument();
+  });
+
+  it("HU10-CA1 permite al estudiante marcar «He subido»", async () => {
+    document.cookie = "csrftoken=abc123; path=/";
+    servidorFalso({
+      "GET /api/viajes?ruta=1": [200, { viajes: [VIAJE] }],
+      "GET /api/viajes/17/mi-aviso": [200, { aviso: { id: 9, estado: "confirmado", parada: { id: 5, nombre: "Sevilla" } } }],
+      "POST /api/avisos/9/subio": [200, { aviso: { id: 9, estado: "a_bordo", parada: { id: 5, nombre: "Sevilla" } } }],
+    });
+
+    render(conEstudiante(<VoyASubir rutaId={1} horarioId={3} paradas={PARADAS} />));
+    await userEvent.click(await screen.findByRole("button", { name: "He subido" }));
+
+    expect(await screen.findByText("Ya estás a bordo. ¡Buen viaje!")).toBeInTheDocument();
+  });
+});
+
+describe("Lista de abordaje del chofer (HU-10)", () => {
+  it("HU10-CA2 y CA4 permiten al chofer marcar Subió y ver quién ya subió", async () => {
+    document.cookie = "csrftoken=abc123; path=/";
+    const avisoConfirmado = {
+      id: 9,
+      estado: "confirmado",
+      estudiante: { id: 4, nombre: "Ismael" },
+      parada: { id: 5, nombre: "Sevilla" },
+      ubicacion: null,
+    };
+    servidorFalso({
+      "GET /api/viajes/17/avisos": [200, { avisos: [avisoConfirmado] }],
+      "POST /api/avisos/9/subio": [200, { aviso: { ...avisoConfirmado, estado: "a_bordo" } }],
+    });
+
+    render(<AvisosDelViaje viajeId={17} />);
+    const botonSubio = await screen.findByRole("button", { name: "Subió" });
+
+    servidorFalso({
+      "GET /api/viajes/17/avisos": [200, { avisos: [{ ...avisoConfirmado, estado: "a_bordo" }] }],
+      "POST /api/avisos/9/subio": [200, { aviso: { ...avisoConfirmado, estado: "a_bordo" } }],
+    });
+    await userEvent.click(botonSubio);
+
+    expect(await screen.findByText("Ya subieron (1)")).toBeInTheDocument();
+    expect(screen.getByText("A bordo")).toBeInTheDocument();
   });
 });
