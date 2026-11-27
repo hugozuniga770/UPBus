@@ -1,0 +1,4 @@
+# Pruebas de punta a punta en el navegador (T21, C-38): el servidor y Playwright.
+# Después de instalarlas: python -m playwright install chromium
+-r requirements.txt
+playwright==1.63.0

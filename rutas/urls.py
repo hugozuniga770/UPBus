@@ -11,4 +11,7 @@ urlpatterns = [
     path("registros/<int:registro_id>/puntos", views.PuntosVista.as_view(), name="puntos"),
     path("registros/<int:registro_id>/terminar", views.TerminarRegistroVista.as_view(), name="terminar-registro"),
     path("registros/<int:registro_id>/cancelar", views.CancelarRegistroVista.as_view(), name="cancelar-registro"),
+    path("rutas/<int:ruta_id>/paradas", views.PropuestasParadaVista.as_view(), name="proponer-parada"),
+    path("paradas/<int:parada_id>/aprobar", views.AprobarParadaVista.as_view(), name="aprobar-parada"),
+    path("paradas/<int:parada_id>/rechazar", views.RechazarParadaVista.as_view(), name="rechazar-parada"),
 ]

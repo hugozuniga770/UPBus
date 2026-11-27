@@ -1,5 +1,6 @@
 # Integración continua (T07): corre las pruebas del servidor y las de la
 # interfaz por separado (BUS-RT-09) en cada Pull Request y en develop y main.
+# Desde T21 corre también las de punta a punta en el navegador (C-38).
 name: Pruebas
 
 on:
@@ -41,3 +42,32 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
+
+  punta_a_punta:
+    name: Punta a punta (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: requirements*.txt
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: pip install -r requirements-e2e.txt
+      - run: python -m playwright install --with-deps chromium
+      - name: Interfaz construida, como la sirve Django
+        working-directory: frontend
+        run: npm ci && npm run build
+      - run: pytest e2e
+      - name: Capturas de las pantallas y de las fallas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capturas-punta-a-punta
+          path: e2e/capturas/
+          if-no-files-found: ignore

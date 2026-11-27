@@ -44,7 +44,7 @@ En el MVP la ubicación del bus y de los estudiantes, la recarga de créditos, e
 | [sesion-12-arquitectura.md](docs/sesion-12-arquitectura.md) | Arquitectura: piezas, cómo se hablan, dónde corren, decisiones y la verificación de punta a punta del registro y el inicio de sesión | Aprobado el 26/11 (T03) |
 | [sesion-13-14-diseno.md](docs/sesion-13-14-diseno.md) | Arquitectura FE / MW / Padrón / BD, datos, clases y API | Base descrita; modelos que faltan propuestos |
 | [diagramas-secuencia.md](docs/diagramas-secuencia.md) | Un diagrama de secuencia por caso de uso, CU-18 incluido | Propuesta para revisión |
-| [trazabilidad.md](docs/trazabilidad.md) | Cada test con su criterio, su requisito y su código | 39 de 75 criterios con test |
+| [trazabilidad.md](docs/trazabilidad.md) | Cada test con su criterio, su requisito y su código | 43 de 75 criterios con test |
 | [entrevistas.md](docs/entrevistas.md) | Entrevistas, conclusiones y guías de las siguientes | ENT-01 a ENT-03 y ENT-07 hechas (T13 cerrada) |
 | [viajes-grabados.md](docs/viajes-grabados.md) | Viajes reales grabados con el modo registro: paradas, horas y personas que suben | REG-01 (Ruta Sur, 25/11) |
 | [sesion-15-costos.md](docs/sesion-15-costos.md) | Horas-persona, tarifa, precio y estimado contra real | Listo para revisión |
@@ -67,9 +67,10 @@ comun/         Rechazo, hora de La Paz, distancias y respuestas JSON
 cuentas/       usuario, padrón, registro, sesión y usuarios (HU-01 a HU-03)
 rutas/         rutas, horarios, paradas, horas aproximadas y modo registro (HU-04, HU-18)
 viajes/        viajes, bus en vivo, «Voy a subir», abordajes y créditos (por hacer)
-mensajes/      chat directo y chat de la ruta (por hacer)
+mensajes/      chat directo y chat de la ruta (HU-14, HU-15)
 padron/        padrón de ejemplo; la lista de la clase va aparte y no se sube
 tests/         un test por criterio de aceptación (pytest)
+e2e/           pruebas de punta a punta en el navegador (Playwright, T21)
 frontend/      React con Tailwind y sus pruebas (Vitest)
 docs/          documentación por sesión y guías
 ```
@@ -97,7 +98,7 @@ npm install
 npm run dev
 ```
 
-Abre <http://localhost:5173> y regístrate con un código del padrón (de ejemplo: `70004` e `ismael@upb.example`). Pruebas: `pytest` y, en `frontend`, `npm test`. Todo lo demás está en la [guía de desarrollo](docs/guia-desarrollo.md); para el celular, en la [guía del modo registro](docs/guia-modo-registro.md), y para publicar, en la [guía de despliegue](docs/guia-despliegue.md).
+Abre <http://localhost:5173> y regístrate con un código del padrón (de ejemplo: `70004` e `ismael@upb.example`). Pruebas: `pytest` y, en `frontend`, `npm test`; las de punta a punta, `pytest e2e`. Todo lo demás está en la [guía de desarrollo](docs/guia-desarrollo.md); para el celular, en la [guía del modo registro](docs/guia-modo-registro.md), y para publicar, en la [guía de despliegue](docs/guia-despliegue.md).
 
 ## 5. Cómo trabajamos
 
