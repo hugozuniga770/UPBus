@@ -52,6 +52,7 @@ Abre <http://localhost:5173>. Vite le pasa a Django (puerto 8000) todo lo que em
 | `pytest tests/test_hu18_modo_registro.py -k CA2` | Corre una sola prueba |
 | `cd frontend` y `npm test` | Corre las pruebas de la interfaz (Vitest) |
 | `cd frontend` y `npm run build` | Comprueba que la interfaz compila, como en la integración continua |
+| `pytest e2e` | Corre las pruebas de punta a punta en el navegador (T21): levanta el servidor sobre una base nueva y prueba con varias cuentas a la vez. Antes, una sola vez: `pip install -r requirements-e2e.txt` y `python -m playwright install chromium`; y `npm run build` en `frontend/` cada vez que cambie la interfaz. Las capturas quedan en `e2e/capturas/` |
 | `python manage.py makemigrations <app>` | Crea la migración después de cambiar un modelo |
 | `python manage.py cargar_rutas` | Carga o actualiza las 5 rutas y sus horarios desde `rutas/datos/rutas.json`; se puede correr varias veces |
 | `python manage.py importar_padron <archivo> --administradores a,b,c` | Arma `padron/padron.local.json` desde la lista de la clase (.xlsx o .csv) |
@@ -68,9 +69,10 @@ comun/         lo compartido: Rechazo, hora de La Paz, distancias, respuestas JS
 cuentas/       usuario, padrón, registro, sesión y gestión de usuarios (HU-01 a HU-03)
 rutas/         rutas, horarios, paradas, horas aproximadas y modo registro (HU-04, HU-18)
 viajes/        viajes, bus en vivo, «Voy a subir», abordajes y créditos (por hacer)
-mensajes/      chat directo y chat de la ruta (por hacer)
+mensajes/      chat directo y chat de la ruta (HU-14, HU-15)
 padron/        padrón de ejemplo; aquí va también padron.local.json, que no se sube
 tests/         un test por criterio de aceptación (pytest)
+e2e/           pruebas de punta a punta en el navegador, con varias cuentas a la vez (T21)
 frontend/      React con Tailwind; sus pruebas van junto a cada archivo (*.test.jsx)
 docs/          documentación por sesión y guías
 ```
@@ -144,4 +146,4 @@ Por ejemplo, para T15 (HU-08): Ismael propone una parada tocando el recorrido, H
 ## 7. Participación y asistencia utilizada
 
 - **Hugo Zuñiga:** dejó la base del código y pidió esta guía para que el equipo pueda tomar las tareas.
-- **Asistencia de IA:** se usó Claude (Anthropic) para escribir la base y esta guía; el 26/11/2026, para agregar cómo probar con varias cuentas.
+- **Asistencia de IA:** se usó Claude (Anthropic) para escribir la base y esta guía; el 26/11/2026, para agregar cómo probar con varias cuentas y cómo correr las pruebas de punta a punta (T21).

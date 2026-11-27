@@ -84,6 +84,20 @@ No son criterios: prueban herramientas que usan las historias.
 | `tests/test_despliegue.py::test_T22_produccion_registra_errores_y_desarrollo_usa_finders` | Los errores de Django llegan a la consola de Render y WhiteNoise usa los buscadores locales solo en desarrollo |
 | `frontend/src/paginas/Demo.test.jsx` (2 pruebas) | El panel de demo manda el escenario, la ruta, la parada y la velocidad elegidos, y muestra la causa de un rechazo |
 
+### Pruebas de punta a punta (T21)
+
+Corren la app real en Chromium, con varias cuentas a la vez: el servidor con sus WebSockets, una base nueva sembrada por `e2e/semilla.py` y la interfaz construida. No son criterios: comprueban que las historias ya hechas funcionan juntas, del navegador a la base, y que una a otra no se rompen (C-38). Se corren con `pytest e2e` ([guía de desarrollo](guia-desarrollo.md), sección 2) y en cada Pull Request.
+
+| Prueba | Qué recorre | Historias |
+|---|---|---|
+| `e2e/test_cuentas.py::test_una_persona_del_padron_se_registra_y_entra` | Los ocho pasos de la [sesión 12, sección 7](sesion-12-arquitectura.md): Ismael se registra, sale, entra con su código y con su correo; se rechazan la contraseña incorrecta, a Lucía (inactiva) y un segundo registro | HU-01, HU-02 |
+| `e2e/test_viaje.py::test_el_estudiante_ve_el_bus_en_vivo` | Marco inicia su viaje y comparte el GPS; Ana ve el bus en vivo y el viaje en curso | HU-05, HU-06 |
+| `e2e/test_viaje.py::test_el_chofer_ve_en_vivo_quien_va_a_subir` | Ana avisa «Voy a subir» en Petrol y a Marco le llega la alerta sin recargar; Ana cancela y sale de su lista | HU-07 |
+| `e2e/test_chats.py::test_el_chat_directo_llega_en_vivo_en_los_dos_sentidos` | Valeria, confirmada, le escribe a Marco; él lo ve con su nombre y contesta con «Ya llego», que le llega en vivo | HU-14 |
+| `e2e/test_chats.py::test_el_chat_de_la_ruta_llega_a_sus_miembros` | Rosa elige la Ruta Norte y escribe; Ana la elige, ve el historial y su respuesta le llega a Rosa en vivo | HU-15 |
+| `e2e/test_demo.py::test_el_panel_demo_mueve_un_bus_simulado` | Hugo corre «Recorrido» en la Ruta Sur, que carga su recorrido grabado (C-37); Ana ve el bus simulado y Hugo lo detiene | T23 |
+| `e2e/test_pantallas.py::test_se_ve_bien_en_celular_y_computadora` (16 pruebas) | Ocho pantallas en el celular y en la computadora, cada una con su rol: no se desplazan hacia el costado y no tienen errores de JavaScript; las capturas quedan en `e2e/capturas/` | Definition of Done |
+
 ## 3. Criterios por hacer
 
 Los 32 criterios restantes (HU07-CA6, que se escribe con T16; HU-09 a HU-13; HU-16 y HU-17) están en la [sesión 7](sesion-07-modelos.md), cada uno con el nombre de su test, y en el issue de su tarea. Cuando se terminan, sus filas pasan a la sección 1.
@@ -97,5 +111,6 @@ Los 32 criterios restantes (HU07-CA6, que se escribe con T16; HU-09 a HU-13; HU-
 - **Sebastian Cruz:** agregó las pruebas de soporte del despliegue T22.
 - **Sebastian Cruz:** agregó la trazabilidad y las pruebas de privacidad de los canales de HU-14 y HU-15 al implementar T19.
 - **Hugo Zuñiga (26/11/2026):** agregó las pruebas de soporte del simulador (T23).
+- **Hugo Zuñiga (26/11/2026):** agregó las pruebas de punta a punta (T21), con asistencia de Claude (Anthropic).
 - **Hugo Zuñiga (25/11/2026):** agregó la trazabilidad de HU-07 al implementar T14, con asistencia de Claude (Anthropic).
 - **Asistencia de IA:** se usó Claude (Anthropic) para escribir los tests de la base y esta tabla; Sebastian usó OpenAI Codex para implementar y documentar HU-05, HU-06, HU-14, HU-15 y T22 siguiendo la skill del repositorio.

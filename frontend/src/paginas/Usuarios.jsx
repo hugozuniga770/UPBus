@@ -48,15 +48,15 @@ export default function Usuarios() {
         <h1 className="font-titulo text-xl font-bold text-upb">Usuarios</h1>
         <table className="mt-4 w-full min-w-[34rem] text-left text-sm">
           <thead className="text-suave">
-            <tr><th className="py-2">Nombre</th><th>Rol</th><th>Código</th><th>Correo</th><th /></tr>
+            <tr><th className="py-2 pr-4">Nombre</th><th className="pr-4">Rol</th><th className="pr-4">Código</th><th className="pr-4">Correo</th><th /></tr>
           </thead>
           <tbody>
             {usuarios.map((u) => (
               <tr key={u.id} className={`border-t border-black/5 ${u.activa ? "" : "text-suave line-through"}`}>
-                <td className="py-2 font-semibold">{u.nombre}</td>
-                <td className="capitalize">{u.rol}</td>
-                <td>{u.codigo ?? "—"}</td>
-                <td>{u.correo}</td>
+                <td className="py-2 pr-4 font-semibold">{u.nombre}</td>
+                <td className="pr-4 capitalize">{u.rol}</td>
+                <td className="pr-4">{u.codigo ?? "—"}</td>
+                <td className="pr-4">{u.correo}</td>
                 <td className="text-right">
                   {u.activa && (porDesactivar === u.id ? (
                     <span className="inline-flex gap-2">
