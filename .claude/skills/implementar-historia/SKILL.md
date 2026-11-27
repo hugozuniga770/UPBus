@@ -9,7 +9,8 @@ Sigue estos pasos en orden. Las reglas generales están en `AGENTS.md` y el deta
 
 ## 1. Entender qué se pide
 
-- Busca la historia en `docs/sesion-07-modelos.md`: su requisito, sus criterios (Dado/Cuando/Entonces) y el nombre de cada test.
+- Busca la historia en `docs/sesion-07-modelos.md`: su frase (Como … quiero … para …), su requisito y sus criterios, cada uno con su tipo, su escenario de prueba (Dado / Cuando / Entonces) y el nombre de su test.
+- Un criterio de manejo de errores o una regla de negocio casi siempre es un `Rechazo` con su causa exacta; uno no funcional (seguridad, privacidad, fiabilidad) se prueba igual que los demás.
 - Lee el issue de la tarea en GitHub, si lo hay: dónde va el código y de qué depende.
 - Si una dependencia no está hecha (por ejemplo, HU-07 sin viajes), dilo antes de empezar.
 
