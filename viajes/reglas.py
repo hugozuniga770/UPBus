@@ -1,6 +1,12 @@
 """Reglas puras de viajes y posiciones. No tocan la base de datos."""
-from comun.geo import coordenadas_validas
+from datetime import timedelta
+
+from comun.geo import coordenadas_validas, distancia_en_metros
 from comun.rechazos import Rechazo, SinPermiso
+
+DISTANCIA_BUS_CERCA_M = 500  # RF-13
+DISTANCIA_BUS_ALEJADO_M = 100  # C-30, P-33
+DISTANCIA_A_BORDO_M = 50  # C-30, P-33
 
 
 def verificar_es_su_viaje(viaje, usuario):
@@ -95,3 +101,41 @@ def verificar_hay_paradas(paradas):
 def verificar_sin_simulacion_en_curso(hay_otra):
     if hay_otra:
         raise Rechazo("ya hay una simulación en curso: detenla primero")
+
+
+def esta_cerca_de_parada(posicion_bus, punto_parada):
+    return distancia_en_metros(posicion_bus, punto_parada) <= DISTANCIA_BUS_CERCA_M
+
+
+def va_atrasado(salida, minutos_aprendidos, iniciado_en, momento):
+    """RF-12: atrasado si pasa por la parada después de su hora aproximada.
+
+    Sin horas aprendidas de esa parada, si el viaje salió tarde (C-40).
+    """
+    if minutos_aprendidos is not None:
+        return momento > salida + timedelta(minutes=minutos_aprendidos)
+    return iniciado_en is not None and iniciado_en > salida
+
+
+def verificar_puede_marcar_abordaje(aviso, viaje, usuario):
+    verificar_viaje_abierto(viaje)
+    es_estudiante_del_aviso = aviso.estudiante_id == usuario.pk
+    es_chofer_o_admin = viaje.chofer_id == usuario.pk or getattr(usuario, "es_administrador", False)
+    if not (es_estudiante_del_aviso or es_chofer_o_admin):
+        raise SinPermiso("no tienes permiso para registrar este abordaje")
+    verificar_aviso_confirmado(aviso)
+
+
+def verificar_puede_marcar_no_se_presento(aviso, viaje, usuario):
+    verificar_viaje_abierto(viaje)
+    verificar_puede_ver_avisos(viaje, usuario)
+    verificar_aviso_confirmado(aviso)
+
+
+def cumple_abordaje_automatico(posicion_bus, punto_parada, ubicacion_actual, anterior_cerca_del_bus):
+    """C-30, P-33: bus > 100 m lejos de la parada y 2 ubicaciones seguidas < 50 m del bus."""
+    if posicion_bus is None or ubicacion_actual is None or not anterior_cerca_del_bus:
+        return False
+    if distancia_en_metros(posicion_bus, punto_parada) <= DISTANCIA_BUS_ALEJADO_M:
+        return False
+    return distancia_en_metros(ubicacion_actual, posicion_bus) < DISTANCIA_A_BORDO_M

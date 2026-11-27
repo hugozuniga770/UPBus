@@ -87,6 +87,7 @@ def aviso_a_dict(aviso, con_ubicacion=False):
         "parada": {"id": aviso.parada_id, "nombre": aviso.parada.nombre},
         "estado": aviso.estado,
         "creado_en": _momento(aviso.creado_en),
+        "aviso_cercania_enviado": aviso.aviso_cercania_enviado,
         "compartiendo_ubicacion": aviso.ubicacion_en is not None,
         "ubicacion": ubicacion,
     }

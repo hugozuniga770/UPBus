@@ -15,4 +15,6 @@ urlpatterns = [
     path("avisos/<int:aviso_id>/ubicacion", views.UbicacionDelAvisoVista.as_view(), name="ubicacion-aviso"),
     path("simulaciones", views.SimulacionesVista.as_view(), name="simulaciones"),
     path("simulaciones/<int:simulacion_id>/detener", views.DetenerSimulacionVista.as_view(), name="detener-simulacion"),
+    path("avisos/<int:aviso_id>/subio", views.SubioVista.as_view(), name="subio-aviso"),
+    path("avisos/<int:aviso_id>/no-se-presento", views.NoSePresentoVista.as_view(), name="no-se-presento-aviso"),
 ]
