@@ -8,8 +8,10 @@ from comun.vistas import leer
 from . import servicios
 from .serializadores import (
     MarcaEntrada,
+    PropuestaParadaEntrada,
     PuntosEntrada,
     RegistroNuevoEntrada,
+    parada_a_dict,
     registro_a_dict,
     ruta_detallada,
     ruta_resumida,
@@ -84,3 +86,34 @@ class CancelarRegistroVista(APIView):
     def post(self, request, registro_id):
         servicios.cancelar_registro(request.user, registro_id)
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class PropuestasParadaVista(APIView):
+    """HU-08. POST /api/rutas/<id>/paradas: propone una parada sobre el recorrido."""
+
+    def post(self, request, ruta_id):
+        datos = leer(PropuestaParadaEntrada, request.data)
+        parada = servicios.proponer_parada(
+            request.user,
+            ruta_id,
+            datos.get("nombre", ""),
+            datos["latitud"],
+            datos["longitud"],
+        )
+        return Response({"parada": parada_a_dict(parada)}, status=status.HTTP_201_CREATED)
+
+
+class AprobarParadaVista(APIView):
+    """HU-08. POST /api/paradas/<id>/aprobar"""
+
+    def post(self, request, parada_id):
+        parada = servicios.aprobar_parada(request.user, parada_id)
+        return Response({"parada": parada_a_dict(parada)})
+
+
+class RechazarParadaVista(APIView):
+    """HU-08. POST /api/paradas/<id>/rechazar"""
+
+    def post(self, request, parada_id):
+        parada = servicios.rechazar_parada(request.user, parada_id)
+        return Response({"parada": parada_a_dict(parada)})

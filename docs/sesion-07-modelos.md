@@ -209,22 +209,22 @@ HU-18 es nueva: sale de la decisión del Product Owner del 18/11/2026 (C-18). RF
 
 ### HU-08 — Proponer una parada
 
-**CA1 — Propone una parada sobre la ruta** ⏳ `test_HU08_CA1_propone_una_parada_sobre_la_ruta`
+**CA1 — Propone una parada sobre la ruta** ✅ `test_HU08_CA1_propone_una_parada_sobre_la_ruta`
 - Dado: la Ruta Norte tiene recorrido.
 - Cuando: Ismael propone la parada «Av. Banzer y 4to anillo» sobre el recorrido.
 - Entonces: queda registrada como propuesta.
 
-**CA2 — Rechaza una parada lejos del recorrido** ⏳ `test_HU08_CA2_rechaza_una_parada_lejos_del_recorrido`
+**CA2 — Rechaza una parada lejos del recorrido** ✅ `test_HU08_CA2_rechaza_una_parada_lejos_del_recorrido`
 - Dado: la misma ruta.
 - Cuando: Ismael propone una parada a más de 200 m del recorrido.
 - Entonces: se rechaza por «la parada debe estar sobre la ruta» (P-07).
 
-**CA3 — Una parada sin nadie no está activa** ⏳ `test_HU08_CA3_una_parada_sin_nadie_no_esta_activa`
+**CA3 — Una parada sin nadie no está activa** ✅ `test_HU08_CA3_una_parada_sin_nadie_no_esta_activa`
 - Dado: en el viaje de las 06:40 nadie marcó «Voy a subir» en Sevilla.
 - Cuando: el bus se acerca a Sevilla.
 - Entonces: la parada no está activa y Marco no recibe avisos de ella.
 
-**CA4 — El administrador aprueba una parada propuesta** ⏳ `test_HU08_CA4_el_administrador_aprueba_una_parada_propuesta`
+**CA4 — El administrador aprueba una parada propuesta** ✅ `test_HU08_CA4_el_administrador_aprueba_una_parada_propuesta`
 - Dado: «Av. Banzer y 4to anillo» está propuesta.
 - Cuando: Hugo la aprueba.
 - Entonces: queda aprobada y todos la ven en la ruta **[PROVISIONAL]** (P-05, P-28).
@@ -627,7 +627,7 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-05 | 4 | 4 | 0 |
 | HU-06 | 5 | 5 | 0 |
 | HU-07 | 7 | 6 | 1 |
-| HU-08 | 4 | 0 | 4 |
+| HU-08 | 4 | 4 | 0 |
 | HU-09 | 5 | 0 | 5 |
 | HU-10 | 5 | 0 | 5 |
 | HU-11 | 5 | 0 | 5 |
@@ -638,9 +638,9 @@ La relación criterio → test → archivo de código está en `docs/trazabilida
 | HU-16 | 4 | 0 | 4 |
 | HU-17 | 4 | 0 | 4 |
 | HU-18 | 5 | 5 | 0 |
-| **Total** | **75** | **39** | **36** |
+| **Total** | **75** | **43** | **32** |
 
-Además de los 39 tests de criterios, hay 25 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur, los WebSockets del viaje y de los chats, programar viajes desde el panel, cerrar los avisos al terminar el viaje, calibrar la distancia de llegada, 12 del simulador de T23 y 4 del despliegue de T22) y 23 pruebas de interfaz en Vitest: 11 de criterios (HU01-CA3, HU02-CA3, HU05-CA1, HU07-CA1, HU07-CA2, HU14-CA1 a CA3, HU15-CA1, HU15-CA2 y HU18-CA5) y 12 de soporte (el cliente de la API, la cola y el respaldo del modo registro, la pantalla del chofer, la consulta del viaje en curso y el panel de demo). Las pruebas de soporte no cuentan como criterios.
+Además de los 43 tests de criterios, hay 25 tests de soporte en pytest (importar el padrón, importar un respaldo, las horas del viaje real de la Ruta Sur, los WebSockets del viaje y de los chats, programar viajes desde el panel, cerrar los avisos al terminar el viaje, calibrar la distancia de llegada, 12 del simulador de T23 y 4 del despliegue de T22) y 24 pruebas de interfaz en Vitest: 12 de criterios (HU01-CA3, HU02-CA3, HU05-CA1, HU07-CA1, HU07-CA2, HU08-CA1 y CA4 en una misma prueba, HU14-CA1 a CA3, HU15-CA1, HU15-CA2 y HU18-CA5) y 12 de soporte (el cliente de la API, la cola y el respaldo del modo registro, la pantalla del chofer, la consulta del viaje en curso y el panel de demo). Las pruebas de soporte no cuentan como criterios.
 
 ## 8. Participación y asistencia utilizada
 
@@ -650,4 +650,6 @@ Además de los 39 tests de criterios, hay 25 tests de soporte en pytest (importa
 - **Sebastian Cruz:** implementó y verificó HU-05 y HU-06 (T11, issue #6), además de revisar las historias que tocan rutas y viajes.
 - **Sebastian Cruz:** implementó y verificó HU-14 y HU-15 (T19, issue #14), incluidos sus canales privados y pantallas para celular.
 - **Asistencia de IA:** se usó Claude (Anthropic) para pasar los criterios de la sesión 6 a la forma Dado/Cuando/Entonces, proponer los nombres de los tests, dibujar los estados y la actividad del modo registro, y escribir los tests de la base; el 25/11/2026, para ajustar HU18-CA2 con lo que mostró el primer viaje real (C-23) y, esa noche, para pasar las decisiones del Product Owner a HU-07, HU-10, HU-11, HU-12 y HU-16. Sebastian usó OpenAI Codex para implementar y probar HU-05, HU-06, HU-14 y HU-15 siguiendo la skill `implementar-historia` del repositorio.
+- **Andrés Laura Vargas:** implementó HU-08 (T15, issue #10): proponer una parada tocando el recorrido, aprobarla o rechazarla, y las paradas activas.
+- **Hugo Zuñiga (26/11/2026):** revisó T15 y ajustó la causa de HU08-CA2 a la de esta sesión, que una parada activa pida la ubicación compartida (RF-10), los tests de HU08-CA3 y CA4 y la documentación, con asistencia de Claude (Anthropic).
 - **Hugo Zuñiga (25/11/2026):** implementó T14 (HU-07, salvo CA6, que se escribe con T16) con asistencia de Claude (Anthropic).

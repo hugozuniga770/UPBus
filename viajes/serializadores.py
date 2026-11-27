@@ -33,6 +33,8 @@ def _momento(valor):
 
 
 def viaje_a_dict(viaje):
+    from .models import AvisoDeSubida
+
     ultima_posicion = None
     if viaje.ultima_posicion_en is not None:
         ultima_posicion = {
@@ -40,6 +42,12 @@ def viaje_a_dict(viaje):
             "longitud": viaje.ultima_longitud,
             "tomada_en": _momento(viaje.ultima_posicion_en),
         }
+    # RF-10: una parada está activa si alguien con «Voy a subir» en ella comparte su ubicación.
+    paradas_activas = list(
+        viaje.avisos.filter(estado=AvisoDeSubida.Estado.CONFIRMADO, ubicacion_en__isnull=False)
+        .values_list("parada_id", flat=True)
+        .distinct()
+    )
     return {
         "id": viaje.pk,
         "ruta": {
@@ -58,6 +66,7 @@ def viaje_a_dict(viaje):
         "iniciado_en": _momento(viaje.iniciado_en),
         "terminado_en": _momento(viaje.terminado_en),
         "ultima_posicion": ultima_posicion,
+        "paradas_activas": paradas_activas,
         "simulado": viaje.simulado,
     }
 
