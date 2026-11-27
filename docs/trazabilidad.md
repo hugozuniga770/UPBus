@@ -1,14 +1,14 @@
 # Trazabilidad: requisito → criterio → test → código
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
-- Fecha: 18/11/2026 · Actualizado: 25/11/2026 (C-23, C-25; 75 criterios desde C-29 y C-30) · Tarea T21 (empezada con la base) · Issue: [#16](https://github.com/hugozuniga770/UPBus/issues/16)
+- Fecha: 18/11/2026 · Actualizado: 27/11/2026 (T16 y las pruebas de soporte de la cámara del mapa). El 25/11/2026: C-23, C-25; 75 criterios desde C-29 y C-30 · Tarea T21 (empezada con la base) · Issue: [#16](https://github.com/hugozuniga770/UPBus/issues/16)
 - Criterios completos: [Sesión 7](sesion-07-modelos.md) · Requisitos: [Sesión 6](sesion-06-requisitos.md)
 
 ## 0. Cómo se mantiene
 
 - Cada criterio de la sesión 7 es un test con el mismo nombre. Cuando una historia se termina, quien la hizo agrega aquí sus filas, en el mismo Pull Request.
 - «Código» nombra el servicio, la regla o la vista que cumple el criterio, para encontrarlo rápido.
-- Al 26/11/2026 hay **54 de 75** criterios con su test en verde.
+- Al 27/11/2026 hay **54 de 75** criterios con su test en verde: 13 historias completas.
 
 ## 1. Criterios con su test (base del código)
 
@@ -95,6 +95,8 @@ No son criterios: prueban herramientas que usan las historias.
 | `tests/test_despliegue.py::test_T22_render_no_incluye_secretos_y_arranca_con_asgi` | El plan gratuito no contiene secretos y el contenedor arranca la aplicación ASGI con Daphne |
 | `tests/test_despliegue.py::test_T22_produccion_registra_errores_y_desarrollo_usa_finders` | Los errores de Django llegan a la consola de Render y WhiteNoise usa los buscadores locales solo en desarrollo |
 | `frontend/src/paginas/Demo.test.jsx` (2 pruebas) | El panel de demo manda el escenario, la ruta, la parada y la velocidad elegidos, y muestra la causa de un rechazo |
+| `frontend/src/paginas/Rutas.test.jsx` (4 pruebas de soporte) | Vuelve a buscar el viaje en curso cada 30 s. La cámara del mapa muestra la ruta entera al llegar y con «Toda la ruta», va a la parada tocada en la lista o en el mapa, y sigue al bus hasta que se arrastra el mapa; tocar el bus lo vuelve a seguir |
+| `frontend/src/componentes/recorrido.test.js` (3 pruebas) | Mide distancias como el servidor y une con un tramo punteado la primera parada que queda lejos de lo grabado (REG-01 empieza en Parque Urbano, no en Makro Parque) |
 
 ### Pruebas de punta a punta (T21)
 
@@ -119,7 +121,7 @@ Los 21 criterios restantes (HU-11 a HU-13, HU-16 y HU-17) están en la [sesión 
 - **Hugo Zuñiga:** dejó la base con estos tests.
 - **Andrés Laura Vargas:** implementó HU-08 (T15) con sus cuatro tests.
 - **Andrés Laura Vargas:** implementó HU-09, HU-10 y HU07-CA6 (T16) con sus once tests.
-- **Hugo Zuñiga (27/11/2026):** agregó la trazabilidad de T16 y la prueba de soporte de la sugerencia al revisarla, con asistencia de Claude (Anthropic).
+- **Hugo Zuñiga (27/11/2026):** agregó la trazabilidad de T16 y la prueba de soporte de la sugerencia al revisarla, y las pruebas de soporte de la cámara del mapa y de los tramos sin grabar, con asistencia de Claude (Anthropic).
 - **Hugo Zuñiga (26/11/2026):** agregó la trazabilidad de HU-08 al revisar T15, con asistencia de Claude (Anthropic).
 - **Sebastian Cruz:** agregó la trazabilidad de HU-05 y HU-06 al implementar T11.
 - **Sebastian Cruz:** agregó las pruebas de soporte del despliegue T22.

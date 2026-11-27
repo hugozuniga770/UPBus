@@ -2,8 +2,8 @@
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
-- Fecha: 18/11/2026 · Actualizado: 26/11/2026 (`AvisoDeSubida` de T14, `Viaje.simulado` de T23 y, en la sección 3, C-28 a C-32; antes, C-23 y C-25) · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
-- Estado: la sección 2 y las secciones 4 a 6 describen el **código ya construido**. En la sección 3, `Viaje`, `PosicionDeViaje` y `AvisoDeSubida` ya están implementados; los demás modelos y los campos marcados para T16 son **[PROPUESTA]** para las historias que faltan.
+- Fecha: 18/11/2026 · Actualizado: 27/11/2026 (T16: campos de `AvisoDeSubida`, reglas, rutas y canales de HU-09 y HU-10; la cámara del mapa en `/rutas`). El 26/11/2026: `AvisoDeSubida` de T14, `Viaje.simulado` de T23 y, en la sección 3, C-28 a C-32; antes, C-23 y C-25 · Sprint 1 · Tarea T03 · Issue: [#3](https://github.com/hugozuniga770/UPBus/issues/3)
+- Estado: la sección 2 y las secciones 4 a 6 describen el **código ya construido**. En la sección 3, `Viaje`, `PosicionDeViaje` y `AvisoDeSubida` (con los campos de T16) ya están implementados; los demás modelos son **[PROPUESTA]** para las historias que faltan: créditos, cambios de ruta y aviso de mínimo.
 - Requisitos: [Sesión 6](sesion-06-requisitos.md) · Historias: [Sesión 7](sesion-07-modelos.md) · Secuencias: [diagramas-secuencia.md](diagramas-secuencia.md) · Trazabilidad: [trazabilidad.md](trazabilidad.md)
 
 ## 0. Cómo leer este documento
@@ -150,9 +150,8 @@ erDiagram
         float ubicacion_longitud
         datetime ubicacion_en
         datetime cerrado_en
-        string subio_por "T16: estudiante, chofer o app"
-        int ubicaciones_junto_al_bus "T16: abordaje automático"
-        bool aviso_de_cercania_enviado "T16"
+        bool aviso_cercania_enviado "T16: «Tu bus está cerca» una sola vez"
+        bool ubicacion_anterior_cerca_del_bus "T16: abordaje automático"
     }
     PAGO_DE_VIAJE {
         int viaje_id
@@ -198,7 +197,7 @@ erDiagram
 | Modelo | App | Historia | Notas |
 |---|---|---|---|
 | `Viaje` y `PosicionDeViaje` | viajes | HU-05, HU-06 | Implementados. `Viaje` guarda la última posición; `PosicionDeViaje.id_cliente` evita duplicar reenvíos. Un chofer tiene un solo viaje en curso. `Viaje.simulado` marca los viajes del simulador (T23), que no enseñan horas (C-28) |
-| `AvisoDeSubida` | viajes | HU-07, HU-09, HU-10 | Implementado. Un aviso activo por estudiante y viaje (HU07-CA2). Cuando el bus llega a otra parada, los confirmados en las que ya pasó quedan «no se presentó»; al terminar el viaje, todos los confirmados (P-33). La ubicación del estudiante va en el mismo aviso (`ubicacion_latitud`, `ubicacion_longitud`, `ubicacion_en`): solo la última, y se borra al cancelar, al cerrarse o al terminar el viaje; con T16, también al subir. Con esa ubicación, T16 detecta que subió: el bus a más de 100 m de su parada y dos ubicaciones seguidas a menos de 50 m del bus (P-33). El abordaje es su estado A bordo, con quién lo marcó: el estudiante, el chofer o la app (C-30); subir no cobra (C-31) |
+| `AvisoDeSubida` | viajes | HU-07, HU-09, HU-10 | Implementado. Un aviso activo por estudiante y viaje (HU07-CA2). Cuando el bus llega a otra parada, los confirmados en las que ya pasó quedan «no se presentó»; al terminar el viaje, todos los confirmados (P-33). La ubicación del estudiante va en el mismo aviso (`ubicacion_latitud`, `ubicacion_longitud`, `ubicacion_en`): solo la última, y se borra al cancelar, al cerrarse o al terminar el viaje; con T16, también al subir. Con esa ubicación, T16 detecta que subió: el bus a más de 100 m de su parada y dos ubicaciones seguidas a menos de 50 m del bus (P-33). El abordaje es su estado A bordo, lo marque el estudiante, el chofer o la app (C-30); quién lo marcó no se guarda, porque ningún criterio lo pide. Subir no cobra (C-31) |
 | `PagoDeViaje` | `creditos` (app nueva) o viajes | HU-12 | Uno por estudiante y viaje. Con créditos genera el cobro, el abono al chofer y el comprobante; en efectivo lo marca el chofer, sin movimiento. `id_cliente` único para que un reenvío no cobre dos veces (HU12-CA3) |
 | `Recarga` y `Movimiento` | `creditos` (app nueva) o viajes | HU-11 a HU-13 | El saldo es la suma de los movimientos; nunca se guarda aparte. Cada cobro, devolución, retiro o ajuste es un movimiento completo o ninguno (RC-03). El ajuste del administrador lleva su motivo y quién lo hizo, y no deja el saldo en negativo (C-29) |
 | `Mensaje` y `MiembroDeRuta` | mensajes | HU-14, HU-15 | Implementados. Solo texto (P-10). Un mensaje directo pertenece a un viaje y a la conversación privada de un estudiante; uno de ruta pertenece a una ruta. `Mensaje.id_cliente` evita duplicar reenvíos y `MiembroDeRuta` guarda la ruta elegida por cada persona |
@@ -265,13 +264,13 @@ Todas las rutas empiezan con `/api/` y responden JSON. Toda escritura lleva el t
 | `/ingresar` | Iniciar sesión con código o correo | Cualquiera | HU-02 |
 | `/registrarse` | Crear la cuenta con el padrón | Persona del padrón | HU-01 |
 | `/` | Inicio con tarjetas según el rol; las que faltan dicen «Próximamente» con su historia | Con sesión | — |
-| `/rutas` | Mapa con recorrido, paradas, horas aproximadas y el bus del viaje en curso; «Voy a subir», chat directo con el chofer y chat de la ruta; proponer una parada tocando el recorrido y, el administrador, aprobarla o rechazarla | Con sesión | HU-04, HU-06, HU-07, HU-08, HU-14, HU-15 |
-| `/viajes` | Iniciar o terminar el viaje asignado, compartir el GPS del bus, ver quién va a subir y responderle con botones rápidos | Chofer | HU-05, HU-06, HU-07, HU-14 |
+| `/rutas` | Mapa con la ruta entera al elegirla (el recorrido como en Google Maps y el tramo sin grabar, punteado), las paradas con su hora aproximada y el bus del viaje en curso. «Seguir al bus», o tocar el bus, hace que la cámara lo siga; tocar una parada, en el mapa o en la lista, la centra; «Toda la ruta» la vuelve a mostrar, y arrastrar el mapa deja de seguir al bus. «Voy a subir», «Tu bus está cerca» y «He subido»; chat directo con el chofer y chat de la ruta; proponer una parada tocando el recorrido y, el administrador, aprobarla o rechazarla | Con sesión | HU-04, HU-06 a HU-10, HU-14, HU-15 |
+| `/viajes` | Iniciar o terminar el viaje asignado, compartir el GPS del bus, ver quién va a subir, marcarlo «Subió» o «No se presentó», recibir «Nadie espera en …: puedes seguir» y responder con botones rápidos | Chofer | HU-05 a HU-07, HU-09, HU-10, HU-14 |
 | `/modo-registro` | Grabar paradas y horas con el GPS | Chofer o administrador | HU-18 |
 | `/usuarios` | Crear choferes y personas, y desactivar cuentas | Administrador | HU-03 |
 | `/demo` | Panel de demo: correr y detener escenarios del simulador | Administrador | T23 |
 
-Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `ErrorApi` con la causa), `sesion/` (quién está dentro y las rutas protegidas por rol), `componentes/` (Boton, Campo, Aviso, Mapa, Plantilla, PantallaDeAcceso, Logo) y `registro/` (la cola sin señal, el almacenamiento en el celular y el respaldo).
+Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `ErrorApi` con la causa), `sesion/` (quién está dentro y las rutas protegidas por rol), `componentes/` (Boton, Campo, Aviso, Mapa con `recorrido.js`, Plantilla, PantallaDeAcceso, Logo, VoyASubir, AvisosDelViaje, ChatDirecto y ChatDeRuta) y `registro/` (la cola sin señal, el almacenamiento en el celular y el respaldo).
 
 ## 7. Decisiones de diseño y su porqué
 
@@ -289,6 +288,8 @@ Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `Error
 | Los viajes del simulador no guardan pasos (C-28) | Las horas que ve el estudiante salen solo de viajes reales |
 | Distancia de llegada configurable (`UPBUS_RADIO_DE_LLEGADA_M`, C-34) | Empieza en 50 m y se calibra con los viajes de prueba sin cambiar el código; la leen las reglas con `radio_de_llegada()` |
 | Un grupo WebSocket por viaje y estudiante para el chat directo | Impide que los demás confirmados del mismo viaje reciban una conversación ajena; el chat de ruta sí usa un grupo común para sus miembros |
+| El mapa mueve la cámara solo cuando se le pide: al elegir la ruta, con «Seguir al bus», al tocar una parada y con «Toda la ruta» | La persona mira otra parte sin que el mapa vuelva solo, y arrastrarlo deja de seguir al bus. Leaflet ignora cualquier movimiento pedido durante una animación de zoom, así que la cámara espera a que termine |
+| El tramo que el recorrido grabado no cubre va punteado | Muestra la ruta entera sin hacer pasar por calles un tramo que nadie grabó; el simulador va por ahí en línea recta (REG-01) |
 
 ## 8. Participación y asistencia utilizada
 
@@ -300,3 +301,5 @@ Piezas compartidas: `api/cliente.js` (todas las llamadas, el token CSRF y `Error
 - **Asistencia de IA (T22):** Sebastian usó OpenAI Codex para implementar y verificar la configuración de despliegue.
 - **Sebastian Cruz (T19):** implementó `Mensaje`, `MiembroDeRuta`, los servicios, la API, los canales privados y la interfaz de HU-14 y HU-15.
 - **Asistencia de IA (T19):** Sebastian usó OpenAI Codex para implementar y verificar los chats siguiendo la skill `implementar-historia`.
+- **Andrés Laura Vargas (T15 y T16):** implementó las paradas propuestas (HU-08) y el aviso de bus cerca y el registro de quién subió (HU-09, HU-10).
+- **Hugo Zuñiga (27/11/2026):** la cámara del mapa de `/rutas` y el tramo sin grabar; puso al día la sección 3 con los campos de T16, con asistencia de Claude (Anthropic).

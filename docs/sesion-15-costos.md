@@ -4,7 +4,7 @@
 - Integrantes: Hugo Zuñiga (Product Owner), Andrés Laura Vargas (Scrum Master) y Sebastian Cruz
 - Docente: Ing. Alejandro Rodríguez (Certificación I)
 - Fecha: 16/11/2026 · Sprint 1 · Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1 · Aprobado por el Product Owner el 26/11/2026 (T01)
-- Actualizado: 25/11/2026 · horas por persona según el reparto del 18/11 (C-26). El 18/11/2026: T25 y T26 suman 10 h-p (152 en total); la base del código cambia responsables y las tareas por asignar las reparte Andrés (C-18, C-19)
+- Actualizado: 27/11/2026 · avance del plan: 110 de 152 h-p (72 %), sección 10. El 25/11/2026: horas por persona según el reparto del 18/11 (C-26). El 18/11/2026: T25 y T26 suman 10 h-p (152 en total); la base del código cambia responsables y las tareas por asignar las reparte Andrés (C-18, C-19)
 - Hoja de cálculo con las cuentas al día: «UPBus · Costos y horas» (Claude Sheets, privada del equipo)
 - Plan: [Sesiones 8–9](sesion-08-09-plan.md) · Cambios: [cambios.md](cambios.md) · Siglas: [glosario.md](glosario.md)
 
@@ -137,16 +137,16 @@ Las horas reales salen de la hoja «Registro de horas»: cada integrante anota l
 | Etapa | h-p estimadas | h-p reales | Diferencia | Costo real (Bs) | Comentario |
 |---|---:|---:|---:|---:|---|
 | Perfil | 6 | — | — | — | Hecho; horas no registradas |
-| Sprint 1 | 58 | — | — | — | En curso; la base del código (42 h-p estimadas) se hizo el 18/11 |
-| Sprint 2 | 19 | — | — | — | |
+| Sprint 1 | 58 | — | — | — | Hecho; la base del código (42 h-p estimadas) se hizo el 18/11 |
+| Sprint 2 | 19 | — | — | — | Cerrado el 26/11; además se adelantaron T14, T15, T16 y T19, de los sprints 3 y 4 |
 | Sprint 3 | 30 | — | — | — | |
 | Sprint 4 | 26 | — | — | — | |
 | Cierre | 13 | — | — | — | |
 | **Total** | **152** | — | — | — | |
 
-Al 18/11/2026 no hay horas reales registradas. T00, T04 y la base del código (T05 a T10, T12 y T25) están hechas, pero falta anotar cuánto tomaron. La base se hizo con asistencia de IA: sus horas reales mostrarán cuánto bajó el esfuerzo frente a lo estimado.
+Al 27/11/2026 están hechas T00 a T16, T19, T25 y T26: **110 de 152 h-p estimadas (72 %)**. Las horas reales todavía no se registraron. Al 18/11/2026 no había horas reales registradas. T00, T04 y la base del código (T05 a T10, T12 y T25) están hechas, pero falta anotar cuánto tomaron. La base se hizo con asistencia de IA: sus horas reales mostrarán cuánto bajó el esfuerzo frente a lo estimado.
 
 ## 11. Participación y asistencia utilizada
 
 - **Hugo Zuñiga (Product Owner):** pidió el cálculo, aprueba la tarifa y los supuestos, y lleva el registro de horas.
-- **Asistencia de IA:** se usó Claude (Anthropic) para buscar los sueldos de referencia y las tasas de impuestos, armar la hoja de cálculo y redactar este documento; el 18/11/2026 para sumar T25 y T26 a la hoja y recalcular los totales, y el 25/11/2026 para pasar el reparto a la hoja.
+- **Asistencia de IA:** se usó Claude (Anthropic) para buscar los sueldos de referencia y las tasas de impuestos, armar la hoja de cálculo y redactar este documento; el 18/11/2026 para sumar T25 y T26 a la hoja y recalcular los totales, el 25/11/2026 para pasar el reparto a la hoja, y el 27/11/2026 para poner al día el avance.

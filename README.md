@@ -4,7 +4,7 @@
 - Docente: Ing. Alejandro Rodríguez (Certificación I)
 - Tecnología: Python con Django, Django REST Framework y Django Channels; SQLite en local y PostgreSQL en el despliegue; React con Tailwind CSS
 - Método: Scrum, con sprints de una semana ([plan](docs/sesion-08-09-plan.md))
-- Estado: Sprint 2. La **base del código** (registro, inicio de sesión, usuarios, rutas en el mapa y modo registro, con sus pruebas) está en `develop` y en `main`. Las tareas se repartieron el 18/11 y cada una tiene su issue asignado. La primera ruta real, la Ruta Sur, se grabó el 25/11 ([REG-01](docs/viajes-grabados.md)).
+- Estado al 27/11/2026: empieza el Sprint 3 (27/11 al 03/12). En `develop` funcionan **13 de las 18 historias**, con todos sus criterios en verde: HU-01 a HU-10, HU-14, HU-15 y HU-18 (54 de 75 criterios). Faltan los créditos (HU-11 a HU-13), modificar una ruta (HU-16) y el aviso de mínimo (HU-17), y publicar la app en Render (T22). Pruebas: 80 de pytest, 32 de Vitest y 22 de punta a punta en el navegador, que corren en cada Pull Request. La primera ruta real, la Ruta Sur, se grabó el 25/11 ([REG-01](docs/viajes-grabados.md)); el panel Demo la recorre con un bus simulado ([guía del simulador](docs/guia-simulador.md)).
 
 ## 1. Qué hace
 
@@ -40,9 +40,8 @@ En el MVP la ubicación del bus y de los estudiantes, la recarga de créditos, e
 | [sesion-06-requisitos.md](docs/sesion-06-requisitos.md) | Requisitos, alcance, lo que se simula y preguntas abiertas | Aprobado el 26/11 (T01) |
 | [sesion-07-modelos.md](docs/sesion-07-modelos.md) | 18 historias, 75 criterios Dado/Cuando/Entonces con el nombre de su test, casos de uso, estados y trazabilidad | Aprobado el 26/11 |
 | [sesion-08-09-plan.md](docs/sesion-08-09-plan.md) | Plan por sprints, tareas, Gantt, riesgos y recortes | Aprobado el 26/11 (T01) |
-| [sesion-12-arquitectura.md](docs/sesion-12-arquitectura.md) | Arquitectura y verificación de un flujo | Pendiente |
 | [sesion-12-arquitectura.md](docs/sesion-12-arquitectura.md) | Arquitectura: piezas, cómo se hablan, dónde corren, decisiones y la verificación de punta a punta del registro y el inicio de sesión | Aprobado el 26/11 (T03) |
-| [sesion-13-14-diseno.md](docs/sesion-13-14-diseno.md) | Arquitectura FE / MW / Padrón / BD, datos, clases y API | Base descrita; modelos que faltan propuestos |
+| [sesion-13-14-diseno.md](docs/sesion-13-14-diseno.md) | Arquitectura FE / MW / Padrón / BD, datos, clases, API y pantallas | Código construido descrito (al 27/11); créditos, cambios de ruta y aviso de mínimo propuestos |
 | [diagramas-secuencia.md](docs/diagramas-secuencia.md) | Un diagrama de secuencia por caso de uso, CU-18 incluido | Propuesta para revisión |
 | [trazabilidad.md](docs/trazabilidad.md) | Cada test con su criterio, su requisito y su código | 54 de 75 criterios con test |
 | [entrevistas.md](docs/entrevistas.md) | Entrevistas, conclusiones y guías de las siguientes | ENT-01 a ENT-03 y ENT-07 hechas (T13 cerrada) |
@@ -65,8 +64,8 @@ Sigue la organización del proyecto de reserva de salas: las vistas solo reciben
 config/        configuración de Django, URLs y ASGI (HTTP y WebSocket)
 comun/         Rechazo, hora de La Paz, distancias y respuestas JSON
 cuentas/       usuario, padrón, registro, sesión y usuarios (HU-01 a HU-03)
-rutas/         rutas, horarios, paradas, horas aproximadas y modo registro (HU-04, HU-18)
-viajes/        viajes, bus en vivo, «Voy a subir», abordajes y créditos (por hacer)
+rutas/         rutas, horarios, paradas, horas aproximadas, paradas propuestas y modo registro (HU-04, HU-08, HU-18)
+viajes/        viajes, bus en vivo, «Voy a subir», bus cerca, quién subió y simulador (HU-05 a HU-07, HU-09, HU-10); créditos por hacer
 mensajes/      chat directo y chat de la ruta (HU-14, HU-15)
 padron/        padrón de ejemplo; la lista de la clase va aparte y no se sube
 tests/         un test por criterio de aceptación (pytest)

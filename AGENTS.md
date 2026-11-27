@@ -40,6 +40,6 @@ python manage.py simular --lista    # escenarios del simulador (T23)
 
 ```
 config/    comun/    cuentas/ (HU-01 a HU-03)    rutas/ (HU-04, HU-08, HU-18)
-viajes/ (HU-05 a HU-13, por hacer)    mensajes/ (HU-14, HU-15)
+viajes/ (HU-05 a HU-07, HU-09, HU-10; HU-11 a HU-13 por hacer)    mensajes/ (HU-14, HU-15)
 padron/    tests/    e2e/    frontend/src/{api,sesion,componentes,paginas,registro}    docs/
 ```

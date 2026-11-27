@@ -41,7 +41,7 @@ Las personas que subieron las anotó Sebastian aparte: el modo registro no las c
 1. **El recorrido tomó 44 minutos**, de las 06:46 en Makro Parque a las 07:30 en la UPB, dentro de la llegada límite de las 07:40.
 2. **Las horas se miden desde la salida programada.** El bus pasó por su punto de partida a las 06:46. Con la primera versión del cálculo, que contaba los minutos desde la primera marca, la app habría mostrado cada parada 6 minutos antes de lo visto (Parque Urbano a las 06:54 en lugar de las 07:00). Desde C-23 los minutos se cuentan desde las 06:40 programadas y la hora se redondea hacia abajo, así que la app muestra lo que se vio. La prueba `test_el_registro_real_de_la_ruta_sur_da_las_horas_observadas` lo comprueba con este mismo respaldo.
 3. **Subieron 14 personas en 8 paradas.** Es un solo viaje, pero queda por debajo del mínimo de 15 de RF-22: con estos números, el administrador habría recibido el aviso de mínimo.
-4. **El recorrido tiene puntos desde las 07:00.** Entre Makro Parque y Parque Urbano no hay puntos, así que el mapa une esas dos paradas con una línea recta. El siguiente registro de esta ruta puede completar ese tramo.
+4. **El recorrido tiene puntos desde las 07:00.** Entre Makro Parque y Parque Urbano no hay puntos, así que el mapa une esas dos paradas con una línea recta punteada (desde el 27/11) y el bus simulado va por ella. El siguiente registro de esta ruta puede completar ese tramo.
 5. **La precisión del GPS fue de 21 a 121 m.** La peor fue en Makro Parque, al empezar. Conviene esperar a que el indicador esté en verde (20 m o menos) antes de marcar la primera parada.
 
 ### Para qué se usa
