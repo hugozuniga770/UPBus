@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { CircleMarker, Polyline, Tooltip } from "react-leaflet";
+import { CircleMarker, Pane, Polyline, Tooltip } from "react-leaflet";
 
 import { api } from "../api/cliente.js";
 import Aviso from "../componentes/Aviso.jsx";
@@ -7,10 +7,18 @@ import Boton from "../componentes/Boton.jsx";
 import ChatDeRuta from "../componentes/ChatDeRuta.jsx";
 import ChatDirecto from "../componentes/ChatDirecto.jsx";
 import Mapa from "../componentes/Mapa.jsx";
+import { tramosSinGrabar } from "../componentes/recorrido.js";
 import VoyASubir from "../componentes/VoyASubir.jsx";
 import { useSesion } from "../sesion/SesionContexto.jsx";
 
 const SENTIDO = { ingreso: "Ingreso", salida: "Salida" };
+
+// La ruta se dibuja como en Google Maps: una línea azul gruesa con borde oscuro.
+const LINEA_DE_LA_RUTA = { color: "#1a73e8", weight: 6, opacity: 1 };
+const BORDE_DE_LA_RUTA = { color: "#174ea6", weight: 10, opacity: 1 };
+// Lo que todavía no se grabó, punteado: el bus simulado va en línea recta por ahí.
+const TRAMO_SIN_GRABAR = { color: "#1a73e8", weight: 6, opacity: 0.9, dashArray: "0.1 12", lineCap: "round" };
+const ZOOM_AL_ENFOCAR = 16;
 
 /** HU-04, HU-06 y HU-08: rutas, bus en vivo, propuestas de parada y aprobación. */
 export default function Rutas() {
@@ -23,6 +31,11 @@ export default function Rutas() {
   const [ruta, setRuta] = useState(null);
   const [viajeActivo, setViajeActivo] = useState(null);
   const [posicionDelBus, setPosicionDelBus] = useState(null);
+  // La cámara: muestra la ruta entera al elegirla; después la persona la mueve como
+  // quiera, y se mueve sola solo si se pide: seguir al bus, ir a una parada o «Toda la ruta».
+  const [siguiendoAlBus, setSiguiendoAlBus] = useState(false);
+  const [paradaElegida, setParadaElegida] = useState(null);
+  const [vecesEncuadre, setVecesEncuadre] = useState(0);
   const [error, setError] = useState("");
   const [aviso, setAviso] = useState("");
 
@@ -106,15 +119,96 @@ export default function Rutas() {
   const paradas = ruta?.paradas ?? [];
   const paradasPropuestas = paradas.filter((p) => p.estado === "propuesta");
   const paradasActivasIds = new Set(viajeActivo?.paradas_activas ?? []);
-  // El mapa se centra al elegir otra ruta, no en cada actualización: así se puede
-  // mover el mapa para buscar el recorrido aunque el bus mande su posición.
-  const [latitudCentro, longitudCentro] = paradas.length
-    ? [paradas[0].latitud, paradas[0].longitud]
-    : ruta?.recorrido?.[0] ?? [];
-  const centro = useMemo(
-    () => (latitudCentro === undefined ? undefined : [latitudCentro, longitudCentro]),
-    [latitudCentro, longitudCentro],
+  const recorrido = ruta?.recorrido?.length > 1 ? ruta.recorrido : [];
+  const tramos = useMemo(
+    () => tramosSinGrabar(
+      ruta?.recorrido,
+      (ruta?.paradas ?? [])
+        .filter((parada) => parada.estado !== "propuesta")
+        .sort((a, b) => a.orden - b.orden)
+        .map((parada) => [parada.latitud, parada.longitud]),
+    ),
+    [ruta],
   );
+  const latitudDelBus = posicionDelBus?.latitud;
+  const longitudDelBus = posicionDelBus?.longitud;
+  const bus = useMemo(
+    () => (latitudDelBus === undefined ? null : [latitudDelBus, longitudDelBus]),
+    [latitudDelBus, longitudDelBus],
+  );
+
+  // La ruta entera: su recorrido grabado, sus paradas y el bus, si hay uno en camino.
+  // Se encuadra cuando llega la ruta elegida y cada vez que se pide «Toda la ruta».
+  const encuadre = [
+    ...recorrido,
+    ...paradas.map((parada) => [parada.latitud, parada.longitud]),
+    ...(bus ? [bus] : []),
+  ];
+  const claveEncuadre = ruta && ruta.id === rutaId ? `${ruta.id}-${vecesEncuadre}` : null;
+  // Lo que la cámara sigue (el bus) o centra una vez (la parada tocada).
+  const foco = siguiendoAlBus && bus
+    ? { punto: bus, clave: "bus" }
+    : paradaElegida && { punto: [paradaElegida.latitud, paradaElegida.longitud], clave: `parada-${paradaElegida.vez}` };
+
+  // Cuánto del mapa tapan el panel (abajo en el celular, a la izquierda en la computadora)
+  // y los botones de arriba, en píxeles: así la ruta, las paradas y el bus quedan a la vista.
+  const contenedor = useRef(null);
+  const panel = useRef(null);
+  const botones = useRef(null);
+  const relleno = useCallback(() => {
+    const margen = 24;
+    const resultado = { arribaIzquierda: [margen, margen], abajoDerecha: [margen, margen] };
+    const mapa = contenedor.current?.getBoundingClientRect();
+    if (!mapa?.height) return resultado;
+    const caja = panel.current?.getBoundingClientRect();
+    if (caja?.height) {
+      if (window.matchMedia?.("(min-width: 768px)").matches) {
+        resultado.arribaIzquierda[0] = Math.round(caja.right - mapa.left) + margen;
+      } else {
+        resultado.abajoDerecha[1] = Math.round(mapa.bottom - caja.top) + margen;
+      }
+    }
+    // Los botones van arriba a la derecha; la etiqueta del bus mide unos 30 px sobre él.
+    const arriba = botones.current?.getBoundingClientRect();
+    if (arriba?.height) resultado.arribaIzquierda[1] = Math.round(arriba.bottom - mapa.top) + 36;
+    return resultado;
+  }, []);
+
+  const dejarDeSeguir = useCallback(() => setSiguiendoAlBus(false), []);
+
+  function seguirAlBus() {
+    setParadaElegida(null);
+    setSiguiendoAlBus(true);
+  }
+
+  function verTodaLaRuta() {
+    setSiguiendoAlBus(false);
+    setVecesEncuadre((antes) => antes + 1);
+  }
+
+  function elegirParada(parada) {
+    setSiguiendoAlBus(false);
+    setParadaElegida((antes) => ({
+      id: parada.id,
+      latitud: parada.latitud,
+      longitud: parada.longitud,
+      vez: (antes?.vez ?? 0) + 1,
+    }));
+  }
+
+  function elegirRuta(id) {
+    setSiguiendoAlBus(false);
+    setParadaElegida(null);
+    if (id === rutaId) {
+      verTodaLaRuta();
+      return;
+    }
+    setRutaId(id);
+    setHorarioId(null);
+    setPuntoPropuesto(null);
+    // El bus de la ruta anterior no cuenta para encuadrar la nueva.
+    setViajeActivo(null);
+  }
 
   function tocarRecorrido(evento) {
     if (!evento?.latlng) return;
@@ -167,35 +261,47 @@ export default function Rutas() {
   }
 
   return (
-    <div className="absolute inset-0">
-      <Mapa centro={centro} seguir={centro}>
-        {ruta?.recorrido?.length > 1 && (
+    <div ref={contenedor} className="absolute inset-0">
+      <Mapa
+        encuadre={encuadre.length ? encuadre : null}
+        claveEncuadre={claveEncuadre}
+        foco={foco}
+        zoomAlEnfocar={ZOOM_AL_ENFOCAR}
+        relleno={relleno}
+        alArrastrar={dejarDeSeguir}
+      >
+        {recorrido.length > 0 && (
           <>
-            <Polyline
-              positions={ruta.recorrido}
-              pathOptions={{ color: "#3c8dbc", weight: 7, opacity: 0.85 }}
-              interactive={false}
-            />
-            {/* Una franja invisible más ancha, para tocar la línea con el dedo en el celular. */}
-            <Polyline
-              positions={ruta.recorrido}
-              pathOptions={{ color: "#3c8dbc", weight: 28, opacity: 0 }}
-              eventHandlers={{ click: tocarRecorrido }}
-            />
+            <Polyline positions={recorrido} pathOptions={BORDE_DE_LA_RUTA} interactive={false} />
+            <Polyline positions={recorrido} pathOptions={LINEA_DE_LA_RUTA} interactive={false} />
           </>
+        )}
+        {tramos.map((tramo) => (
+          <Polyline key={tramo.flat().join(",")} positions={tramo} pathOptions={TRAMO_SIN_GRABAR} interactive={false} />
+        ))}
+        {recorrido.length > 0 && (
+          // Una franja invisible más ancha, para tocar la línea con el dedo en el celular.
+          <Polyline
+            positions={recorrido}
+            pathOptions={{ color: "#1a73e8", weight: 28, opacity: 0 }}
+            eventHandlers={{ click: tocarRecorrido }}
+          />
         )}
         {paradas.map((parada) => {
           const esPropuesta = parada.estado === "propuesta";
           const estaActiva = paradasActivasIds.has(parada.id);
+          const estaElegida = paradaElegida?.id === parada.id;
           const colorRelleno = esPropuesta ? "#f39c12" : estaActiva ? "#16a34a" : "#242865";
           return (
             <CircleMarker
               key={parada.id}
               center={[parada.latitud, parada.longitud]}
-              radius={estaActiva ? 11 : 9}
-              pathOptions={{ color: "#fff", weight: 3, fillColor: colorRelleno, fillOpacity: 1 }}
+              radius={estaElegida ? 12 : estaActiva ? 11 : 9}
+              pathOptions={{ color: "#fff", weight: estaElegida ? 4 : 3, fillColor: colorRelleno, fillOpacity: 1 }}
+              eventHandlers={{ click: () => elegirParada(parada) }}
             >
-              <Tooltip direction="top">
+              {/* La parada elegida deja su nombre a la vista; las demás, al pasar o tocar. */}
+              <Tooltip key={estaElegida ? "fija" : "flotante"} direction="top" permanent={estaElegida}>
                 {parada.orden}. {parada.nombre}
                 {parada.hora_aproximada ? ` · ${parada.hora_aproximada}` : ""}
                 {esPropuesta ? " (propuesta)" : ""}
@@ -213,18 +319,46 @@ export default function Rutas() {
             <Tooltip direction="top" permanent>📍 Nueva parada propuesta</Tooltip>
           </CircleMarker>
         )}
-        {posicionDelBus && (
-          <CircleMarker
-            center={[posicionDelBus.latitud, posicionDelBus.longitud]}
-            radius={12}
-            pathOptions={{ color: "#fff", weight: 4, fillColor: "#009fe3", fillOpacity: 1 }}
-          >
-            <Tooltip direction="top" permanent>{viajeActivo?.simulado ? "🧪 Bus simulado" : "🚌 Bus en vivo"}</Tooltip>
-          </CircleMarker>
-        )}
+        {/* El bus va en su propia capa, siempre encima de la línea y de las paradas. Tocarlo lo sigue. */}
+        <Pane name="bus" style={{ zIndex: 450 }}>
+          {posicionDelBus && (
+            <CircleMarker
+              center={[posicionDelBus.latitud, posicionDelBus.longitud]}
+              radius={12}
+              pathOptions={{ color: "#fff", weight: 4, fillColor: "#009fe3", fillOpacity: 1 }}
+              eventHandlers={{ click: seguirAlBus }}
+            >
+              <Tooltip direction="top" permanent>{viajeActivo?.simulado ? "🧪 Bus simulado" : "🚌 Bus en vivo"}</Tooltip>
+            </CircleMarker>
+          )}
+        </Pane>
       </Mapa>
 
-      <section className="absolute inset-x-0 bottom-0 z-[1000] max-h-[55%] overflow-y-auto rounded-t-3xl bg-white p-5 shadow-[0_-8px_30px_rgba(0,0,0,0.15)] md:inset-y-4 md:left-4 md:right-auto md:max-h-none md:w-96 md:rounded-3xl">
+      {(bus || encuadre.length > 0) && (
+        <div ref={botones} className="absolute right-3 top-3 z-[1000] flex max-w-[calc(100%-1.5rem)] flex-wrap justify-end gap-2">
+          {bus && (
+            <button
+              type="button"
+              aria-pressed={siguiendoAlBus}
+              onClick={() => (siguiendoAlBus ? setSiguiendoAlBus(false) : seguirAlBus())}
+              className={`rounded-full px-4 py-2 text-sm font-semibold shadow-lg ${siguiendoAlBus ? "bg-upb text-white" : "bg-white text-upb"}`}
+            >
+              {siguiendoAlBus ? "🚌 Siguiendo al bus" : "🚌 Seguir al bus"}
+            </button>
+          )}
+          {encuadre.length > 0 && (
+            <button
+              type="button"
+              onClick={verTodaLaRuta}
+              className="rounded-full bg-white px-4 py-2 text-sm font-semibold text-upb shadow-lg"
+            >
+              🗺️ Toda la ruta
+            </button>
+          )}
+        </div>
+      )}
+
+      <section ref={panel} className="absolute inset-x-0 bottom-0 z-[1000] max-h-[55%] overflow-y-auto rounded-t-3xl bg-white p-5 shadow-[0_-8px_30px_rgba(0,0,0,0.15)] md:inset-y-4 md:left-4 md:right-auto md:max-h-none md:w-96 md:rounded-3xl">
         <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-black/10 md:hidden" />
         {error && <div className="mb-2"><Aviso tipo="error">{error}</Aviso></div>}
         {aviso && <div className="mb-2"><Aviso tipo="alerta">{aviso}</Aviso></div>}
@@ -233,11 +367,7 @@ export default function Rutas() {
             <button
               key={r.id}
               type="button"
-              onClick={() => {
-                setRutaId(r.id);
-                setHorarioId(null);
-                setPuntoPropuesto(null);
-              }}
+              onClick={() => elegirRuta(r.id)}
               className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-semibold ${r.id === rutaId ? "bg-upb text-white" : "bg-fondo text-upb"}`}
             >
               {r.nombre.replace("Ruta ", "")}
@@ -277,9 +407,10 @@ export default function Rutas() {
                 </div>
               </form>
             ) : (
-              ruta.recorrido?.length > 1 && (
+              recorrido.length > 0 && (
                 <p className="mt-2 text-xs text-suave">
                   Toca la línea azul del recorrido en el mapa para proponer una nueva parada.
+                  {tramos.length > 0 && " La línea punteada es un tramo que todavía no se grabó."}
                 </p>
               )
             )}
@@ -340,24 +471,30 @@ export default function Rutas() {
                 </button>
               ))}
             </div>
-            <ol className="mt-4 space-y-2">
+            {paradas.length > 0 && <p className="mt-4 text-xs text-suave">Toca una parada para verla en el mapa.</p>}
+            <ol className="mt-2 space-y-2">
               {paradas.map((parada) => {
                 const estaActiva = paradasActivasIds.has(parada.id);
                 return (
-                  <li key={parada.id} className="flex items-center justify-between rounded-xl bg-fondo px-3 py-2">
-                    <span>
-                      <span className="mr-2 font-bold text-upb">{parada.orden}</span>
-                      {parada.nombre}
-                      {parada.estado === "propuesta" && (
-                        <span className="ml-2 text-xs font-medium text-[#7a4a00]">(propuesta)</span>
-                      )}
-                      {estaActiva && (
-                        <span className="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-800">
-                          Activa
-                        </span>
-                      )}
-                    </span>
-                    <span className="font-semibold text-boton">{parada.hora_aproximada ?? "—"}</span>
+                  <li key={parada.id}>
+                    <button
+                      type="button"
+                      onClick={() => elegirParada(parada)}
+                      className={`flex w-full items-center justify-between rounded-xl bg-fondo px-3 py-2 text-left ${paradaElegida?.id === parada.id ? "ring-2 ring-boton" : ""}`}
+                    >
+                      <span>
+                        <span className="mr-1 font-bold text-upb">{parada.orden}</span> {parada.nombre}
+                        {parada.estado === "propuesta" && (
+                          <span className="ml-2 text-xs font-medium text-[#7a4a00]">(propuesta)</span>
+                        )}
+                        {estaActiva && (
+                          <span className="ml-2 rounded-full bg-green-100 px-2 py-0.5 text-xs font-semibold text-green-800">
+                            Activa
+                          </span>
+                        )}
+                      </span>{" "}
+                      <span className="font-semibold text-boton">{parada.hora_aproximada ?? "—"}</span>
+                    </button>
                   </li>
                 );
               })}

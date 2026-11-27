@@ -67,8 +67,8 @@ Para cambiar algo de la configuración (otra base, otro padrón, otro dominio o 
 config/        configuración de Django, URLs y ASGI (HTTP y WebSocket)
 comun/         lo compartido: Rechazo, hora de La Paz, distancias, respuestas JSON
 cuentas/       usuario, padrón, registro, sesión y gestión de usuarios (HU-01 a HU-03)
-rutas/         rutas, horarios, paradas, horas aproximadas y modo registro (HU-04, HU-18)
-viajes/        viajes, bus en vivo, «Voy a subir», abordajes y créditos (por hacer)
+rutas/         rutas, horarios, paradas, horas aproximadas, paradas propuestas y modo registro (HU-04, HU-08, HU-18)
+viajes/        viajes, bus en vivo, «Voy a subir», bus cerca, quién subió y simulador (HU-05 a HU-07, HU-09, HU-10); créditos por hacer
 mensajes/      chat directo y chat de la ruta (HU-14, HU-15)
 padron/        padrón de ejemplo; aquí va también padron.local.json, que no se sube
 tests/         un test por criterio de aceptación (pytest)
