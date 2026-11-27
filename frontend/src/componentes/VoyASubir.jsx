@@ -8,8 +8,8 @@ import Boton from "./Boton.jsx";
 const SEGUNDOS_ENTRE_UBICACIONES = 15;
 
 /**
- * HU-07: el estudiante avisa «Voy a subir» en su parada, lo cancela mientras el bus
- * no pasó y, si quiere, comparte su ubicación con el chofer (BUS-RF-08, BUS-RF-09).
+ * HU-07, HU-09 y HU-10: el estudiante avisa «Voy a subir», recibe aviso cuando el bus
+ * está a <= 500 m, comparte ubicación y registra que subió («He subido» o automático).
  */
 export default function VoyASubir({ rutaId, horarioId, paradas }) {
   const usuario = useSesion()?.usuario;
@@ -18,6 +18,7 @@ export default function VoyASubir({ rutaId, horarioId, paradas }) {
   const [aviso, setAviso] = useState(null);
   const [paradaId, setParadaId] = useState("");
   const [compartiendo, setCompartiendo] = useState(false);
+  const [avisoBusCerca, setAvisoBusCerca] = useState("");
   const [ocupado, setOcupado] = useState(false);
   const [error, setError] = useState("");
   const ultimoEnvio = useRef(0);
@@ -47,13 +48,43 @@ export default function VoyASubir({ rutaId, horarioId, paradas }) {
   const viajeId = viaje?.id;
   useEffect(() => {
     setAviso(null);
+    setAvisoBusCerca("");
     if (!viajeId) return undefined;
     let vigente = true;
-    api.miAviso(viajeId)
-      .then(({ aviso: actual }) => vigente && setAviso(actual))
-      .catch((falla) => setError(falla.causa));
-    return () => { vigente = false; };
-  }, [viajeId]);
+    const cargarMiAviso = () => {
+      api.miAviso(viajeId)
+        .then(({ aviso: actual }) => {
+          if (!vigente) return;
+          setAviso(actual);
+          if (actual?.estado === "a_bordo") {
+            setCompartiendo(false);
+          } else if (actual?.aviso_cercania_enviado && actual?.parada?.nombre) {
+            setAvisoBusCerca(`Tu bus está cerca de ${actual.parada.nombre}`);
+          }
+        })
+        .catch((falla) => vigente && setError(falla.causa));
+    };
+    cargarMiAviso();
+
+    let socket = null;
+    if (typeof WebSocket !== "undefined") {
+      const protocolo = window.location.protocol === "https:" ? "wss:" : "ws:";
+      socket = new WebSocket(`${protocolo}//${window.location.host}/ws/viajes/${viajeId}/`);
+      socket.onmessage = ({ data }) => {
+        const evento = JSON.parse(data);
+        if (evento.tipo === "bus_cerca" && evento.estudiante === usuario?.id) {
+          setAvisoBusCerca(evento.mensaje);
+        }
+        if (evento.tipo === "aviso_actualizado") {
+          cargarMiAviso();
+        }
+      };
+    }
+    return () => {
+      vigente = false;
+      socket?.close();
+    };
+  }, [viajeId, usuario?.id]);
 
   const avisoConfirmado = aviso?.estado === "confirmado" ? aviso.id : null;
   useEffect(() => {
@@ -70,7 +101,14 @@ export default function VoyASubir({ rutaId, horarioId, paradas }) {
           latitud: posicion.coords.latitude,
           longitud: posicion.coords.longitude,
           tomada_en: new Date(posicion.timestamp).toISOString(),
-        }).catch((falla) => !falla.esDeRed && setError(falla.causa));
+        })
+          .then(({ aviso: actualizado }) => {
+            if (actualizado?.estado === "a_bordo") {
+              setCompartiendo(false);
+              setAviso(actualizado);
+            }
+          })
+          .catch((falla) => !falla.esDeRed && setError(falla.causa));
       },
       () => setError("No se pudo leer tu ubicación. Revisa el permiso del navegador."),
       { enableHighAccuracy: true, maximumAge: 10_000, timeout: 20_000 },
@@ -99,10 +137,26 @@ export default function VoyASubir({ rutaId, horarioId, paradas }) {
         Viaje de las {viaje.horario.salida} · {viaje.estado === "en_curso" ? "en curso" : "programado"}
       </p>
       {error && <div className="mt-2"><Aviso tipo="error">{error}</Aviso></div>}
+      {avisoBusCerca && aviso?.estado === "confirmado" && (
+        <div className="mt-2">
+          <Aviso tipo="alerta">🚌 {avisoBusCerca}</Aviso>
+        </div>
+      )}
       {aviso?.estado === "confirmado" && (
         <>
           <p className="mt-2 text-sm">Vas a subir en <strong>{aviso.parada.nombre}</strong>. El chofer ya lo sabe.</p>
           <div className="mt-3 flex flex-wrap gap-2">
+            <Boton
+              disabled={ocupado}
+              onClick={() => hacer(async () => {
+                const { aviso: actualizado } = await api.marcarSubio(aviso.id);
+                setCompartiendo(false);
+                setAvisoBusCerca("");
+                setAviso(actualizado);
+              })}
+            >
+              He subido
+            </Boton>
             <Boton variante="secundario" onClick={() => setCompartiendo((actual) => !actual)}>
               {compartiendo ? "Dejar de compartir mi ubicación" : "Compartir mi ubicación"}
             </Boton>
@@ -112,6 +166,7 @@ export default function VoyASubir({ rutaId, horarioId, paradas }) {
               onClick={() => hacer(async () => {
                 await api.cancelarAviso(aviso.id);
                 setCompartiendo(false);
+                setAvisoBusCerca("");
                 setAviso(null);
               })}
             >
@@ -120,7 +175,7 @@ export default function VoyASubir({ rutaId, horarioId, paradas }) {
           </div>
         </>
       )}
-      {aviso?.estado === "a_bordo" && <p className="mt-2 text-sm">Ya estás a bordo. ¡Buen viaje!</p>}
+      {aviso?.estado === "a_bordo" && <p className="mt-2 text-sm font-semibold text-green-800">Ya estás a bordo. ¡Buen viaje!</p>}
       {!aviso && (
         <div className="mt-2 flex flex-wrap items-end gap-2">
           <label className="text-sm">

@@ -102,3 +102,18 @@ class DetenerSimulacionVista(APIView):
     def post(self, request, simulacion_id):
         simulacion = simulador.detener_simulacion(request.user, simulacion_id)
         return Response({"simulacion": simulacion_a_dict(simulacion)})
+
+class SubioVista(APIView):
+    """HU-10. POST /api/avisos/<id>/subio: registra que el estudiante abordó el bus."""
+
+    def post(self, request, aviso_id):
+        aviso = servicios.marcar_a_bordo(request.user, aviso_id)
+        return Response({"aviso": aviso_a_dict(aviso)})
+
+
+class NoSePresentoVista(APIView):
+    """HU-10. POST /api/avisos/<id>/no-se-presento: el chofer marca que no se presentó."""
+
+    def post(self, request, aviso_id):
+        aviso = servicios.marcar_no_se_presento(request.user, aviso_id)
+        return Response({"aviso": aviso_a_dict(aviso)})

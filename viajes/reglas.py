@@ -1,7 +1,11 @@
 """Reglas puras de viajes y posiciones. No tocan la base de datos."""
 from comun.geo import coordenadas_validas
 from comun.rechazos import Rechazo, SinPermiso
+from comun.geo import coordenadas_validas, distancia_en_metros
 
+DISTANCIA_BUS_CERCA_M = 500
+DISTANCIA_BUS_ALEJADO_M = 100
+DISTANCIA_A_BORDO_M = 50
 
 def verificar_es_su_viaje(viaje, usuario):
     if viaje.chofer_id != usuario.pk:
@@ -95,3 +99,38 @@ def verificar_hay_paradas(paradas):
 def verificar_sin_simulacion_en_curso(hay_otra):
     if hay_otra:
         raise Rechazo("ya hay una simulación en curso: detenla primero")
+
+def esta_cerca_de_parada(posicion_bus, punto_parada):
+    return distancia_en_metros(posicion_bus, punto_parada) <= DISTANCIA_BUS_CERCA_M
+
+
+def debe_sugerir_saltar_parada(posicion_bus, punto_parada, nadie_espera, va_atrasado):
+    return (
+        nadie_espera
+        and va_atrasado
+        and esta_cerca_de_parada(posicion_bus, punto_parada)
+    )
+
+
+def verificar_puede_marcar_abordaje(aviso, viaje, usuario):
+    verificar_viaje_abierto(viaje)
+    es_estudiante_del_aviso = aviso.estudiante_id == usuario.pk
+    es_chofer_o_admin = viaje.chofer_id == usuario.pk or getattr(usuario, "es_administrador", False)
+    if not (es_estudiante_del_aviso or es_chofer_o_admin):
+        raise SinPermiso("no tienes permiso para registrar este abordaje")
+    verificar_aviso_confirmado(aviso)
+
+
+def verificar_puede_marcar_no_se_presento(aviso, viaje, usuario):
+    verificar_viaje_abierto(viaje)
+    verificar_puede_ver_avisos(viaje, usuario)
+    verificar_aviso_confirmado(aviso)
+
+
+def cumple_abordaje_automatico(posicion_bus, punto_parada, ubicacion_actual, anterior_cerca_del_bus):
+    """C-30, P-33: bus > 100 m lejos de la parada y 2 ubicaciones seguidas < 50 m del bus."""
+    if posicion_bus is None or ubicacion_actual is None or not anterior_cerca_del_bus:
+        return False
+    if distancia_en_metros(posicion_bus, punto_parada) <= DISTANCIA_BUS_ALEJADO_M:
+        return False
+    return distancia_en_metros(ubicacion_actual, posicion_bus) < DISTANCIA_A_BORDO_M
