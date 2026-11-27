@@ -8,7 +8,7 @@ from comun.rechazos import NoExiste
 from comun.tiempo import a_hora_local, ahora as ahora_local
 from rutas import reglas as reglas_de_rutas
 from rutas.models import Parada
-from rutas.servicios import registrar_paso
+from rutas.servicios import minutos_aprendidos, registrar_paso
 
 from . import reglas
 from .consumers import grupo_del_chofer, grupo_del_viaje
@@ -189,6 +189,7 @@ def dejar_de_compartir(aviso):
     aviso.ubicacion_latitud = aviso.ubicacion_longitud = aviso.ubicacion_en = None
     aviso.ubicacion_anterior_cerca_del_bus = False
 
+
 def _cerrar(aviso, estado, momento=None):
     aviso.estado = estado
     aviso.cerrado_en = momento or ahora_local()
@@ -221,6 +222,7 @@ def marcar_no_se_presento(usuario, aviso_id, momento=None):
     reglas.verificar_puede_marcar_no_se_presento(aviso, aviso.viaje, usuario)
     _cerrar(aviso, AvisoDeSubida.Estado.NO_SE_PRESENTO, momento)
     return aviso
+
 
 @transaction.atomic
 def cancelar_aviso(usuario, aviso_id):
@@ -268,6 +270,7 @@ def compartir_ubicacion(usuario, aviso_id, latitud, longitud, tomada_en):
     transaction.on_commit(lambda: _publicar_al_chofer(aviso.viaje_id, datos))
     return aviso
 
+
 def avisos_del_viaje(usuario, viaje_id):
     """Los que van a subir o ya subieron, con su ubicación: solo para el chofer y el administrador."""
     viaje = buscar_viaje(viaje_id)
@@ -302,19 +305,12 @@ def cerrar_avisos_del_viaje(viaje):
         ubicacion_latitud=None, ubicacion_longitud=None, ubicacion_en=None
     )
 
-def _viaje_va_atrasado(viaje, tomada_en):
-    """Determina si el viaje salió tarde o lleva retraso respecto al horario programado."""
-    salida = reglas_de_rutas.salida_programada(viaje.horario.salida, tomada_en)
-    if viaje.iniciado_en and viaje.iniciado_en > salida:
-        return True
-    return tomada_en > salida
-
 
 def _procesar_cercania_y_sugerencias(viaje, latitud, longitud, tomada_en):
     posicion_bus = (latitud, longitud)
 
-    # HU-09 CA1-CA3: Aviso «Tu bus está cerca» (<= 500 m, una sola vez por viaje)
-    pendientes = viaje.avisos.select_related("parada", "estudiante").filter(
+    # HU-09 CA1-CA3: «Tu bus está cerca» a 500 m o menos, una sola vez por viaje (RF-13).
+    pendientes = viaje.avisos.select_related("parada").filter(
         estado=AvisoDeSubida.Estado.CONFIRMADO,
         aviso_cercania_enviado=False,
     )
@@ -322,47 +318,49 @@ def _procesar_cercania_y_sugerencias(viaje, latitud, longitud, tomada_en):
         if reglas.esta_cerca_de_parada(posicion_bus, aviso.parada.punto):
             aviso.aviso_cercania_enviado = True
             aviso.save(update_fields=["aviso_cercania_enviado"])
+            # Va por el canal público del viaje, sin datos de la persona: cada estudiante
+            # reconoce su aviso por su id (la ubicación de los estudiantes es sensible, ENT-07).
             datos = {
                 "tipo": "bus_cerca",
-                "viaje": viaje.pk,
                 "aviso": aviso.pk,
-                "estudiante": aviso.estudiante_id,
                 "parada": aviso.parada_id,
                 "mensaje": f"Tu bus está cerca de {aviso.parada.nombre}",
             }
             transaction.on_commit(lambda d=datos: _enviar_posicion(viaje.pk, d))
 
-    # HU-09 CA4-CA5: Sugerencia al chofer de seguir si nadie espera y va atrasado (RF-12)
-    va_atrasado = _viaje_va_atrasado(viaje, tomada_en)
-    if not va_atrasado:
-        return
-    paradas_con_espera = set(
-        viaje.avisos.filter(estado=AvisoDeSubida.Estado.CONFIRMADO).values_list("parada_id", flat=True)
-    )
-    proximas = (
+    # HU-09 CA4-CA5: si nadie espera y el bus va atrasado, se sugiere seguir; el chofer decide (RF-12).
+    paradas_con_espera = viaje.avisos.filter(estado=AvisoDeSubida.Estado.CONFIRMADO).values("parada_id")
+    sin_nadie = (
         viaje.ruta.paradas.filter(estado=Parada.Estado.APROBADA)
+        .exclude(pk__in=paradas_con_espera)
         .exclude(pk__in=viaje.paradas_registradas.values("pk"))
         .exclude(pk__in=viaje.paradas_sugeridas_saltar.values("pk"))
     )
-    for parada in proximas:
-        nadie_espera = parada.pk not in paradas_con_espera
-        if reglas.debe_sugerir_saltar_parada(posicion_bus, parada.punto, nadie_espera, va_atrasado):
-            viaje.paradas_sugeridas_saltar.add(parada)
-            datos = {
-                "tipo": "sugerencia_saltar",
-                "viaje": viaje.pk,
-                "parada": parada.pk,
-                "parada_nombre": parada.nombre,
-                "mensaje": f"Nadie espera en {parada.nombre} y vas atrasado: puedes seguir sin detenerte.",
-            }
-            transaction.on_commit(lambda d=datos: _publicar_al_chofer(viaje.pk, d))
+    salida = reglas_de_rutas.salida_programada(viaje.horario.salida, tomada_en)
+    for parada in sin_nadie:
+        if not reglas.esta_cerca_de_parada(posicion_bus, parada.punto):
+            continue
+        minutos = minutos_aprendidos(parada, viaje.horario)
+        if not reglas.va_atrasado(salida, minutos, viaje.iniciado_en, tomada_en):
+            continue
+        viaje.paradas_sugeridas_saltar.add(parada)
+        datos = {
+            "tipo": "sugerencia_saltar",
+            "viaje": viaje.pk,
+            "parada": parada.pk,
+            "parada_nombre": parada.nombre,
+            "mensaje": f"Nadie espera en {parada.nombre}: puedes seguir",
+        }
+        transaction.on_commit(lambda d=datos: _publicar_al_chofer(viaje.pk, d))
 
 
 def _evaluar_abordaje_automatico_aviso(aviso, posicion_bus, momento=None, desde_bus=False):
     if posicion_bus is None or aviso.ubicacion_en is None:
         return False
     ubicacion_actual = (aviso.ubicacion_latitud, aviso.ubicacion_longitud)
-    if reglas.cumple_abordaje_automatico(
+    # Sube solo con una ubicación nueva del estudiante: la anterior ya estuvo junto al bus y
+    # esta también. Una posición nueva del bus no cuenta como otra ubicación suya (P-33).
+    if not desde_bus and reglas.cumple_abordaje_automatico(
         posicion_bus, aviso.parada.punto, ubicacion_actual, aviso.ubicacion_anterior_cerca_del_bus
     ):
         _completar_abordaje(aviso, momento)
@@ -403,11 +401,15 @@ def _completar_abordaje(aviso, momento=None):
             "ubicacion_anterior_cerca_del_bus",
         ]
     )
-    datos = {
+    nombre = aviso.estudiante.nombre
+    al_chofer = {
         "tipo": "aviso_actualizado",
         "aviso": aviso.pk,
         "estado": aviso.estado,
-        "estudiante": aviso.estudiante.nombre,
+        "estudiante": nombre,
+        "mensaje": f"{nombre}: ha subido",
     }
-    transaction.on_commit(lambda: _publicar_al_chofer(aviso.viaje_id, datos))
-    transaction.on_commit(lambda: _enviar_posicion(aviso.viaje_id, datos))
+    # Al canal público va sin el nombre: solo el estudiante de ese aviso lo reconoce.
+    al_viaje = {"tipo": "aviso_actualizado", "aviso": aviso.pk, "estado": aviso.estado}
+    transaction.on_commit(lambda: _publicar_al_chofer(aviso.viaje_id, al_chofer))
+    transaction.on_commit(lambda: _enviar_posicion(aviso.viaje_id, al_viaje))

@@ -103,6 +103,7 @@ class DetenerSimulacionVista(APIView):
         simulacion = simulador.detener_simulacion(request.user, simulacion_id)
         return Response({"simulacion": simulacion_a_dict(simulacion)})
 
+
 class SubioVista(APIView):
     """HU-10. POST /api/avisos/<id>/subio: registra que el estudiante abordó el bus."""
 

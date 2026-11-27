@@ -1,11 +1,13 @@
 """Reglas puras de viajes y posiciones. No tocan la base de datos."""
-from comun.geo import coordenadas_validas
-from comun.rechazos import Rechazo, SinPermiso
-from comun.geo import coordenadas_validas, distancia_en_metros
+from datetime import timedelta
 
-DISTANCIA_BUS_CERCA_M = 500
-DISTANCIA_BUS_ALEJADO_M = 100
-DISTANCIA_A_BORDO_M = 50
+from comun.geo import coordenadas_validas, distancia_en_metros
+from comun.rechazos import Rechazo, SinPermiso
+
+DISTANCIA_BUS_CERCA_M = 500  # RF-13
+DISTANCIA_BUS_ALEJADO_M = 100  # C-30, P-33
+DISTANCIA_A_BORDO_M = 50  # C-30, P-33
+
 
 def verificar_es_su_viaje(viaje, usuario):
     if viaje.chofer_id != usuario.pk:
@@ -100,16 +102,19 @@ def verificar_sin_simulacion_en_curso(hay_otra):
     if hay_otra:
         raise Rechazo("ya hay una simulación en curso: detenla primero")
 
+
 def esta_cerca_de_parada(posicion_bus, punto_parada):
     return distancia_en_metros(posicion_bus, punto_parada) <= DISTANCIA_BUS_CERCA_M
 
 
-def debe_sugerir_saltar_parada(posicion_bus, punto_parada, nadie_espera, va_atrasado):
-    return (
-        nadie_espera
-        and va_atrasado
-        and esta_cerca_de_parada(posicion_bus, punto_parada)
-    )
+def va_atrasado(salida, minutos_aprendidos, iniciado_en, momento):
+    """RF-12: atrasado si pasa por la parada después de su hora aproximada.
+
+    Sin horas aprendidas de esa parada, si el viaje salió tarde (C-40).
+    """
+    if minutos_aprendidos is not None:
+        return momento > salida + timedelta(minutes=minutos_aprendidos)
+    return iniciado_en is not None and iniciado_en > salida
 
 
 def verificar_puede_marcar_abordaje(aviso, viaje, usuario):
