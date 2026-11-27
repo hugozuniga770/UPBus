@@ -38,7 +38,7 @@ export default function AvisosDelViaje({ viajeId }) {
       socket = new WebSocket(`${protocolo}//${window.location.host}/ws/viajes/${viajeId}/chofer/`);
       socket.onmessage = ({ data }) => {
         const evento = JSON.parse(data);
-        if (evento.tipo === "aviso") setUltimaAlerta(evento.mensaje);
+        if (evento.tipo === "aviso" || evento.tipo === "aviso_actualizado") setUltimaAlerta(evento.mensaje);
         if (evento.tipo === "sugerencia_saltar") setSugerenciaSeguir(evento.mensaje);
         if (["aviso", "aviso_cerrado", "aviso_actualizado", "ubicacion"].includes(evento.tipo)) {
           consultar();

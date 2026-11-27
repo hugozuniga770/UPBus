@@ -22,6 +22,11 @@ export default function VoyASubir({ rutaId, horarioId, paradas }) {
   const [ocupado, setOcupado] = useState(false);
   const [error, setError] = useState("");
   const ultimoEnvio = useRef(0);
+  // El canal del viaje es público: los eventos traen el id del aviso, no quién es.
+  const miAvisoId = useRef(null);
+  useEffect(() => {
+    miAvisoId.current = aviso?.id ?? null;
+  }, [aviso?.id]);
 
   useEffect(() => {
     if (!puedeAvisar || !rutaId) return undefined;
@@ -72,19 +77,16 @@ export default function VoyASubir({ rutaId, horarioId, paradas }) {
       socket = new WebSocket(`${protocolo}//${window.location.host}/ws/viajes/${viajeId}/`);
       socket.onmessage = ({ data }) => {
         const evento = JSON.parse(data);
-        if (evento.tipo === "bus_cerca" && evento.estudiante === usuario?.id) {
-          setAvisoBusCerca(evento.mensaje);
-        }
-        if (evento.tipo === "aviso_actualizado") {
-          cargarMiAviso();
-        }
+        if (evento.aviso !== miAvisoId.current) return;
+        if (evento.tipo === "bus_cerca") setAvisoBusCerca(evento.mensaje);
+        if (evento.tipo === "aviso_actualizado") cargarMiAviso();
       };
     }
     return () => {
       vigente = false;
       socket?.close();
     };
-  }, [viajeId, usuario?.id]);
+  }, [viajeId]);
 
   const avisoConfirmado = aviso?.estado === "confirmado" ? aviso.id : null;
   useEffect(() => {
