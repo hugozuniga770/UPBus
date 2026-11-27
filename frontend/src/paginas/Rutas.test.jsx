@@ -4,11 +4,22 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { SesionContexto } from "../sesion/SesionContexto.jsx";
 import Rutas from "./Rutas.jsx";
 
+// El mapa de mentira muestra a qué apunta la cámara y deja simular que se arrastra.
 vi.mock("../componentes/Mapa.jsx", () => ({
-  default: ({ children }) => <div>{children}</div>,
+  default: ({ children, foco, claveEncuadre, alArrastrar }) => (
+    <div
+      data-testid="mapa"
+      data-foco={foco ? `${foco.clave} ${foco.punto.join(",")}` : ""}
+      data-encuadre={claveEncuadre ?? ""}
+    >
+      <button type="button" onClick={alArrastrar}>Arrastrar el mapa</button>
+      {children}
+    </div>
+  ),
 }));
 vi.mock("react-leaflet", () => ({
-  CircleMarker: ({ children }) => <div>{children}</div>,
+  CircleMarker: ({ children, eventHandlers }) => <div onClick={eventHandlers?.click}>{children}</div>,
+  Pane: ({ children }) => <div>{children}</div>,
   Polyline: ({ eventHandlers }) => (eventHandlers ? (
     <button
       type="button"
@@ -139,5 +150,82 @@ describe("Paradas propuestas y aprobación (HU-08)", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Aprobar" }));
     await waitFor(() => expect(screen.getByText("Parada aprobada y añadida al recorrido.")).toBeInTheDocument());
+  });
+});
+
+describe("Cámara del mapa (soporte de HU-06)", () => {
+  afterEach(() => vi.restoreAllMocks());
+
+  const PARADA = { id: 10, nombre: "Parada El Cristo", latitud: -17.75, longitud: -63.17, orden: 1, estado: "aprobada", hora_aproximada: "06:52" };
+
+  function servidor(viajes = []) {
+    vi.stubGlobal("fetch", vi.fn(async (url) => {
+      if (url === "/api/rutas") {
+        return { ok: true, status: 200, json: async () => ({ rutas: [RUTA] }) };
+      }
+      if (url.startsWith("/api/rutas/1")) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({
+            ruta: { ...RUTA, horario_elegido: 1, recorrido: [[-17.72, -63.16], [-17.78, -63.18]], paradas: [PARADA] },
+          }),
+        };
+      }
+      if (url === "/api/viajes?ruta=1&estado=en_curso") {
+        return { ok: true, status: 200, json: async () => ({ viajes }) };
+      }
+      return { ok: true, status: 200, json: async () => ({}) };
+    }));
+    vi.stubGlobal("WebSocket", class {
+      close() {}
+    });
+  }
+
+  it("muestra la ruta entera cuando llega y otra vez con «Toda la ruta»", async () => {
+    servidor();
+    render(<Rutas />);
+    await screen.findByRole("heading", { name: "Ruta Norte" });
+    expect(screen.getByTestId("mapa")).toHaveAttribute("data-encuadre", "1-0");
+
+    fireEvent.click(screen.getByRole("button", { name: "🗺️ Toda la ruta" }));
+
+    expect(screen.getByTestId("mapa")).toHaveAttribute("data-encuadre", "1-1");
+  });
+
+  it("tocar una parada, en la lista o en el mapa, lleva la cámara a esa parada", async () => {
+    servidor();
+    render(<Rutas />);
+    await screen.findByRole("heading", { name: "Ruta Norte" });
+    expect(screen.getByTestId("mapa")).toHaveAttribute("data-foco", "");
+
+    fireEvent.click(screen.getByRole("button", { name: /Parada El Cristo/ }));
+    expect(screen.getByTestId("mapa")).toHaveAttribute("data-foco", "parada-1 -17.75,-63.17");
+
+    fireEvent.click(screen.getByText("1. Parada El Cristo · 06:52"));
+    expect(screen.getByTestId("mapa")).toHaveAttribute("data-foco", "parada-2 -17.75,-63.17");
+  });
+
+  it("sigue al bus hasta que la persona mueve el mapa, y tocar el bus lo vuelve a seguir", async () => {
+    servidor([{
+      id: 17,
+      estado: "en_curso",
+      simulado: true,
+      ultima_posicion: { latitud: -17.76, longitud: -63.17, tomada_en: "2026-11-27T07:00:00-04:00" },
+    }]);
+    render(<Rutas />);
+    const seguir = await screen.findByRole("button", { name: "🚌 Seguir al bus" });
+    expect(seguir).toHaveAttribute("aria-pressed", "false");
+
+    fireEvent.click(seguir);
+    expect(screen.getByRole("button", { name: "🚌 Siguiendo al bus" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByTestId("mapa")).toHaveAttribute("data-foco", "bus -17.76,-63.17");
+
+    fireEvent.click(screen.getByRole("button", { name: "Arrastrar el mapa" }));
+    expect(screen.getByRole("button", { name: "🚌 Seguir al bus" })).toHaveAttribute("aria-pressed", "false");
+    expect(screen.getByTestId("mapa")).toHaveAttribute("data-foco", "");
+
+    fireEvent.click(screen.getByText("🧪 Bus simulado"));
+    expect(screen.getByTestId("mapa")).toHaveAttribute("data-foco", "bus -17.76,-63.17");
   });
 });

@@ -302,7 +302,7 @@ export default function ModoRegistro() {
 
   return (
     <div className="absolute inset-0">
-      <Mapa centro={aqui ?? undefined} zoom={16} seguir={seguir ? aqui : null}>
+      <Mapa centro={aqui ?? undefined} zoom={16} foco={seguir && aqui ? { punto: aqui, clave: "aqui" } : null}>
         <DejarDeSeguirAlArrastrar alArrastrar={() => setSeguir(false)} />
         {estado?.puntos?.length > 1 && (
           <Polyline positions={estado.puntos.map((p) => [p.latitud, p.longitud])} pathOptions={{ color: "#3c8dbc", weight: 5 }} />
