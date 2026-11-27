@@ -99,7 +99,7 @@ Ejemplos completos para copiar el molde: `cuentas/` (HU-03, gestión de usuarios
    git pull
    git checkout -b hu-05-viajes
    ```
-2. **Copia los criterios.** En la [sesión 7](sesion-07-modelos.md) están los criterios de tu historia con el nombre de cada test. Crea `tests/test_hu05_<tema>.py` con esos nombres.
+2. **Copia los criterios.** En la [sesión 7](sesion-07-modelos.md) está tu historia (Como … quiero … para …) con sus criterios: cada uno con su tipo, su escenario de prueba (Dado / Cuando / Entonces) y el nombre de su test. Si hace falta un criterio nuevo, se escribe igual: una condición clara y medible, con su tipo, y se revisa con el Product Owner. Crea `tests/test_hu05_<tema>.py` con esos nombres.
 3. **Escribe el primer test y míralo fallar.** Usa los datos y fixtures de `tests/conftest.py`: `hugo`, `sebastian`, `ismael`, `marco`, `cliente`, `cliente_de(persona)`, `ruta_norte`, `horario_0640`, `hora(dia, horas, minutos)` y los puntos `LA_FONTANA`, `SEVILLA`, `PETROL`, `CAMPOS` y `CAMPUS_UPB`.
 4. **Modelo:** agrega lo que necesitas en `models.py` y crea la migración con `python manage.py makemigrations <app>`. El diseño propuesto está en la [sesión 13–14](sesion-13-14-diseno.md), sección 3.
 5. **Reglas:** una función por cosa que se decide, con el mensaje exacto del documento, por ejemplo `verificar_es_su_viaje` → `«este viaje no es tuyo»`.

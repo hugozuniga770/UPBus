@@ -8,7 +8,7 @@ UPBus conecta en tiempo real a los estudiantes y choferes de los buses de la UPB
 
 ## Antes de escribir código
 
-1. Lee los criterios de la historia en [`docs/sesion-07-modelos.md`](docs/sesion-07-modelos.md). Cada criterio es un test con un nombre ya escrito (`test_HUxx_CAy_...`).
+1. Lee la historia (Como … quiero … para …) y sus criterios en [`docs/sesion-07-modelos.md`](docs/sesion-07-modelos.md). Cada criterio dice su tipo (funcional, regla de negocio, manejo de errores o no funcional), trae su escenario de prueba (Dado / Cuando / Entonces) y es un test con un nombre ya escrito (`test_HUxx_CAy_...`).
 2. Lee el issue de la tarea: dice dónde va el código y de qué depende.
 3. Mira el molde en `cuentas/` (HU-03) y `rutas/` (HU-18).
 

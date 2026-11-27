@@ -5,7 +5,7 @@ Busca la sigla, lee su significado y sigue.
 ## Ficha del documento
 
 - Proyecto: UPBus — Buses UPB en tiempo real
-- Creado: 13/11/2026 · Actualizado: 25/11/2026 (abordaje, ajustes y pago, PO25). El 18/11/2026: modo registro, padrón local y términos del código · Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
+- Creado: 13/11/2026 · Actualizado: 27/11/2026 (historia de usuario, tipos de criterio e INVEST, C-41). El 25/11/2026: abordaje, ajustes y pago (PO25). El 18/11/2026: modo registro, padrón local y términos del código · Issue: [#1](https://github.com/hugozuniga770/UPBus/issues/1) · Milestone: Sprint 1
 - Elaboración: Hugo Zuñiga, con asistencia de Claude (Anthropic)
 
 ## 0. Cómo se arma un ID
@@ -19,8 +19,8 @@ Busca la sigla, lee su significado y sigue.
 | RF | Requisito funcional: algo que la app debe hacer | RF-09, «Voy a subir» | `sesion-06-requisitos.md` |
 | RC | Requisito de calidad: cómo debe hacerlo | RC-03, un rechazo no deja la operación a medias | `sesion-06-requisitos.md` |
 | RT | Restricción: algo ya decidido sobre la tecnología | RT-02, SQLite | `sesion-06-requisitos.md` |
-| HU | Historia de usuario | HU-07 | `sesion-07-modelos.md` |
-| CA | Criterio de aceptación; cada uno es un test | HU07-CA2 | `sesion-07-modelos.md` |
+| HU | Historia de usuario: «Como (rol), quiero (acción), para (beneficio)». Cumple INVEST | HU-07 | `sesion-07-modelos.md` |
+| CA | Criterio de aceptación: condición clara, medible y verificable para dar la historia por terminada. Tiene su tipo (funcional, regla de negocio, manejo de errores o no funcional) y cada uno es un test | HU07-CA2 | `sesion-07-modelos.md` |
 | CU | Caso de uso: los pasos de una historia. Mismo número que su historia | CU-07 | `sesion-07-modelos.md`, `diagramas-secuencia.md` |
 | P-xx | Pregunta abierta para el Product Owner | P-06, horas de llegada | `sesion-06-requisitos.md`, sección 6 |
 | C-xx | Cambio registrado a algo ya acordado | C-02, créditos en lugar de QR | `cambios.md` |
@@ -93,6 +93,8 @@ Busca la sigla, lee su significado y sigue.
 | Sprint | Ciclo de una semana que termina con algo que funciona |
 | Incremento | Lo terminado en un sprint que cumple la Definition of Done |
 | MVP | Producto mínimo viable: la primera versión que ya resuelve el problema principal |
+| INVEST | Lo que cumple una buena historia: Independiente, Negociable, Valiosa, Estimable, pequeña (Small) y Testeable. Ver la sesión 7, sección 1 |
+| Escenario de prueba | El ejemplo con datos que comprueba un criterio, con la forma Dado / Cuando / Entonces |
 | Modo registro | Modo del chofer y del administrador para grabar paradas, horas y recorrido en un viaje real (RF-23, HU-18) |
 | Registro | Una grabación del modo registro: una ruta, un horario y sus marcas |
 | Marca | Lo que se guarda al tocar «Parada» en el modo registro: posición, precisión del GPS y hora |

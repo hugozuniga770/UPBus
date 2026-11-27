@@ -1,73 +1,74 @@
 # Trazabilidad: requisito → criterio → test → código
 
 - Proyecto: UPBus — Buses UPB en tiempo real (UPB Santa Cruz)
-- Fecha: 18/11/2026 · Actualizado: 27/11/2026 (T16 y las pruebas de soporte de la cámara del mapa). El 25/11/2026: C-23, C-25; 75 criterios desde C-29 y C-30 · Tarea T21 (empezada con la base) · Issue: [#16](https://github.com/hugozuniga770/UPBus/issues/16)
+- Fecha: 18/11/2026 · Actualizado: 27/11/2026 (mediodía: columna «Tipo» de cada criterio, C-41; antes, T16 y las pruebas de soporte de la cámara del mapa). El 25/11/2026: C-23, C-25; 75 criterios desde C-29 y C-30 · Tarea T21 (empezada con la base) · Issue: [#16](https://github.com/hugozuniga770/UPBus/issues/16)
 - Criterios completos: [Sesión 7](sesion-07-modelos.md) · Requisitos: [Sesión 6](sesion-06-requisitos.md)
 
 ## 0. Cómo se mantiene
 
 - Cada criterio de la sesión 7 es un test con el mismo nombre. Cuando una historia se termina, quien la hizo agrega aquí sus filas, en el mismo Pull Request.
+- «Tipo» es el tipo del criterio en la sesión 7: funcional, regla de negocio, manejo de errores o no funcional.
 - «Código» nombra el servicio, la regla o la vista que cumple el criterio, para encontrarlo rápido.
 - Al 27/11/2026 hay **54 de 75** criterios con su test en verde: 13 historias completas.
 
 ## 1. Criterios con su test (base del código)
 
-| Criterio | Requisito | Test de pytest | Código | Prueba de interfaz |
-|---|---|---|---|---|
-| HU01-CA1 | RF-01 | `tests/test_hu01_registro.py::test_HU01_CA1_registra_cuenta_con_codigo_y_correo_del_padron` | `cuentas.servicios.registrar` | — |
-| HU01-CA2 | RF-01 | `tests/test_hu01_registro.py::test_HU01_CA2_rechaza_registro_de_persona_inactiva` | `cuentas.reglas.verificar_persona_activa` | — |
-| HU01-CA3 | RF-01 | `tests/test_hu01_registro.py::test_HU01_CA3_rechaza_si_las_contrasenas_no_coinciden` | `cuentas.reglas.verificar_contrasenas_iguales` | `frontend/src/paginas/Registrarse.test.jsx` |
-| HU01-CA4 | RF-01, RF-03 | `tests/test_hu01_registro.py::test_HU01_CA4_la_cuenta_toma_el_rol_de_administrador_del_padron` | `cuentas.reglas.rol_desde_el_padron` | — |
-| HU02-CA1 | RF-02 | `tests/test_hu02_sesion.py::test_HU02_CA1_entra_con_su_codigo` | `cuentas.backends.CodigoOCorreoBackend` | — |
-| HU02-CA2 | RF-02 | `tests/test_hu02_sesion.py::test_HU02_CA2_entra_con_su_correo` | `cuentas.backends.buscar_por_identificador` | — |
-| HU02-CA3 | RF-02 | `tests/test_hu02_sesion.py::test_HU02_CA3_un_solo_mensaje_si_algo_no_coincide` | `cuentas.reglas.verificar_credenciales` | `frontend/src/paginas/IniciarSesion.test.jsx` |
-| HU02-CA4 | RF-02 | `tests/test_hu02_sesion.py::test_HU02_CA4_al_cerrar_sesion_vuelve_a_pedir_inicio` | `cuentas.views.SesionVista` (DELETE), `comun.respuestas.manejar_excepcion` | — |
-| HU03-CA1 | RF-04 | `tests/test_hu03_usuarios.py::test_HU03_CA1_el_administrador_crea_la_cuenta_de_un_chofer` | `cuentas.servicios.crear_cuenta` | — |
-| HU03-CA2 | RF-04 | `tests/test_hu03_usuarios.py::test_HU03_CA2_rechaza_un_correo_que_ya_tiene_cuenta` | `cuentas.reglas.verificar_correo_libre` | — |
-| HU03-CA3 | RF-03 | `tests/test_hu03_usuarios.py::test_HU03_CA3_un_estudiante_no_puede_crear_cuentas` | `cuentas.reglas.verificar_es_administrador` | — |
-| HU03-CA4 | RF-04 | `tests/test_hu03_usuarios.py::test_HU03_CA4_eliminar_desactiva_la_cuenta` | `cuentas.servicios.eliminar_cuenta` | — |
-| HU04-CA1 | RF-05 | `tests/test_hu04_rutas.py::test_HU04_CA1_ve_la_ruta_con_recorrido_paradas_y_horarios` | `rutas.servicios.ver_ruta` | — |
-| HU04-CA2 | RF-05 | `tests/test_hu04_rutas.py::test_HU04_CA2_el_estudiante_ve_solo_las_paradas_aprobadas` | `rutas.servicios.paradas_visibles` | — |
-| HU05-CA1 | RF-06 | `tests/test_hu05_viajes.py::test_HU05_CA1_el_chofer_inicia_su_viaje` | `viajes.servicios.iniciar_viaje` | `frontend/src/paginas/Viajes.test.jsx` |
-| HU05-CA2 | RF-06 | `tests/test_hu05_viajes.py::test_HU05_CA2_rechaza_un_segundo_viaje_en_curso` | `viajes.reglas.verificar_sin_viaje_en_curso` | — |
-| HU05-CA3 | RF-06 | `tests/test_hu05_viajes.py::test_HU05_CA3_el_chofer_termina_su_viaje` | `viajes.servicios.terminar_viaje`, `frontend/src/paginas/Viajes.jsx` | — |
-| HU05-CA4 | RF-03, RF-06 | `tests/test_hu05_viajes.py::test_HU05_CA4_rechaza_iniciar_un_viaje_ajeno` | `viajes.reglas.verificar_es_su_viaje` | — |
-| HU06-CA1 | RF-07 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA1_la_posicion_del_bus_llega_a_quienes_miran_la_ruta` | `viajes.servicios.registrar_posicion`, `viajes.consumers.ViajeConsumer`, `frontend/src/paginas/Rutas.jsx` | `frontend/src/paginas/Rutas.test.jsx` |
-| HU06-CA2 | RF-07 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA2_rechaza_posiciones_de_un_viaje_que_no_esta_en_curso` | `viajes.reglas.verificar_en_curso` | — |
-| HU06-CA3 | RF-11 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA3_pasar_a_menos_de_50_m_registra_un_paso` | `viajes.servicios.registrar_posicion`, `rutas.servicios.registrar_paso` | — |
-| HU06-CA4 | RF-11 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA4_pasar_a_80_m_no_cuenta_como_llegada` | `rutas.reglas.parada_mas_cercana` | — |
-| HU06-CA5 | RF-07 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA5_sin_senal_se_ve_la_ultima_posicion_con_su_hora` | `viajes.serializadores.viaje_a_dict`, `frontend/src/paginas/Rutas.jsx` | — |
-| HU07-CA1 | RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA1_avisa_que_va_a_subir` | `viajes.servicios.avisar_que_va_a_subir`, `viajes.consumers.ChoferDelViajeConsumer` | `frontend/src/componentes/VoyASubir.test.jsx` |
-| HU07-CA2 | RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA2_rechaza_un_segundo_aviso_en_el_mismo_viaje` | `viajes.reglas.verificar_sin_aviso_activo` | `frontend/src/componentes/VoyASubir.test.jsx` |
-| HU07-CA3 | RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA3_si_el_bus_pasa_y_no_subio_queda_no_se_presento` | `viajes.servicios.cerrar_no_presentados` | — |
-| HU07-CA4 | RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA4_puede_cancelar_antes_de_que_pase_el_bus` | `viajes.servicios.cancelar_aviso` | — |
-| HU07-CA5 | RF-08 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA5_el_chofer_ve_la_ubicacion_compartida` | `viajes.servicios.compartir_ubicacion`, `viajes.reglas.verificar_puede_ver_avisos`, `frontend/src/componentes/AvisosDelViaje.jsx` | — |
-| HU07-CA6 | RF-08 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA6_deja_de_compartir_al_subir` | `viajes.servicios.marcar_a_bordo`, `viajes.servicios.dejar_de_compartir` | — |
-| HU07-CA7 | RF-03, RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA7_un_administrador_tambien_puede_avisar` | `viajes.reglas.verificar_puede_avisar` | — |
-| HU08-CA1 | RF-10 | `tests/test_hu08_paradas_propuestas.py::test_HU08_CA1_propone_una_parada_sobre_la_ruta` | `rutas.servicios.proponer_parada`, `frontend/src/paginas/Rutas.jsx` | `frontend/src/paginas/Rutas.test.jsx` |
-| HU08-CA2 | RF-10 | `tests/test_hu08_paradas_propuestas.py::test_HU08_CA2_rechaza_una_parada_lejos_del_recorrido` | `rutas.reglas.verificar_cerca_del_recorrido`, `comun.geo.distancia_a_recorrido` | — |
-| HU08-CA3 | RF-10 | `tests/test_hu08_paradas_propuestas.py::test_HU08_CA3_una_parada_sin_nadie_no_esta_activa` | `viajes.serializadores.viaje_a_dict` (`paradas_activas`) | — |
-| HU08-CA4 | RF-10 | `tests/test_hu08_paradas_propuestas.py::test_HU08_CA4_el_administrador_aprueba_una_parada_propuesta` | `rutas.servicios.aprobar_parada`, `rutas.reglas.verificar_puede_aprobar_parada`, `rutas.servicios.paradas_visibles` | `frontend/src/paginas/Rutas.test.jsx` |
-| HU09-CA1 | RF-13 | `tests/test_hu09_aviso_bus_cerca.py::test_HU09_CA1_avisa_cuando_el_bus_esta_a_500_m_o_menos` | `viajes.servicios.registrar_posicion`, `viajes.reglas.esta_cerca_de_parada`, `frontend/src/componentes/VoyASubir.jsx` | — |
-| HU09-CA2 | RF-13 | `tests/test_hu09_aviso_bus_cerca.py::test_HU09_CA2_no_avisa_a_mas_de_500_m` | `viajes.reglas.esta_cerca_de_parada` | — |
-| HU09-CA3 | RF-13 | `tests/test_hu09_aviso_bus_cerca.py::test_HU09_CA3_avisa_una_sola_vez_por_viaje` | `viajes.models.AvisoDeSubida.aviso_cercania_enviado` | — |
-| HU09-CA4 | RF-12 | `tests/test_hu09_aviso_bus_cerca.py::test_HU09_CA4_sugiere_seguir_si_nadie_espera` | `viajes.reglas.va_atrasado`, `frontend/src/componentes/AvisosDelViaje.jsx` | — |
-| HU09-CA5 | RF-12 | `tests/test_hu09_aviso_bus_cerca.py::test_HU09_CA5_no_sugiere_seguir_si_alguien_viene` | `viajes.servicios.registrar_posicion` | — |
-| HU10-CA1 | RF-14 | `tests/test_hu10_quien_subio.py::test_HU10_CA1_el_estudiante_registra_que_subio` | `viajes.servicios.marcar_a_bordo`, `viajes.reglas.verificar_puede_marcar_abordaje` | `frontend/src/componentes/VoyASubir.test.jsx` |
-| HU10-CA2 | RF-14 | `tests/test_hu10_quien_subio.py::test_HU10_CA2_el_chofer_registra_que_subio` | `viajes.servicios.marcar_a_bordo`, `frontend/src/componentes/AvisosDelViaje.jsx` | `frontend/src/componentes/VoyASubir.test.jsx` |
-| HU10-CA3 | RF-14 | `tests/test_hu10_quien_subio.py::test_HU10_CA3_rechaza_subir_a_un_viaje_terminado` | `viajes.reglas.verificar_viaje_abierto` | — |
-| HU10-CA4 | RF-14 | `tests/test_hu10_quien_subio.py::test_HU10_CA4_el_chofer_marca_no_se_presento` | `viajes.servicios.marcar_no_se_presento`, `viajes.reglas.verificar_puede_marcar_no_se_presento` | `frontend/src/componentes/VoyASubir.test.jsx` |
-| HU10-CA5 | RF-14 | `tests/test_hu10_quien_subio.py::test_HU10_CA5_queda_a_bordo_si_avanza_con_el_bus` | `viajes.reglas.cumple_abordaje_automatico`, `viajes.servicios.compartir_ubicacion` | — |
-| HU14-CA1 | RF-19 | `tests/test_hu14_chat_directo.py::test_HU14_CA1_el_confirmado_le_escribe_al_chofer` | `mensajes.servicios.enviar_mensaje_directo`, `mensajes.consumers.ChatDirectoConsumer` | `frontend/src/componentes/ChatDirecto.test.jsx` |
-| HU14-CA2 | RF-19 | `tests/test_hu14_chat_directo.py::test_HU14_CA2_rechaza_escribir_sin_estar_en_el_viaje` | `mensajes.reglas.verificar_confirmado` | `frontend/src/componentes/ChatDirecto.test.jsx` |
-| HU14-CA3 | RF-19 | `tests/test_hu14_chat_directo.py::test_HU14_CA3_el_chofer_responde_con_una_respuesta_rapida` | `mensajes.reglas.verificar_respuesta_rapida`, `mensajes.servicios.enviar_mensaje_directo` | `frontend/src/componentes/ChatDirecto.test.jsx` |
-| HU15-CA1 | RF-20 | `tests/test_hu15_chat_de_ruta.py::test_HU15_CA1_el_miembro_escribe_en_el_chat_de_su_ruta` | `mensajes.servicios.elegir_ruta`, `mensajes.servicios.enviar_mensaje_de_ruta`, `mensajes.consumers.ChatDeRutaConsumer` | `frontend/src/componentes/ChatDeRuta.test.jsx` |
-| HU15-CA2 | RF-20 | `tests/test_hu15_chat_de_ruta.py::test_HU15_CA2_rechaza_escribir_en_una_ruta_ajena` | `mensajes.reglas.verificar_es_miembro_de_la_ruta` | `frontend/src/componentes/ChatDeRuta.test.jsx` |
-| HU18-CA1 | RF-23, RF-11 | `tests/test_hu18_modo_registro.py::test_HU18_CA1_el_primer_registro_crea_las_paradas_y_sus_horas` | `rutas.servicios.terminar_registro`, `rutas.reglas.hora_aproximada` | — |
-| HU18-CA2 | RF-23, RF-11 | `tests/test_hu18_modo_registro.py::test_HU18_CA2_un_segundo_registro_ajusta_la_hora_sin_duplicar_la_parada` | `rutas.reglas.parada_mas_cercana`, `rutas.reglas.salida_programada`, `rutas.servicios.minutos_aprendidos` | — |
-| HU18-CA3 | RF-23 | `tests/test_hu18_modo_registro.py::test_HU18_CA3_un_estudiante_no_puede_usar_el_modo_registro` | `rutas.reglas.verificar_puede_registrar` | — |
-| HU18-CA4 | RF-23 | `tests/test_hu18_modo_registro.py::test_HU18_CA4_rechaza_una_marca_a_menos_de_50_m_de_otra` | `rutas.reglas.verificar_lejos_de_las_otras_marcas` | — |
-| HU18-CA5 | RF-23 | `tests/test_hu18_modo_registro.py::test_HU18_CA5_una_marca_reenviada_se_guarda_una_sola_vez` | `rutas.servicios.marcar_parada` | `frontend/src/registro/cola.test.js` |
+| Criterio | Tipo | Requisito | Test de pytest | Código | Prueba de interfaz |
+|---|---|---|---|---|---|
+| HU01-CA1 | Funcional | RF-01 | `tests/test_hu01_registro.py::test_HU01_CA1_registra_cuenta_con_codigo_y_correo_del_padron` | `cuentas.servicios.registrar` | — |
+| HU01-CA2 | Regla de negocio | RF-01 | `tests/test_hu01_registro.py::test_HU01_CA2_rechaza_registro_de_persona_inactiva` | `cuentas.reglas.verificar_persona_activa` | — |
+| HU01-CA3 | Manejo de errores | RF-01 | `tests/test_hu01_registro.py::test_HU01_CA3_rechaza_si_las_contrasenas_no_coinciden` | `cuentas.reglas.verificar_contrasenas_iguales` | `frontend/src/paginas/Registrarse.test.jsx` |
+| HU01-CA4 | Regla de negocio | RF-01, RF-03 | `tests/test_hu01_registro.py::test_HU01_CA4_la_cuenta_toma_el_rol_de_administrador_del_padron` | `cuentas.reglas.rol_desde_el_padron` | — |
+| HU02-CA1 | Funcional | RF-02 | `tests/test_hu02_sesion.py::test_HU02_CA1_entra_con_su_codigo` | `cuentas.backends.CodigoOCorreoBackend` | — |
+| HU02-CA2 | Funcional | RF-02 | `tests/test_hu02_sesion.py::test_HU02_CA2_entra_con_su_correo` | `cuentas.backends.buscar_por_identificador` | — |
+| HU02-CA3 | No funcional | RF-02 | `tests/test_hu02_sesion.py::test_HU02_CA3_un_solo_mensaje_si_algo_no_coincide` | `cuentas.reglas.verificar_credenciales` | `frontend/src/paginas/IniciarSesion.test.jsx` |
+| HU02-CA4 | Funcional | RF-02 | `tests/test_hu02_sesion.py::test_HU02_CA4_al_cerrar_sesion_vuelve_a_pedir_inicio` | `cuentas.views.SesionVista` (DELETE), `comun.respuestas.manejar_excepcion` | — |
+| HU03-CA1 | Funcional | RF-04 | `tests/test_hu03_usuarios.py::test_HU03_CA1_el_administrador_crea_la_cuenta_de_un_chofer` | `cuentas.servicios.crear_cuenta` | — |
+| HU03-CA2 | Regla de negocio | RF-04 | `tests/test_hu03_usuarios.py::test_HU03_CA2_rechaza_un_correo_que_ya_tiene_cuenta` | `cuentas.reglas.verificar_correo_libre` | — |
+| HU03-CA3 | Regla de negocio | RF-03 | `tests/test_hu03_usuarios.py::test_HU03_CA3_un_estudiante_no_puede_crear_cuentas` | `cuentas.reglas.verificar_es_administrador` | — |
+| HU03-CA4 | Regla de negocio | RF-04 | `tests/test_hu03_usuarios.py::test_HU03_CA4_eliminar_desactiva_la_cuenta` | `cuentas.servicios.eliminar_cuenta` | — |
+| HU04-CA1 | Funcional | RF-05 | `tests/test_hu04_rutas.py::test_HU04_CA1_ve_la_ruta_con_recorrido_paradas_y_horarios` | `rutas.servicios.ver_ruta` | — |
+| HU04-CA2 | Regla de negocio | RF-05 | `tests/test_hu04_rutas.py::test_HU04_CA2_el_estudiante_ve_solo_las_paradas_aprobadas` | `rutas.servicios.paradas_visibles` | — |
+| HU05-CA1 | Funcional | RF-06 | `tests/test_hu05_viajes.py::test_HU05_CA1_el_chofer_inicia_su_viaje` | `viajes.servicios.iniciar_viaje` | `frontend/src/paginas/Viajes.test.jsx` |
+| HU05-CA2 | Regla de negocio | RF-06 | `tests/test_hu05_viajes.py::test_HU05_CA2_rechaza_un_segundo_viaje_en_curso` | `viajes.reglas.verificar_sin_viaje_en_curso` | — |
+| HU05-CA3 | Funcional | RF-06 | `tests/test_hu05_viajes.py::test_HU05_CA3_el_chofer_termina_su_viaje` | `viajes.servicios.terminar_viaje`, `frontend/src/paginas/Viajes.jsx` | — |
+| HU05-CA4 | Regla de negocio | RF-03, RF-06 | `tests/test_hu05_viajes.py::test_HU05_CA4_rechaza_iniciar_un_viaje_ajeno` | `viajes.reglas.verificar_es_su_viaje` | — |
+| HU06-CA1 | Funcional | RF-07 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA1_la_posicion_del_bus_llega_a_quienes_miran_la_ruta` | `viajes.servicios.registrar_posicion`, `viajes.consumers.ViajeConsumer`, `frontend/src/paginas/Rutas.jsx` | `frontend/src/paginas/Rutas.test.jsx` |
+| HU06-CA2 | Manejo de errores | RF-07 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA2_rechaza_posiciones_de_un_viaje_que_no_esta_en_curso` | `viajes.reglas.verificar_en_curso` | — |
+| HU06-CA3 | Regla de negocio | RF-11 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA3_pasar_a_menos_de_50_m_registra_un_paso` | `viajes.servicios.registrar_posicion`, `rutas.servicios.registrar_paso` | — |
+| HU06-CA4 | Regla de negocio | RF-11 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA4_pasar_a_80_m_no_cuenta_como_llegada` | `rutas.reglas.parada_mas_cercana` | — |
+| HU06-CA5 | Manejo de errores | RF-07 | `tests/test_hu06_bus_en_vivo.py::test_HU06_CA5_sin_senal_se_ve_la_ultima_posicion_con_su_hora` | `viajes.serializadores.viaje_a_dict`, `frontend/src/paginas/Rutas.jsx` | — |
+| HU07-CA1 | Funcional | RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA1_avisa_que_va_a_subir` | `viajes.servicios.avisar_que_va_a_subir`, `viajes.consumers.ChoferDelViajeConsumer` | `frontend/src/componentes/VoyASubir.test.jsx` |
+| HU07-CA2 | Regla de negocio | RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA2_rechaza_un_segundo_aviso_en_el_mismo_viaje` | `viajes.reglas.verificar_sin_aviso_activo` | `frontend/src/componentes/VoyASubir.test.jsx` |
+| HU07-CA3 | Regla de negocio | RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA3_si_el_bus_pasa_y_no_subio_queda_no_se_presento` | `viajes.servicios.cerrar_no_presentados` | — |
+| HU07-CA4 | Funcional | RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA4_puede_cancelar_antes_de_que_pase_el_bus` | `viajes.servicios.cancelar_aviso` | — |
+| HU07-CA5 | No funcional | RF-08 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA5_el_chofer_ve_la_ubicacion_compartida` | `viajes.servicios.compartir_ubicacion`, `viajes.reglas.verificar_puede_ver_avisos`, `frontend/src/componentes/AvisosDelViaje.jsx` | — |
+| HU07-CA6 | No funcional | RF-08 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA6_deja_de_compartir_al_subir` | `viajes.servicios.marcar_a_bordo`, `viajes.servicios.dejar_de_compartir` | — |
+| HU07-CA7 | Regla de negocio | RF-03, RF-09 | `tests/test_hu07_voy_a_subir.py::test_HU07_CA7_un_administrador_tambien_puede_avisar` | `viajes.reglas.verificar_puede_avisar` | — |
+| HU08-CA1 | Funcional | RF-10 | `tests/test_hu08_paradas_propuestas.py::test_HU08_CA1_propone_una_parada_sobre_la_ruta` | `rutas.servicios.proponer_parada`, `frontend/src/paginas/Rutas.jsx` | `frontend/src/paginas/Rutas.test.jsx` |
+| HU08-CA2 | Regla de negocio | RF-10 | `tests/test_hu08_paradas_propuestas.py::test_HU08_CA2_rechaza_una_parada_lejos_del_recorrido` | `rutas.reglas.verificar_cerca_del_recorrido`, `comun.geo.distancia_a_recorrido` | — |
+| HU08-CA3 | Regla de negocio | RF-10 | `tests/test_hu08_paradas_propuestas.py::test_HU08_CA3_una_parada_sin_nadie_no_esta_activa` | `viajes.serializadores.viaje_a_dict` (`paradas_activas`) | — |
+| HU08-CA4 | Funcional | RF-10 | `tests/test_hu08_paradas_propuestas.py::test_HU08_CA4_el_administrador_aprueba_una_parada_propuesta` | `rutas.servicios.aprobar_parada`, `rutas.reglas.verificar_puede_aprobar_parada`, `rutas.servicios.paradas_visibles` | `frontend/src/paginas/Rutas.test.jsx` |
+| HU09-CA1 | Funcional | RF-13 | `tests/test_hu09_aviso_bus_cerca.py::test_HU09_CA1_avisa_cuando_el_bus_esta_a_500_m_o_menos` | `viajes.servicios.registrar_posicion`, `viajes.reglas.esta_cerca_de_parada`, `frontend/src/componentes/VoyASubir.jsx` | — |
+| HU09-CA2 | Regla de negocio | RF-13 | `tests/test_hu09_aviso_bus_cerca.py::test_HU09_CA2_no_avisa_a_mas_de_500_m` | `viajes.reglas.esta_cerca_de_parada` | — |
+| HU09-CA3 | Regla de negocio | RF-13 | `tests/test_hu09_aviso_bus_cerca.py::test_HU09_CA3_avisa_una_sola_vez_por_viaje` | `viajes.models.AvisoDeSubida.aviso_cercania_enviado` | — |
+| HU09-CA4 | Funcional | RF-12 | `tests/test_hu09_aviso_bus_cerca.py::test_HU09_CA4_sugiere_seguir_si_nadie_espera` | `viajes.reglas.va_atrasado`, `frontend/src/componentes/AvisosDelViaje.jsx` | — |
+| HU09-CA5 | Regla de negocio | RF-12 | `tests/test_hu09_aviso_bus_cerca.py::test_HU09_CA5_no_sugiere_seguir_si_alguien_viene` | `viajes.servicios.registrar_posicion` | — |
+| HU10-CA1 | Funcional | RF-14 | `tests/test_hu10_quien_subio.py::test_HU10_CA1_el_estudiante_registra_que_subio` | `viajes.servicios.marcar_a_bordo`, `viajes.reglas.verificar_puede_marcar_abordaje` | `frontend/src/componentes/VoyASubir.test.jsx` |
+| HU10-CA2 | Funcional | RF-14 | `tests/test_hu10_quien_subio.py::test_HU10_CA2_el_chofer_registra_que_subio` | `viajes.servicios.marcar_a_bordo`, `frontend/src/componentes/AvisosDelViaje.jsx` | `frontend/src/componentes/VoyASubir.test.jsx` |
+| HU10-CA3 | Manejo de errores | RF-14 | `tests/test_hu10_quien_subio.py::test_HU10_CA3_rechaza_subir_a_un_viaje_terminado` | `viajes.reglas.verificar_viaje_abierto` | — |
+| HU10-CA4 | Funcional | RF-14 | `tests/test_hu10_quien_subio.py::test_HU10_CA4_el_chofer_marca_no_se_presento` | `viajes.servicios.marcar_no_se_presento`, `viajes.reglas.verificar_puede_marcar_no_se_presento` | `frontend/src/componentes/VoyASubir.test.jsx` |
+| HU10-CA5 | Regla de negocio | RF-14 | `tests/test_hu10_quien_subio.py::test_HU10_CA5_queda_a_bordo_si_avanza_con_el_bus` | `viajes.reglas.cumple_abordaje_automatico`, `viajes.servicios.compartir_ubicacion` | — |
+| HU14-CA1 | Funcional | RF-19 | `tests/test_hu14_chat_directo.py::test_HU14_CA1_el_confirmado_le_escribe_al_chofer` | `mensajes.servicios.enviar_mensaje_directo`, `mensajes.consumers.ChatDirectoConsumer` | `frontend/src/componentes/ChatDirecto.test.jsx` |
+| HU14-CA2 | Regla de negocio | RF-19 | `tests/test_hu14_chat_directo.py::test_HU14_CA2_rechaza_escribir_sin_estar_en_el_viaje` | `mensajes.reglas.verificar_confirmado` | `frontend/src/componentes/ChatDirecto.test.jsx` |
+| HU14-CA3 | No funcional | RF-19 | `tests/test_hu14_chat_directo.py::test_HU14_CA3_el_chofer_responde_con_una_respuesta_rapida` | `mensajes.reglas.verificar_respuesta_rapida`, `mensajes.servicios.enviar_mensaje_directo` | `frontend/src/componentes/ChatDirecto.test.jsx` |
+| HU15-CA1 | Funcional | RF-20 | `tests/test_hu15_chat_de_ruta.py::test_HU15_CA1_el_miembro_escribe_en_el_chat_de_su_ruta` | `mensajes.servicios.elegir_ruta`, `mensajes.servicios.enviar_mensaje_de_ruta`, `mensajes.consumers.ChatDeRutaConsumer` | `frontend/src/componentes/ChatDeRuta.test.jsx` |
+| HU15-CA2 | Regla de negocio | RF-20 | `tests/test_hu15_chat_de_ruta.py::test_HU15_CA2_rechaza_escribir_en_una_ruta_ajena` | `mensajes.reglas.verificar_es_miembro_de_la_ruta` | `frontend/src/componentes/ChatDeRuta.test.jsx` |
+| HU18-CA1 | Funcional | RF-23, RF-11 | `tests/test_hu18_modo_registro.py::test_HU18_CA1_el_primer_registro_crea_las_paradas_y_sus_horas` | `rutas.servicios.terminar_registro`, `rutas.reglas.hora_aproximada` | — |
+| HU18-CA2 | Regla de negocio | RF-23, RF-11 | `tests/test_hu18_modo_registro.py::test_HU18_CA2_un_segundo_registro_ajusta_la_hora_sin_duplicar_la_parada` | `rutas.reglas.parada_mas_cercana`, `rutas.reglas.salida_programada`, `rutas.servicios.minutos_aprendidos` | — |
+| HU18-CA3 | Regla de negocio | RF-23 | `tests/test_hu18_modo_registro.py::test_HU18_CA3_un_estudiante_no_puede_usar_el_modo_registro` | `rutas.reglas.verificar_puede_registrar` | — |
+| HU18-CA4 | Manejo de errores | RF-23 | `tests/test_hu18_modo_registro.py::test_HU18_CA4_rechaza_una_marca_a_menos_de_50_m_de_otra` | `rutas.reglas.verificar_lejos_de_las_otras_marcas` | — |
+| HU18-CA5 | No funcional | RF-23 | `tests/test_hu18_modo_registro.py::test_HU18_CA5_una_marca_reenviada_se_guarda_una_sola_vez` | `rutas.servicios.marcar_parada` | `frontend/src/registro/cola.test.js` |
 
 ## 2. Pruebas de soporte
 
@@ -121,6 +122,7 @@ Los 21 criterios restantes (HU-11 a HU-13, HU-16 y HU-17) están en la [sesión 
 - **Hugo Zuñiga:** dejó la base con estos tests.
 - **Andrés Laura Vargas:** implementó HU-08 (T15) con sus cuatro tests.
 - **Andrés Laura Vargas:** implementó HU-09, HU-10 y HU07-CA6 (T16) con sus once tests.
+- **Hugo Zuñiga (27/11/2026, mediodía):** agregó el tipo de cada criterio (C-41), con asistencia de Claude (Anthropic).
 - **Hugo Zuñiga (27/11/2026):** agregó la trazabilidad de T16 y la prueba de soporte de la sugerencia al revisarla, y las pruebas de soporte de la cámara del mapa y de los tramos sin grabar, con asistencia de Claude (Anthropic).
 - **Hugo Zuñiga (26/11/2026):** agregó la trazabilidad de HU-08 al revisar T15, con asistencia de Claude (Anthropic).
 - **Sebastian Cruz:** agregó la trazabilidad de HU-05 y HU-06 al implementar T11.
